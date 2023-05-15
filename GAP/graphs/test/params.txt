@@ -1,0 +1,17 @@
+feat-dim	:	250
+n_part	:	5
+embedding_dim	:	64
+hidden_dim	:	128
+learning_rate	:	0.0001
+n_graph_layers	:	4
+n_ff_layers	:	2
+name	:	test
+n_times	:	500
+n_nodes	:	250
+cuda	:	False
+path	:	None
+bs	:	250
+kind	:	mfpt
+state	:	None
+save	:	False
+loss_function	:	kemeny
