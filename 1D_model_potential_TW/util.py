@@ -57,6 +57,18 @@ def compute_free_energy(K, kT):
 
     return [peq, F, evectors, evalues, evalues_sorted, index]
 
+def kemeny_constant_check(N, mfpt, peq):
+    kemeny = np.zeros((N, 1))
+    for i in range(N):
+        for j in range(N):
+            kemeny[i] = kemeny[i] + mfpt[i, j] * peq[j]
+    print("Performing Kemeny constant check...")
+    print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
+    
+    if np.max(kemeny) - np.min(kemeny) > 1e-5:
+        print("Kemeny constant check failed!")
+        raise ValueError("Kemeny constant check failed!")
+    return kemeny
 
 #define a function calculating the mean first passage time
 def mfpt_calc(peq, K, N):
@@ -91,17 +103,14 @@ def bias_K(K, total_bias, kT, N, cutoff = 20):
     This function returns the perturbed transition matrix K_biased.
     """
     K_biased = np.zeros([N, N])
-    for i in range(N):
-        u_ij = total_bias - total_bias[i]  # Calculate u_ij (Note: Indexing starts from 0)
-        u_ij[u_ij > cutoff] = cutoff  # Apply cutoff to u_ij
-        u_ij[u_ij < -cutoff] = -cutoff
+    for i in range(N-1):
+        u_ij = total_bias[i+1] - total_bias[i]  # Calculate u_ij (Note: Indexing starts from 0)
+        if u_ij > cutoff: u_ij = cutoff  # Apply cutoff to u_ij
+        if u_ij < -cutoff: u_ij = -cutoff
 
-        KK = K[i, :]
-        KK = KK.T * np.exp(u_ij / (2 * kT))  # Update KK
-
-        K_biased[i, :] = KK.flatten()  # Assign KK to K_biased
-        K_biased[i, i] = 0  # Set diagonal element to 0
-
+        K_biased[i, i+1] = K[i, i+1] * np.exp(-u_ij /(2*kT))  # Calculate K_biased
+        K_biased[i+1, i] = K[i+1, i] * np.exp(u_ij /(2*kT))
+    
     #normalizing the biased K matrix.
     for i in range(N):
         K_biased[i,i] = -np.sum(K_biased[:,i])

@@ -39,6 +39,11 @@ mfpt_9_89 = mfpt[8, 88]
 print("Unperturbed. State 9 -> 89 MFPT: ", mfpt_9_89)
 mfpt_9_89_opt = mfpt_9_89
 
+check = kemeny_constant_check(N, mfpt, peq)
+
+
+
+
 ##############################################################
 #In the second step. We apply 5 random gaussian functions to the free energy.
 #we repeat this process 1000 times and update the lowest mfpt.
@@ -49,14 +54,14 @@ mfpt_9_89_opt = mfpt_9_89
 def perturbation(K, F, kT, cutoff, N, mfpt_9_89_ref, iter_num):
     #setup random seed
     mfpt_9_89_opt = mfpt_9_89_ref #initialize the mfpt_opt
-    np.random.seed(iter_num)
+    np.random.seed(iter_num) #set random seed for reproducibility.
 
     #setup the gaussian functions
     def gaussian(x, a, b, c):
         return a * np.exp(-(x - b)**2 / ((2*c)**2)) #c is the "std_g" in Simian's code. b is the c_g.
 
     #setup the parameters for the gaussian functions
-    a = [1]*5 # according to simian code
+    a = [1]*5 
     b = np.random.rand(5) * 100
     c = np.random.rand(5) * 25
 
@@ -70,7 +75,7 @@ def perturbation(K, F, kT, cutoff, N, mfpt_9_89_ref, iter_num):
     total_bias_opt = None
 
     #apply the 5 gaussian functions to the free energy and plot
-    F_biased = F + total_bias
+    #F_biased = F + total_bias
 
     """
     plot the biased free energy
@@ -80,7 +85,7 @@ def perturbation(K, F, kT, cutoff, N, mfpt_9_89_ref, iter_num):
     plt.show()
     """
     #here we set the cutoff for the biased free energy
-    cutoff = 20 #no unit.
+    #cutoff = 20 #no unit.
     """
     K_biased = np.zeros([N, N])
     for i in range(N):
@@ -103,6 +108,9 @@ def perturbation(K, F, kT, cutoff, N, mfpt_9_89_ref, iter_num):
     #here we calculate the MFPT for the biased K matrix
     peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
     mfpt_biased = mfpt_calc(peq_biased, K_biased, N)
+
+    check = kemeny_constant_check(N, mfpt_biased, peq_biased)
+
     #print(mfpt_biased)
     #we update the mftp_opt if the new mfpt is smaller than the old one.
     #need to fix this. update all param if mfpt is smaller. otherwise, keep the original param.
@@ -124,12 +132,14 @@ for i in range(100): #100iter: Final MFPT:  3801.16;;; 3000iter: Final MFPT:  26
         total_bias_opt = result[0]
     mfpt_9_89_opt = result[1]
 
+F_biased_opt = F + total_bias_opt 
+
 print("Final MFPT: ", mfpt_9_89_opt)
 #note the optimial total_bias is stored in total_bias_opt now.
 
 #plot the biased free energy
 plt.plot(F, color='blue')
-#plt.plot(F_biased, color='red')
+plt.plot(F_biased_opt, color='green', linestyle='--')
 #plt.plot(total_bias_opt, color='green')
 plt.show()
 
@@ -170,7 +180,7 @@ plt.plot(state_visited[1], color='red')
 plt.plot(state_visited[2], color='green')
 plt.show()
 
-
+"""
 #here we unbias using DHAM.
 #under construction.
 x_eq = np.array(range(100)).reshape[100,1] #i dont understand.
@@ -181,3 +191,4 @@ F_DHAM = -kT * np.log(prob_dist) # calculate the free energy surface based on DH
 #plot DHAM prob_dist
 plt.plot(prob_dist, color='blue')
 plt.show()
+"""
