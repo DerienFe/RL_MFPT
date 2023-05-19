@@ -6,7 +6,7 @@ function [mfpt] = mfpt_calc(peq,K,N)
 %   N = Number of states 
 
 onevec=ones(N,1);
-Qinv=inv(peq'*onevec'-K');
+Qinv=inv(peq*onevec'-K');
 %mfpt=zeros(N,N);
 for j=1:N
     for i=1:N
