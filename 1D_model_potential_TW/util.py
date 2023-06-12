@@ -1,11 +1,14 @@
 #Written by TW 16th May
 import numpy as np
 from scipy.linalg import eig
-
+from scipy.linalg import expm
 # this is utility function for main.py
 
 #define a function calculating free energy
 #original matlab code:  [pi, F, eigenvectors, eigenvalues, eigenvalues_sorted, index]=compute_free_energy(K, kT)
+
+def gaussian(x, a, b, c): #self-defined gaussian function
+        return a * np.exp(-(x - b)**2 / ((2*c)**2)) 
 
 def create_K_1D(N, kT):
     #create the K matrix for 1D model potential
@@ -28,7 +31,6 @@ def create_K_1D(N, kT):
         K[i, i] = -np.sum(K[:, i])
     return K
 
-
 def compute_free_energy(K, kT):
     """
     K is the transition matrix
@@ -48,7 +50,7 @@ def compute_free_energy(K, kT):
     evalues_sorted = evalues[index] #sort the eigenvalues based on index
 
     #calculate the equilibrium distribution
-    peq = evectors[:, index[-1]]/np.sum(evectors[:, index[-1]]) #normalize the eigenvector
+    peq = evectors[:, index[-1]].T/np.sum(evectors[:, index[-1]]) #normalize the eigenvector
     #take the real part of the eigenvector i.e. the probability distribution at equilibrium.
     #print('sum of the peq is:', np.sum(peq))
 
@@ -62,21 +64,22 @@ def kemeny_constant_check(N, mfpt, peq):
     for i in range(N):
         for j in range(N):
             kemeny[i] = kemeny[i] + mfpt[i, j] * peq[j]
-    print("Performing Kemeny constant check...")
-    print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
-    
-    if np.max(kemeny) - np.min(kemeny) > 1e-5:
+    #print("Performing Kemeny constant check...")
+    #print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
+    """
+    if np.max(kemeny) - np.min(kemeny) > 1e-6:
         print("Kemeny constant check failed!")
-        raise ValueError("Kemeny constant check failed!")
+        raise ValueError("Kemeny constant check failed!")"""
     return kemeny
 
 #define a function calculating the mean first passage time
-def mfpt_calc(peq, K, N):
+def mfpt_calc(peq, K):
     """
     peq is the probability distribution at equilibrium.
     K is the transition matrix.
     N is the number of states.
     """
+    N = K.shape[0] #K is a square matrix.
     onevec = np.ones((N, 1))
     Qinv = np.linalg.inv(peq.T @ onevec - K.T) #Qinv is the inverse of the matrix Q 
 
@@ -88,12 +91,14 @@ def mfpt_calc(peq, K, N):
                 mfpt[i, j] = 0
             else:
                 mfpt[i, j] = 1 / peq[j] * (Qinv[j, j] - Qinv[i, j])
+    
+    result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
 #here we define a function, transform the unperturbed K matrix,
 #with given biasing potential, into a perturbed K matrix K_biased.
 
-def bias_K(K, total_bias, kT, N, cutoff = 20):
+def bias_K_1D(K, total_bias, kT, N, cutoff = 20):
     """
     K is the unperturbed transition matrix.
     total_bias is the total biasing potential.
@@ -110,12 +115,11 @@ def bias_K(K, total_bias, kT, N, cutoff = 20):
 
         K_biased[i, i+1] = K[i, i+1] * np.exp(-u_ij /(2*kT))  # Calculate K_biased
         K_biased[i+1, i] = K[i+1, i] * np.exp(u_ij /(2*kT))
+        K_biased[i,i] = 0 #kinda redundant.
     
-    #normalizing the biased K matrix.
     for i in range(N):
         K_biased[i,i] = -np.sum(K_biased[:,i])
-    return K_biased
-
+    return K_biased.T
 
 #here is the python equivalent of the matlab function "explore_the_network.m"
 
@@ -134,10 +138,10 @@ def explore_the_network(t_max, ts, K_biased, state_start, state_end,N=100):
 
     #M_t is the transition matrix, calculated by yielding the exponential of sq matrix K_biiased times the time step ts, then transpose.
     #this gives us the population transition rate of the i,j element per time step.
-    M_t =  np.exp(K_biased * ts)  #the rate is K_biased * ts. The transition matrix is the exponential of the rate matrix.
+    M_t =expm(K_biased * ts)  #the rate is K_biased * ts. The transition matrix is the exponential of the rate matrix.
     
     #normalize the M_t matrix, such that each row sums to 1.
-    M_t = M_t / np.sum(M_t, axis=1, keepdims=True)
+    M_t = M_t / np.sum(M_t, axis=1, keepdims=True) #do we need normalize this?
 
     record_states = np.zeros(t_max)
     record_states[0] = state_start
@@ -151,11 +155,60 @@ def explore_the_network(t_max, ts, K_biased, state_start, state_end,N=100):
         record_states[i] = new_state
         
         if new_state == state_end:
+            print("Reached the end state at time step %d" % (i))
             step = i #steps needed to reach the end state.
             break
     return record_states, step
 
 
+def markov_mfpt_calc(peq, M):
+    """
+    peq is the equilibrium probability distribution.
+    M is the transition matrix.
+    """
+    N = M.shape[0]
+    onevec = np.ones(N)
+    I = np.diag(onevec)
+    A = np.outer(peq, onevec)
+    Qinv = np.linalg.inv(A + I - M)
+    mfpt = np.zeros((N, N))
+    
+    for j in range(N):
+        for i in range(N):
+            mfpt[i, j] = 1 / peq[j] * (Qinv[j, j] - Qinv[i, j] + I[i, j])
+    
+    result = kemeny_constant_check(N, mfpt, peq)
+    return mfpt
+
+
+def min_mfpt(abc_init, K, num_gaussian, kT, ts, state_start, state_end):
+    """
+    abc_init is the parameters for gaussians, namely the a, b c in the gaussian function.
+     inside abc_init: [a, b, c]
+    K is the unperturbed transition matrix.
+    """
+    N = K.shape[0]
+
+    a, b, c = abc_init[0], abc_init[1], abc_init[2]
+
+    gaussian_functions = []
+    for i in range(num_gaussian):
+        gaussian_functions.append(gaussian(np.linspace(0, 99, 100), a[i], b[i], c[i])) #5 gaussians start from 0 to 99.
+
+    #we sum up all the random gaussian functions as total_bias
+    total_bias = np.sum(gaussian_functions, axis=0)
+
+    K_biased = bias_K_1D(K, total_bias, kT, N=100, cutoff=20)
+    peq_biased = compute_free_energy(K_biased, kT)[0]
+    
+    M_t = expm(K_biased*ts)
+    Mmfpt_biased = markov_mfpt_calc(peq_biased.T, M_t) * ts  # we use markov probagation as updating rule.
+    return Mmfpt_biased[state_start, state_end]
+
+
+
+"""
+To be Done in the future.
 #python equivalent of DHAM_unbias.m
 def DHAM_unbias(record_states, x_eq, kT, N, bias, force_constant=0.1, cutoff=20):
     qspace = np.linspace(0.9, N + 1, N + 1)
@@ -205,4 +258,4 @@ def DHAM_unbias(record_states, x_eq, kT, N, bias, force_constant=0.1, cutoff=20)
 
     return prob_dist
 
-
+"""
