@@ -11,6 +11,10 @@ state_end = 89
 state_size = N*N #because K shape is [N, N]
 action_size = N #because we have N grid points to put the gaussian
 
+random.seed(1)
+np.random.seed(1)
+torch.manual_seed(1)
+
 #initialize the environment
 env = All_known_1D(N = N, kT = kT, state_start = state_start, state_end = state_end)
 
@@ -18,7 +22,7 @@ env = All_known_1D(N = N, kT = kT, state_start = state_start, state_end = state_
 agent = DQNAgent(state_size, action_size)
 
 #def training.
-num_episodes = 400
+num_episodes = 1000
 def train(num_episodes):
     for episode in range(num_episodes):
         state = env.reset()
@@ -39,12 +43,13 @@ def train(num_episodes):
             else: #else, we have placed 20 gaussians already, so we are done.
                 done = True
             #env.render(state)
-        print(f"Episode: {episode+1}, \tTotal Reward: {total_reward:.2f}")
+        ep_mfpt = env.get_mfpt(state)
+        print(f"Episode: {episode+1}, \tTotal Reward: {total_reward:.2f}, \tMFPT: {ep_mfpt:.2f}")
         agent.decay_epsilon()
         agent.update_target_model()
 
 train(num_episodes)
-torch.save(agent.model.state_dict(), 'model_1.pt')
+torch.save(agent.model.state_dict(), './RL_Qagent_1D/model_1.pt')
 
 #to load the model:
 #agent.model.load_state_dict(torch.load('model_1.pt'))
@@ -52,8 +57,9 @@ print("Training done!")
 
 
 #here we visualize the trained agent picking up 20 gaussians.
-agent.model.load_state_dict(torch.load('model_1.pt'))
+agent.model.load_state_dict(torch.load('./RL_Qagent_1D/model_1.pt'))
 
+state = env.reset()
 for _ in range(20):  # Run for 20 steps
     # Select action from the agent
     action = agent.get_action(state)
@@ -61,6 +67,6 @@ for _ in range(20):  # Run for 20 steps
     # Apply the action to the environment
     state, reward = env.step(state, action)
 
-    # Plot the FES
-    env.render(state)
-    plt.show()
+# Plot the FES
+env.render(state)
+plt.show()

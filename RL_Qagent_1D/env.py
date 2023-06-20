@@ -24,6 +24,7 @@ class All_known_1D:
     #initialize the K as state
     def define_states(self):
         states = create_K_1D(self.N)
+        #self.render(states)
         return states
     
     #define the action space, adding a standard gaussian at the grid point from 0 to N.
@@ -68,7 +69,7 @@ class All_known_1D:
         #quantify the reward as the percentate of the mfpt reduction.
         #set a threshold of reward to avoid the reward/punishment being too big.
 
-        change_percentage = (mfpt - mfpt_biased) / mfpt 
+        change_percentage = (mfpt - mfpt_biased) / max(mfpt, mfpt_biased) 
         
         reward = self.normalize_R(change_percentage, -0.5, 0.5)
     
@@ -81,10 +82,19 @@ class All_known_1D:
         #transition is the new state after the action is taken.
         K = state
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=1, b=action_taken, c=0.5)
+        gaussian_bias = gaussian(np.array([i for i in range(100)]), a=1, b=action_taken, c=0.5)
         bias_K = bias_K_1D(K, gaussian_bias)
+        #render the new state
+        #self.render(bias_K)
         return bias_K
     
+    def get_mfpt(self, state):
+        K = state
+        peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, self.kT)
+        mfpts = mfpt_calc(peq, K)
+        mfpt = mfpts[self.state_start, self.state_end]
+        return mfpt
+
     #define the step function
     def step(self, state, action_taken):
         #state is the K matrix
@@ -105,9 +115,9 @@ class All_known_1D:
         #render is the plot of the K matrix.
         K = state
         peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, self.kT)
-        
+        #print(F)
         #plot the free energy surface
         plt.figure(figsize=(10, 5))
-        plt.plot(np.linspace(0, self.N, self.N), F-min(F))
-
+        plt.plot(np.linspace(0, self.N - 1, self.N), F-min(F))
+        plt.show()
         return None

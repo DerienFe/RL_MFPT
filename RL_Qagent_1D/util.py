@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 #original matlab code:  [pi, F, eigenvectors, eigenvalues, eigenvalues_sorted, index]=compute_free_energy(K, kT)
 
 def gaussian(x, a, b, c): #self-defined gaussian function
-    return a * np.exp(-(x - b)**2 / ((2*c)**2))
+    return a * np.exp(-(x - b)**2 / 2*(c**2))
 
 def create_K_1D(N=100, kT=0.5981):
     #create the K matrix for 1D model potential
@@ -58,7 +58,7 @@ def mfpt_calc(peq, K):
     """
     N = K.shape[0] #K is a square matrix.
     onevec = np.ones((N, 1))
-    Qinv = np.linalg.inv(peq.T @ onevec - K.T) #Qinv is the inverse of the matrix Q 
+    Qinv = np.linalg.inv(peq.T @ onevec - K) #Qinv is the inverse of the matrix Q 
 
     mfpt = np.zeros((N, N))
     for j in range(N):
@@ -69,7 +69,7 @@ def mfpt_calc(peq, K):
             else:
                 mfpt[i, j] = 1 / peq[j] * (Qinv[j, j] - Qinv[i, j])
     
-    #result = kemeny_constant_check(N, mfpt, peq)
+    result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
 #here we define a function, transform the unperturbed K matrix,
@@ -92,7 +92,7 @@ def bias_K_1D(K, total_bias, kT=0.5981):
     
     for i in range(N):
         K_biased[i,i] = -np.sum(K_biased[:,i])
-    return K_biased.T
+    return K_biased
 
 def markov_mfpt_calc(peq, M):
     """
