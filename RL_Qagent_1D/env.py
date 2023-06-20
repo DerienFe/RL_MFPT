@@ -20,6 +20,7 @@ class All_known_1D:
         self.kT = kT
         self.state_start = state_start
         self.state_end = state_end
+        self.init_mfpt = self.get_mfpt(self.define_states())
 
     #initialize the K as state
     def define_states(self):
@@ -44,21 +45,21 @@ class All_known_1D:
         K = state
 
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=1, b=action_taken, c=0.5)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.5)
         bias_K = bias_K_1D(K, gaussian_bias)
 
         #compute the mfpt
         peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(bias_K, self.kT)
-        mfpts = mfpt_calc(peq, K)
+        #mfpts = mfpt_calc(peq, K)
         
         mfpts_biased = mfpt_calc(peq, bias_K)
 
-        Mt = expm(bias_K * ts)
-        Mmfpts_biased = markov_mfpt_calc(peq, Mt)
+        #Mt = expm(bias_K * ts)
+        #Mmfpts_biased = markov_mfpt_calc(peq, Mt)
 
-        mfpt = mfpts[self.state_start, self.state_end] #point of interest mfpt. Unbiased.
+        #mfpt = mfpts[self.state_start, self.state_end] #point of interest mfpt. Unbiased.
         mfpt_biased = mfpts_biased[self.state_start, self.state_end] #point of interest mfpt.
-        Mmfpt_biased = Mmfpts_biased[self.state_start, self.state_end] / ts#point of interest mfpt.
+        #Mmfpt_biased = Mmfpts_biased[self.state_start, self.state_end] / ts#point of interest mfpt.
 
         """#reward the exploration.
         print("action taken is:", action_taken)
@@ -69,11 +70,11 @@ class All_known_1D:
         #quantify the reward as the percentate of the mfpt reduction.
         #set a threshold of reward to avoid the reward/punishment being too big.
 
-        change_percentage = (mfpt - mfpt_biased) / max(mfpt, mfpt_biased) 
+        change_percentage = (self.init_mfpt - mfpt_biased) / self.init_mfpt
         
-        reward = self.normalize_R(change_percentage, -0.5, 0.5)
+        #reward = self.normalize_R(change_percentage, -0.5, 0.5)
     
-        return (reward) #negative reward, so that the agent will try to minimize the mfpt.
+        return (change_percentage) #negative reward, so that the agent will try to minimize the mfpt.
     
     #define the transition function
     def define_transition(self, state, action_taken):

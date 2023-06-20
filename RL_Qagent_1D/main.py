@@ -3,10 +3,10 @@ from dqn_agent import *
 from env import *
 
 #parameters
-N = 100
+N = 20
 kT = 0.5981
-state_start = 8
-state_end = 89
+state_start = 2
+state_end = 18
 
 state_size = N*N #because K shape is [N, N]
 action_size = N #because we have N grid points to put the gaussian
@@ -19,10 +19,10 @@ torch.manual_seed(1)
 env = All_known_1D(N = N, kT = kT, state_start = state_start, state_end = state_end)
 
 #initialize the agent
-agent = DQNAgent(state_size, action_size)
+agent = DQNAgent(state_size, action_size, learning_rate=1e-2, max_action=10)
 
 #def training.
-num_episodes = 1000
+
 def train(num_episodes):
     for episode in range(num_episodes):
         state = env.reset()
@@ -48,8 +48,24 @@ def train(num_episodes):
         agent.decay_epsilon()
         agent.update_target_model()
 
-train(num_episodes)
-torch.save(agent.model.state_dict(), './RL_Qagent_1D/model_1.pt')
+#train(num_episodes)
+#torch.save(agent.model.state_dict(), './RL_Qagent_1D/model_1.pt')
+
+#now we split the training into different parts, so that we can save the model after each part.
+# models are saved as model_1.pt, model_2.pt, etc.
+
+num_episodes = 1000
+for i in range(10):
+    #if there's a previous model, load it.
+    if i > 0:
+        agent.model.load_state_dict(torch.load(f'./RL_Qagent_1D/model_{i}.pt'))
+    train(num_episodes)
+    torch.save(agent.model.state_dict(), f'./RL_Qagent_1D/model_{i+1}.pt')
+    print(f"Model {i+1} saved.")
+
+
+    
+
 
 #to load the model:
 #agent.model.load_state_dict(torch.load('model_1.pt'))
@@ -60,7 +76,9 @@ print("Training done!")
 agent.model.load_state_dict(torch.load('./RL_Qagent_1D/model_1.pt'))
 
 state = env.reset()
-for _ in range(20):  # Run for 20 steps
+env.render(state)
+agent.reset_action_counter()
+for _ in range(10):  # Run for 20 steps
     # Select action from the agent
     action = agent.get_action(state)
 
