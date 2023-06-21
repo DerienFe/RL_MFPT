@@ -55,7 +55,7 @@ class DQNAgent:
         states, actions, rewards, next_states, dones = zip(*batch)
 
         states = torch.tensor(np.array(states), dtype=torch.float32)
-        actions = torch.tensor(np.array(actions), dtype=torch.float32)  # Change dtype to float32
+        actions = torch.tensor(np.array(actions), dtype=torch.int64)  # Change dtype to float32
         rewards = torch.tensor(np.array(rewards), dtype=torch.float32)
         next_states = torch.tensor(np.array(next_states), dtype=torch.float32)
         dones = torch.tensor(np.array(dones), dtype=torch.float32)
@@ -67,8 +67,8 @@ class DQNAgent:
         
         # Gather Q-values using the individual action components
         action_positions = actions[:, 0].long().unsqueeze(1)
-        action_heights = actions[:, 1].unsqueeze(1).long()
-        action_widths = actions[:, 2].unsqueeze(1).long()
+        action_heights = actions[:, 1]
+        action_widths = actions[:, 2]
         
         Q_values_pos = torch.gather(Q_values[:, 0:self.N], 1, action_positions)  # Gather position component
         Q_values_height = torch.gather(Q_values[:, self.N:(self.N+5)], 1, action_heights)  # Gather height component
