@@ -19,10 +19,10 @@ torch.manual_seed(2)
 env = All_known_1D(N = N, kT = kT, state_start = state_start, state_end = state_end)
 
 #initialize the agent
-agent = DQNAgent(state_size, action_size, N = N, learning_rate=1e-3, max_action=10)
+agent = DQNAgent(state_size, action_size, learning_rate=1e-3, max_action=10)
 
 #def training.
-
+num_episodes = 1000
 def train(num_episodes):
     for episode in range(num_episodes):
         state = env.reset()
