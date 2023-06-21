@@ -25,7 +25,7 @@ class DQN(nn.Module):
         return x
 
 class DQNAgent:
-    def __init__(self, state_size, action_size, gamma=0.99, epsilon=0.9, epsilon_decay=0.995, epsilon_min=0.05, learning_rate=1e-4, batch_size=32, max_action = 20):
+    def __init__(self, state_size, action_size, N=100, gamma=0.99, epsilon=0.9, epsilon_decay=0.995, epsilon_min=0.05, learning_rate=1e-4, batch_size=32, max_action = 20):
         self.state_size = state_size
         self.action_size = action_size
         self.gamma = gamma
@@ -41,6 +41,7 @@ class DQNAgent:
         self.criterion = nn.MSELoss()
         self.max_action = max_action
         self.action_counter = 0
+        self.N = N
     
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
@@ -48,28 +49,40 @@ class DQNAgent:
     def replay(self):
         if len(self.memory) < self.batch_size:
             return
-        
+
         batch = random.sample(self.memory, self.batch_size)
-        
+
         states, actions, rewards, next_states, dones = zip(*batch)
-        
+
         states = torch.tensor(np.array(states), dtype=torch.float32)
-        actions = torch.tensor(np.array(actions), dtype=torch.long)
+        actions = torch.tensor(np.array(actions), dtype=torch.float32)  # Change dtype to float32
         rewards = torch.tensor(np.array(rewards), dtype=torch.float32)
         next_states = torch.tensor(np.array(next_states), dtype=torch.float32)
         dones = torch.tensor(np.array(dones), dtype=torch.float32)
-        
+
         Q_targets = rewards + self.gamma * torch.max(self.target_model(next_states), dim=1)[0] * (1 - dones)
-        Q_targets = Q_targets.detach()
-        
+        Q_targets = Q_targets.unsqueeze(1).detach()
+
         Q_values = self.model(states)
-        Q_values = torch.gather(Q_values, 1, actions.unsqueeze(1)).squeeze(1)
+        
+        # Gather Q-values using the individual action components
+        action_positions = actions[:, 0].long().unsqueeze(1)
+        action_heights = actions[:, 1].unsqueeze(1).long()
+        action_widths = actions[:, 2].unsqueeze(1).long()
+        
+        Q_values_pos = torch.gather(Q_values[:, 0:self.N], 1, action_positions)  # Gather position component
+        Q_values_height = torch.gather(Q_values[:, self.N:(self.N+5)], 1, action_heights)  # Gather height component
+        Q_values_width = torch.gather(Q_values[:, (self.N+5):], 1, action_widths)  # Gather width component
+        
+        # Combine the gathered Q-values for the final Q-values tensor
+        Q_values = torch.cat((Q_values_pos, Q_values_height, Q_values_width), dim=1)
         
         loss = self.criterion(Q_values, Q_targets)
-        
+
         self.optimizer.zero_grad()
         loss.backward()
         self.optimizer.step()
+
     
     def update_target_model(self):
         self.target_model.load_state_dict(self.model.state_dict())
@@ -78,15 +91,29 @@ class DQNAgent:
         if self.action_counter >= self.max_action:
             return None
 
-        if np.random.rand() <= self.epsilon: #explore
+        if np.random.rand() <= self.epsilon:  # explore
             self.action_counter += 1
-            return random.randint(0, self.action_size - 1)
+            action_position = np.random.randint(0, int(np.sqrt(self.state_size)))
+            action_height = np.random.uniform(0.1, 5)
+            action_width = np.random.uniform(0.1, 2)
+            action = (action_position, action_height, action_width)
+            return action
         
         #else: exploit
         self.action_counter += 1
         state = torch.tensor(state, dtype=torch.float32)
         Q_values = self.model(state)
         action = torch.argmax(Q_values).item()
+
+        #convert action to gaussian parameters
+        action_position = action // (10 * 5)
+        action_height_idx = (action % (10 * 5)) // 5
+        action_width_idx = (action % (10 * 5)) % 5
+        action_height = np.linspace(0.1, 5, 10)[action_height_idx]
+        action_width = np.linspace(0.1, 2, 5)[action_width_idx]
+
+        action = (action_position, action_height, action_width)
+
         return action
     
     def decay_epsilon(self):
