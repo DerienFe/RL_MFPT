@@ -6,10 +6,6 @@
 # And rewards are the utility the agent receives for performing the “right” actions.
 #  In our case, the reward is the biased mfpt from start state to end state.
 
-#to do: expand the action into 2 divided action:
-# 1)select where to put gaussian
-# 2)how high/wide the gaussian is.
-
 from util import *
 from scipy.linalg import expm
 
@@ -24,6 +20,7 @@ class All_known_1D:
         self.kT = kT
         self.state_start = state_start
         self.state_end = state_end
+        self.init_mfpt = self.get_mfpt(self.define_states())
 
     #initialize the K as state
     def define_states(self):
@@ -31,25 +28,11 @@ class All_known_1D:
         #self.render(states)
         return states
     
-    #define the action space, chose where to put the gaussian
-    # then chose the height and width of the gaussian.
+    #define the action space, adding a standard gaussian at the grid point from 0 to N.
     def define_actions(self):
-        action_space = []
-        
-        # Define the positions where the Gaussian can be placed
-        positions = np.linspace(0, self.N - 1, self.N)
-        
-        # Define the range of heights and widths for the Gaussian
-        height_range = np.linspace(0.1, 5, 5)  # Example height range
-        width_range = np.linspace(0.1, 2, 5)  # Example width range
-        
-        # Generate all possible combinations of positions, heights, and widths
-        for position in positions:
-            for height in height_range:
-                for width in width_range:
-                    action_space.append((position, height, width))
-        return action_space
-
+        actions = np.array([i for i in range(self.N)])
+        return actions
+    
     def normalize_R(self, value, min_value, max_value):
         return 2 * ((value - min_value) / (max_value - min_value)) - 1
 
@@ -60,24 +43,23 @@ class All_known_1D:
         #reward is the biased mfpt from start state to end state.
         ts = 0.01 #time step， used in Mmfpt calculation.
         K = state
-        action_position, action_height, action_width = action_taken #unpack values
 
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=1, b=action_taken, c=0.5)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.5)
         bias_K = bias_K_1D(K, gaussian_bias)
 
         #compute the mfpt
         peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(bias_K, self.kT)
-        mfpts = mfpt_calc(peq, K)
+        #mfpts = mfpt_calc(peq, K)
         
         mfpts_biased = mfpt_calc(peq, bias_K)
 
-        Mt = expm(bias_K * ts)
-        Mmfpts_biased = markov_mfpt_calc(peq, Mt)
+        #Mt = expm(bias_K * ts)
+        #Mmfpts_biased = markov_mfpt_calc(peq, Mt)
 
-        mfpt = mfpts[self.state_start, self.state_end] #point of interest mfpt. Unbiased.
+        #mfpt = mfpts[self.state_start, self.state_end] #point of interest mfpt. Unbiased.
         mfpt_biased = mfpts_biased[self.state_start, self.state_end] #point of interest mfpt.
-        Mmfpt_biased = Mmfpts_biased[self.state_start, self.state_end] / ts#point of interest mfpt.
+        #Mmfpt_biased = Mmfpts_biased[self.state_start, self.state_end] / ts#point of interest mfpt.
 
         """#reward the exploration.
         print("action taken is:", action_taken)
@@ -88,22 +70,20 @@ class All_known_1D:
         #quantify the reward as the percentate of the mfpt reduction.
         #set a threshold of reward to avoid the reward/punishment being too big.
 
-        change_percentage = (mfpt - mfpt_biased) / max(mfpt, mfpt_biased) 
+        change_percentage = (self.init_mfpt - mfpt_biased) / self.init_mfpt
         
-        reward = self.normalize_R(change_percentage, -0.5, 0.5)
+        #reward = self.normalize_R(change_percentage, -0.5, 0.5)
     
-        return (reward) #negative reward, so that the agent will try to minimize the mfpt.
+        return (change_percentage) #negative reward, so that the agent will try to minimize the mfpt.
     
     #define the transition function
     def define_transition(self, state, action_taken):
         #state is the K matrix
         #action is the position of the gaussian
         #transition is the new state after the action is taken.
-        action_position, action_height, action_width = action_taken #unpack values
-
         K = state
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.array([i for i in range(100)]), a=action_height, b=action_position, c=action_width)
+        gaussian_bias = gaussian(np.array([i for i in range(100)]), a=1, b=action_taken, c=0.5)
         bias_K = bias_K_1D(K, gaussian_bias)
         #render the new state
         #self.render(bias_K)
@@ -139,6 +119,6 @@ class All_known_1D:
         #print(F)
         #plot the free energy surface
         plt.figure(figsize=(10, 5))
-        plt.plot(np.linspace(0, self.N - 1, self.N), F)
+        plt.plot(np.linspace(0, self.N - 1, self.N), F-min(F))
         plt.show()
         return None

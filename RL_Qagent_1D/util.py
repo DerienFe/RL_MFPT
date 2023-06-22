@@ -69,7 +69,7 @@ def mfpt_calc(peq, K):
             else:
                 mfpt[i, j] = 1 / peq[j] * (Qinv[j, j] - Qinv[i, j])
     
-    result = kemeny_constant_check(N, mfpt, peq)
+    #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
 #here we define a function, transform the unperturbed K matrix,
