@@ -16,8 +16,8 @@ t_max = 10**7 #max time
 ts = 0.1 #time step
 num_simultation = 3 #number of simulations
 num_gaussian = 10 #number of gaussian functions
-state_start = 90 #note in this code this is 0-indexed. so 8 means state 9.
-state_end = 9 #same as above. 88 means state 89.
+state_start = 7 #note in this code this is 0-indexed. so 8 means state 9.
+state_end = 88 #same as above. 88 means state 89.
 
 #create a K matrix for 1D model potential.
 K = create_K_1D(N, kT)

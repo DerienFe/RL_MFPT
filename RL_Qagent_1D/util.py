@@ -58,7 +58,7 @@ def mfpt_calc(peq, K):
     """
     N = K.shape[0] #K is a square matrix.
     onevec = np.ones((N, 1))
-    Qinv = np.linalg.inv(peq.T @ onevec - K) #Qinv is the inverse of the matrix Q 
+    Qinv = np.linalg.inv(peq.T @ onevec - K.T) #Qinv is the inverse of the matrix Q 
 
     mfpt = np.zeros((N, N))
     for j in range(N):
@@ -71,7 +71,6 @@ def mfpt_calc(peq, K):
     
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
-
 #here we define a function, transform the unperturbed K matrix,
 #with given biasing potential, into a perturbed K matrix K_biased.
 
