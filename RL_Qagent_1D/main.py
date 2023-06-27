@@ -9,7 +9,7 @@ N = 100
 kT = 0.5981
 state_start = 8
 state_end = 89
-max_action = 20
+max_action = 10
 state_size = N*N #because K shape is [N, N]
 action_size = N #because we have N grid points to put the gaussian
 
@@ -69,9 +69,9 @@ num_episodes = 2500
 for i in range(0,1):
     #if there's a previous model, load it.
     if i > 0:
-        agent.model.load_state_dict(torch.load(f'./model_26thJune{i}.pt'))
+        agent.model.load_state_dict(torch.load(f'./model_26thJune{i}_N100.pt'))
     train(num_episodes)
-    torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}.pt')
+    torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}_N100.pt')
     print(f"Model {i+1} saved.")
 
 #to load the model:
@@ -99,7 +99,7 @@ ax2.tick_params('y', colors='r')
 
 plt.title('Total Reward and MFPT of Python Learn')
 plt.show()
-plt.savefig('RL_Qagent_1D_singleaction_0.png')
+plt.savefig('RL_Qagent_1D_singleaction_0_N100.png')
 
 
 #here we def a simulate function that use the trained model to pick up 20 gaussians.
@@ -115,7 +115,7 @@ def simulate():
         state, reward = env.step(state, action)
     env.render(state)
     plt.show()
-    plt.savefig('RL_Qagent_1D_sim.png')
+    plt.savefig('RL_Qagent_1D_sim_N100.png')
 
 for _ in range(10):
     simulate()
