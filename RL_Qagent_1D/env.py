@@ -45,7 +45,7 @@ class All_known_1D:
         K = state
 
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.5)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.75)
         bias_K = bias_K_1D(K, gaussian_bias)
 
         #compute the mfpt
@@ -83,7 +83,7 @@ class All_known_1D:
         #transition is the new state after the action is taken.
         K = state
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.array([i for i in range(self.N)]), a=1, b=action_taken, c=0.5)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.75)
         bias_K = bias_K_1D(K, gaussian_bias)
         #render the new state
         #self.render(bias_K)
@@ -120,5 +120,5 @@ class All_known_1D:
         #plot the free energy surface
         plt.figure(figsize=(10, 5))
         plt.plot(np.linspace(0, self.N - 1, self.N), F)
-        plt.show()
+        #plt.show()
         return None

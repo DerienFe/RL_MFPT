@@ -5,10 +5,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 #parameters
-N = 100
+N = 20
 kT = 0.5981
-state_start = 8
-state_end = 89
+state_start = 2
+state_end = 18
 max_action = 10
 state_size = N*N #because K shape is [N, N]
 action_size = N #because we have N grid points to put the gaussian
@@ -65,15 +65,17 @@ def train(num_episodes):
 #now we split the training into different parts, so that we can save the model after each part.
 # models are saved as model_1.pt, model_2.pt, etc.
 
-num_episodes = 2500
+num_episodes = 500
+
 for i in range(0,1):
     #if there's a previous model, load it.
     if i > 0:
-        agent.model.load_state_dict(torch.load(f'./model_26thJune{i}_N100.pt'))
+        agent.model.load_state_dict(torch.load(f'./model_27thJune{i}_N20.pt'))
     train(num_episodes)
-    torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}_N100.pt')
+    torch.save(agent.model.state_dict(), f'./model_27thJune{i+1}_N20.pt')
     print(f"Model {i+1} saved.")
 
+"""
 #to load the model:
 #agent.model.load_state_dict(torch.load('model_1.pt'))
 print("Training done!")
@@ -100,23 +102,29 @@ ax2.tick_params('y', colors='r')
 plt.title('Total Reward and MFPT of Python Learn')
 plt.show()
 plt.savefig('RL_Qagent_1D_singleaction_0_N100.png')
-
+"""
 
 #here we def a simulate function that use the trained model to pick up 20 gaussians.
 
 def simulate():
     state = env.reset()
     agent.reset_action_counter()
+
+    #here's the initial FES
+    env.render(state)
+
     for _ in range(max_action):
         # Select action from the agent
         action = agent.get_action(state)
         print(action)
         # Apply the action to the environment
         state, reward = env.step(state, action)
-    env.render(state)
+        env.render(state)
     plt.show()
-    plt.savefig('RL_Qagent_1D_sim_N100.png')
+    #plt.savefig('RL_Qagent_1D_sim_N100.png')
 
 for _ in range(10):
     simulate()
     print("Simulation done!")
+
+print("All done")

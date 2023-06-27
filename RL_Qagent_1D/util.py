@@ -8,7 +8,8 @@ import matplotlib.pyplot as plt
 #original matlab code:  [pi, F, eigenvectors, eigenvalues, eigenvalues_sorted, index]=compute_free_energy(K, kT)
 
 def gaussian(x, a, b, c): #self-defined gaussian function
-    return a * np.exp(-(x - b)**2 / 2*(c**2))
+    return a * np.exp(-(x - b)**2 / 2*(c**2)) 
+    
 
 def create_K_1D(N=100, kT=0.5981):
     #create the K matrix for 1D model potential
@@ -83,11 +84,12 @@ def bias_K_1D(K, total_bias, kT=0.5981):
     """
     N = K.shape[0]
     K_biased = np.zeros([N, N])
-    for i in range(N-1):
-        u_ij = total_bias[i+1] - total_bias[i]  # Calculate u_ij (Note: Indexing starts from 0)
 
-        K_biased[i, i+1] = K[i, i+1] * np.exp(-u_ij /(2*kT))  # Calculate K_biased
-        K_biased[i+1, i] = K[i+1, i] * np.exp(u_ij /(2*kT))
+    for i in range(N-1):
+        u_ij = total_bias[i+1] - total_bias[i]  
+
+        K_biased[i, i+1] = K[i, i+1] * np.exp(u_ij /(2*kT))  
+        K_biased[i+1, i] = K[i+1, i] * np.exp(-u_ij /(2*kT))
     
     for i in range(N):
         K_biased[i,i] = -np.sum(K_biased[:,i])
