@@ -18,6 +18,8 @@ class All_known_1D:
                 ):
         self.N = N
         self.kT = kT
+        self.a = 2
+        self.c = 0.75
         self.state_start = state_start
         self.state_end = state_end
         self.init_mfpt = self.get_mfpt(self.define_states())
@@ -45,7 +47,7 @@ class All_known_1D:
         K = state
 
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.75)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=self.a, b=action_taken, c=self.c)
         bias_K = bias_K_1D(K, gaussian_bias)
 
         #compute the mfpt
@@ -83,7 +85,7 @@ class All_known_1D:
         #transition is the new state after the action is taken.
         K = state
         #based on the action we create the bias, just a gaussian at the action position
-        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=2, b=action_taken, c=0.75)
+        gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=self.a, b=action_taken, c=self.c)
         bias_K = bias_K_1D(K, gaussian_bias)
         #render the new state
         #self.render(bias_K)

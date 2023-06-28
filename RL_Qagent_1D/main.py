@@ -112,19 +112,57 @@ def simulate():
 
     #here's the initial FES
     env.render(state)
+    plt.savefig(f'./0.png')
 
-    for _ in range(max_action):
+    for i in range(max_action):
         # Select action from the agent
         action = agent.get_action(state)
         print(action)
         # Apply the action to the environment
         state, reward = env.step(state, action)
         env.render(state)
-    plt.show()
+        plt.savefig(f'./{i+1}.png')
+    #plt.show()
     #plt.savefig('RL_Qagent_1D_sim_N100.png')
 
 for _ in range(10):
     simulate()
     print("Simulation done!")
+
+
+#convert gif
+from PIL import Image
+png_files = [
+    "0.png",
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png",
+    "5.png",
+    "6.png",
+    "7.png",
+    "8.png",
+    "9.png",
+    "10.png",
+]
+
+# Create an empty list to store the image frames
+frames = []
+
+# Open each PNG image file, convert it to RGBA mode, and append it to the frames list
+for png_file in png_files:
+    with Image.open(png_file).convert("RGBA") as image:
+        frames.append(image)
+
+# Save the frames as an animated GIF
+gif_file = "animation.gif"
+frames[0].save(
+    gif_file,
+    format="GIF",
+    append_images=frames[1:],
+    save_all=True,
+    duration=1000,  # Specify the duration (in milliseconds) for each frame
+    loop=0  # Set loop to 0 for an infinite loop, or any positive integer for a finite loop
+)
 
 print("All done")
