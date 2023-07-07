@@ -1,0 +1,168 @@
+from util import *
+from dqn_agent import *
+from env import *
+import matplotlib.pyplot as plt
+import numpy as np
+
+#parameters
+N = 100
+kT = 0.5981
+state_start = 8
+state_end = 88
+max_action = 10
+state_size = N*N #because K shape is [N, N]
+action_size = N #because we have N grid points to put the gaussian
+
+random.seed(1)
+np.random.seed(1)
+torch.manual_seed(1)
+
+#initialize the environment
+env = All_known_1D(N = N, kT = kT, state_start = state_start, state_end = state_end)
+
+#initialize the agent
+agent = DQNAgent(state_size, action_size, learning_rate=1e-3, batch_size = 64, max_action=max_action)
+
+#def training.
+total_rewards = []
+mfpts = []
+def train(num_episodes):
+    for episode in range(num_episodes):
+        state = env.reset()
+        agent.reset_action_counter()
+        done = False
+        total_reward = 0
+        
+        while not done:
+            action = agent.get_action(state)
+            if action is not None:
+                next_state, reward = env.step(state, action)
+                total_reward += reward
+                agent.remember(state, action, reward, next_state, done)
+                agent.replay()
+                state = next_state
+                #print(f"Episode: {episode+1}, \tThis reward: {reward:.2f}, \tTotal Reward: {total_reward:.2f}")
+            
+            else: #else, we have placed 20 gaussians already, so we are done.
+                done = True
+            #env.render(state)
+        ep_mfpt = env.get_mfpt(state)
+        total_rewards.append(total_reward)
+        mfpts.append(ep_mfpt)
+        print(f"Episode: {episode+1}, \tTotal Reward: {total_reward:.6f}, \tMFPT: {ep_mfpt:.2f}")
+        agent.decay_epsilon()
+        agent.update_target_model()
+
+        if episode == 200:
+            torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}_200.pt')
+        elif episode == 400:
+            torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}_400.pt')
+        elif episode == 100:
+            torch.save(agent.model.state_dict(), f'./model_26thJune{i+1}_100.pt')
+#train(num_episodes)
+#torch.save(agent.model.state_dict(), './RL_Qagent_1D/model_1.pt')
+
+#now we split the training into different parts, so that we can save the model after each part.
+# models are saved as model_1.pt, model_2.pt, etc.
+
+num_episodes = 1000
+
+for i in range(0,10):
+    #if there's a previous model, load it.
+    if i > 0:
+        agent.model.load_state_dict(torch.load(f'./model_29thJune{i}_N100.pt'))
+    train(num_episodes)
+    torch.save(agent.model.state_dict(), f'./model_29thJune{i+1}_N100.pt')
+    print(f"Model {i+1} saved.")
+
+"""
+#to load the model:
+#agent.model.load_state_dict(torch.load('model_1.pt'))
+print("Training done!")
+np.savetxt('total_rewards.txt', total_rewards)
+#here we visualize the trained agent picking up 20 gaussians.
+#agent.model.load_state_dict(torch.load('./RL_Qagent_1D/model_1.pt'))
+
+#plot the total reward during training.
+episodes = range(1, num_episodes + 1)
+fig, ax1 = plt.subplots()
+
+# Plot total rewards
+ax1.plot(episodes, total_rewards, 'b-')
+ax1.set_xlabel('Episode')
+ax1.set_ylabel('Total Reward', color='b')
+ax1.tick_params('y', colors='b')
+
+# Create a second y-axis for MFPTs
+ax2 = ax1.twinx()
+ax2.plot(episodes, mfpts, 'r-')
+ax2.set_ylabel('MFPT', color='r')
+ax2.tick_params('y', colors='r')
+
+plt.title('Total Reward and MFPT of Python Learn')
+plt.show()
+plt.savefig('RL_Qagent_1D_singleaction_0_N100.png')
+"""
+
+#here we def a simulate function that use the trained model to pick up 20 gaussians.
+
+def simulate():
+    state = env.reset()
+    agent.reset_action_counter()
+
+    #here's the initial FES
+    env.render(state)
+    plt.savefig(f'./0.png')
+
+    for i in range(max_action):
+        # Select action from the agent
+        action = agent.get_action(state)
+        print(action)
+        # Apply the action to the environment
+        state, reward = env.step(state, action)
+        env.render(state)
+        plt.savefig(f'./{i+1}.png')
+    #plt.show()
+    #plt.savefig('RL_Qagent_1D_sim_N100.png')
+
+for _ in range(10):
+    simulate()
+    print("Simulation done!")
+
+
+#convert gif
+from PIL import Image
+png_files = [
+    "0.png",
+    "1.png",
+    "2.png",
+    "3.png",
+    "4.png",
+    "5.png",
+    "6.png",
+    "7.png",
+    "8.png",
+    "9.png",
+    "10.png",
+]
+
+# Create an empty list to store the image frames
+frames = []
+
+# Open each PNG image file, convert it to RGBA mode, and append it to the frames list
+for png_file in png_files:
+    with Image.open(png_file).convert("RGBA") as image:
+        frames.append(image)
+
+# Save the frames as an animated GIF
+gif_file = "animation.gif"
+frames[0].save(
+    gif_file,
+    format="GIF",
+    append_images=frames[1:],
+    save_all=True,
+    duration=1000,  # Specify the duration (in milliseconds) for each frame
+    loop=0  # Set loop to 0 for an infinite loop, or any positive integer for a finite loop
+)
+
+print("All done")
