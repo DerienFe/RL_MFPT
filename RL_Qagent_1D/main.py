@@ -65,14 +65,14 @@ def train(num_episodes):
 #now we split the training into different parts, so that we can save the model after each part.
 # models are saved as model_1.pt, model_2.pt, etc.
 
-num_episodes = 500
+num_episodes = 2500
 
-for i in range(0,1):
+for i in range(0,10):
     #if there's a previous model, load it.
     if i > 0:
-        agent.model.load_state_dict(torch.load(f'./model_27thJune{i}_N20.pt'))
+        agent.model.load_state_dict(torch.load(f'./model_29thJune{i}_N100.pt'))
     train(num_episodes)
-    torch.save(agent.model.state_dict(), f'./model_27thJune{i+1}_N20.pt')
+    torch.save(agent.model.state_dict(), f'./model_29thJune{i+1}_N100.pt')
     print(f"Model {i+1} saved.")
 
 """

@@ -27,7 +27,7 @@ def create_K_1D(N=100, kT=0.5981):
     #plt.plot(x, y)
     #plt.show()
 
-    K = np.zeros((N,N))
+    K = np.zeros((N,N), dtype=np.float64)
     for i in range(N-1):
         K[i, i + 1] = amplitude * np.exp((y[i+1] - y[i]) / 2 / kT)
         K[i + 1, i] = amplitude * np.exp((y[i] - y[i+1]) / 2 / kT) #where does this formula come from?
@@ -58,10 +58,10 @@ def mfpt_calc(peq, K):
     N is the number of states.
     """
     N = K.shape[0] #K is a square matrix.
-    onevec = np.ones((N, 1))
-    Qinv = np.linalg.inv(peq.T @ onevec - K.T) #Qinv is the inverse of the matrix Q 
+    onevec = np.ones((N, 1), dtype=np.float64)
+    Qinv = np.linalg.inv(peq.T * onevec - K.T)
 
-    mfpt = np.zeros((N, N))
+    mfpt = np.zeros((N, N), dtype=np.float64)
     for j in range(N):
         for i in range(N):
             #to avoid devided by zero error:
@@ -75,7 +75,7 @@ def mfpt_calc(peq, K):
 #here we define a function, transform the unperturbed K matrix,
 #with given biasing potential, into a perturbed K matrix K_biased.
 
-def bias_K_1D(K, total_bias, kT=0.5981):
+def bias_K_1D(K, total_bias, kT=0.596):
     """
     K is the unperturbed transition matrix.
     total_bias is the total biasing potential.
@@ -83,7 +83,7 @@ def bias_K_1D(K, total_bias, kT=0.5981):
     This function returns the perturbed transition matrix K_biased.
     """
     N = K.shape[0]
-    K_biased = np.zeros([N, N])
+    K_biased = np.zeros([N, N], dtype=np.float64)
 
     for i in range(N-1):
         u_ij = total_bias[i+1] - total_bias[i]  
@@ -114,7 +114,7 @@ def markov_mfpt_calc(peq, M):
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
-def compute_free_energy(K, kT):
+def compute_free_energy(K, kT=0.596):
     """
     K is the transition matrix
     kT is the thermal energy
@@ -138,6 +138,6 @@ def compute_free_energy(K, kT):
     #print('sum of the peq is:', np.sum(peq))
 
     #calculate the free energy
-    F = -kT * np.log(peq + 1e-9) #add a small number to avoid log(0))
+    F = -kT * np.log(peq + 1e-6) #add a small number to avoid log(0))
 
     return [peq, F, evectors, evalues, evalues_sorted, index]
