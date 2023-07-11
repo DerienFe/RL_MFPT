@@ -9,12 +9,12 @@ N = 100
 kT = 0.596
 state_start = 1
 state_end = 88
-num_gaussians = 20
+num_gaussians = 10
 time_step = 0.01
 simulation_steps = 10000
 
 state_size = ([1,], [N, N]) #position + M, shape in ([1, N, N])
-action_size = N #because we have N grid points to put the gaussian
+action_size = [N] #we use a vector of length N to represent the number of gaussians at each position
 
 set_randomseed(1)
 
@@ -34,7 +34,7 @@ agent = pos_M_DQNAgent(state_size = state_size,
 
 #we use the training defined in agent model.
 
-num_episodes = 1000
+num_episodes = 100
 agent.train(env, num_episodes)
 
 

@@ -14,6 +14,10 @@ import random
 def gaussian(x, a, b, c): #self-defined gaussian function
     return a * np.exp(-(x - b)**2 / 2*(c**2)) 
     
+def real_nonnegative(M): #filter to make sure the M matrix is all positive and real.
+    M = M.real
+    M = np.where(M < 0, 0, M)
+    return M
 
 def create_K_1D(N=100, kT=0.5981):
     #create the K matrix for 1D model potential
@@ -31,7 +35,7 @@ def create_K_1D(N=100, kT=0.5981):
     #plt.plot(x, y)
     #plt.show()
 
-    K = np.zeros((N,N), dtype=np.float64)
+    K = np.zeros((N,N)) #, dtype=np.float64
     for i in range(N-1):
         K[i, i + 1] = amplitude * np.exp((y[i+1] - y[i]) / 2 / kT)
         K[i + 1, i] = amplitude * np.exp((y[i] - y[i+1]) / 2 / kT) #where does this formula come from?
@@ -62,10 +66,10 @@ def mfpt_calc(peq, K):
     N is the number of states.
     """
     N = K.shape[0] #K is a square matrix.
-    onevec = np.ones((N, 1), dtype=np.float64)
+    onevec = np.ones((N, 1)) #, dtype=np.float64
     Qinv = np.linalg.inv(peq.T * onevec - K.T)
 
-    mfpt = np.zeros((N, N), dtype=np.float64)
+    mfpt = np.zeros((N, N)) #, dtype=np.float64
     for j in range(N):
         for i in range(N):
             #to avoid devided by zero error:
@@ -87,7 +91,7 @@ def bias_K_1D(K, total_bias, kT=0.596):
     This function returns the perturbed transition matrix K_biased.
     """
     N = K.shape[0]
-    K_biased = np.zeros([N, N], dtype=np.float64)
+    K_biased = np.zeros([N, N])#, #dtype=np.float64)
 
     for i in range(N-1):
         u_ij = total_bias[i+1] - total_bias[i]  
@@ -125,7 +129,7 @@ def simulate(state_start, state_end, M, steps = 1000):
         next_pos = np.random.choice(np.arange(len(M)), p=M[cur_pos])
         traj[i] = next_pos
         cur_pos = next_pos
-        if i % 1000 == 0:
+        if i % 5000 == 0:
             print("exploring bias and simulating at step: ", i, "cuurent position is: ", cur_pos)
         if next_pos == state_end:
             print('simulation ended at end point')

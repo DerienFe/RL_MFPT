@@ -87,7 +87,7 @@ class All_known_1D:
         #based on the action we create the bias, just a gaussian at the action position
         gaussian_bias = gaussian(np.linspace(0, self.N, self.N), a=self.a, b=action_taken, c=self.c)
         bias_K = bias_K_1D(K, gaussian_bias)
-        #render the new state
+        #render the new statez
         #self.render(bias_K)
         return bias_K
     
