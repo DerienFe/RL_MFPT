@@ -41,14 +41,15 @@ class posM_env_1d:
     #initialize state 
     #maybe try randomizing the initial state?
     def define_states(self):
-        states = [self.state_start, create_K_1D(self.N)]
-        #self.render(states[1])
+        K = create_K_1D(self.N)
+        M = expm(K * self.time_step)
+        M = real_nonnegative(M)
+        M = M / np.sum(M, axis=1)[:, None]
+        states = [self.state_start, M]
         return states
     
-    #define the action space, adding 10 standard gaussians at the grid point from 0 to N.
     def define_actions(self):
-        actions = np.zeros([self.num_gaussians]) #action space if vector of 10 gaussian positions.
-        print("action space:", actions.shape)
+        actions = np.zeros(self.N) #now action space is a vector of length N, representing number of gaussians at each position 
         return actions
     
     #define the reward function
@@ -57,11 +58,11 @@ class posM_env_1d:
         #action is the position of the gaussian, num_gaussians times.
         #reward is -1 or distance of the current state to the end state.
         
-        self.define_transition(state, action_taken)
-        pos, M = state #unpack the state
+        next_state, done = self.define_transition(state, action_taken)
+        next_pos, next_M = next_state #unpack the state
 
         #now we have the new state, we calculate the reward.
-        distance = np.abs(self.state_end - pos)
+        distance = np.abs(self.state_end - next_pos)
         reward = -1*distance
 
         print("reward is: ", reward)
@@ -72,14 +73,15 @@ class posM_env_1d:
         #state is the current 'state' or position; plus the M0 matrix.
         #action is the position of the gaussian, num_gaussians times.
         #reward is -1 or distance of the current state to the end state.
-        
         pos, M = state #unpack the state
-
-        gaussian_params = action_taken # we have 10 gaussian parameters, each is a position.
-        total_bias = np.zeros(self.N)
-        for i in range(self.num_gaussians):
-            total_bias += gaussian(np.linspace(0, self.N, self.N), a=self.a, b=gaussian_params[i], c=self.c)
         
+        gaussian_numbers = action_taken # we have N gaussian numbers, each represents the number of gaussians at a position.
+        total_bias = np.zeros(self.N)
+        
+        # calculate the total bias
+        for position, num_gaussians in enumerate(gaussian_numbers):
+            total_bias += num_gaussians * gaussian(np.linspace(0, self.N, self.N), a=self.a, b=position, c=self.c)
+
         #now we have the bias, we update the M matrix.
         M = bias_M(M, total_bias, time_step=self.time_step) #or we keep track of K? it doesn't really matter. the game is one-step.
 
@@ -102,8 +104,10 @@ class posM_env_1d:
         #state is the K matrix
         #action is the position of the gaussian
         #step is the new state after the action is taken.
-        reward = self.define_reward(state, action_taken)
+        #reward = self.define_reward(state, action_taken)
         next_state, done = self.define_transition(state, action_taken)
+        distance = np.abs(self.state_end - next_state[0])
+        reward = -1*distance
         return next_state, reward, done
     
     #define the reset function
