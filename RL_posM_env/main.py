@@ -34,7 +34,7 @@ agent = pos_M_DQNAgent(state_size = state_size,
 
 #we use the training defined in agent model.
 
-num_episodes = 100
+num_episodes = 500
 agent.train(env, num_episodes)
 
 

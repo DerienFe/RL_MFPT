@@ -22,8 +22,8 @@ class posM_env_1d:
                  state_start = 8,
                  state_end = 89,
                  num_gaussians = 10,
-                 time_step = 0.01,
-                 simulation_steps = 10000,
+                 time_step = 0.1,
+                 simulation_steps = 1000,
                 ):
         self.N = N
         self.kT = kT
@@ -119,7 +119,8 @@ class posM_env_1d:
     def render(self, state):
         #state is the K matrix
         #render is the plot of the K matrix.
-        K = state
+        pos, M = state
+
         peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, self.kT)
         #print(F)
         #plot the free energy surface
