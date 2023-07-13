@@ -51,8 +51,17 @@ class pos_M_DQN(nn.Module):
         return x
 
 class pos_M_DQNAgent:
-    def __init__(self, state_size, action_size, num_gaussian, gamma=0.99, epsilon=0.9, epsilon_decay=0.995, epsilon_min=0.05, learning_rate=1e-3, batch_size=64):
-        self.state_size = state_size # state in shape ([1,], [N, N])
+    def __init__(self, 
+                 state_size, 
+                 action_size, 
+                 num_gaussian, 
+                 gamma=0.99, 
+                 epsilon=0.9, 
+                 epsilon_decay=0.995, #0.995
+                 epsilon_min=0.05, 
+                 learning_rate=1e-3, 
+                 batch_size=32):
+        self.state_size = state_size # state in shape ([1,], [N, N]) 
         self.action_size = action_size # action in shape [num_gaussian]
         self.num_gaussian = num_gaussian
 
@@ -75,28 +84,31 @@ class pos_M_DQNAgent:
     def get_action(self, state):
         pos, M = state
         N = self.state_size[1][0]
-        if np.random.rand() <= self.epsilon: #?or len(self.memory) < self.batch_size: #explore
+        #explore
+        r = np.random.rand()
+        if r <= self.epsilon: #?or len(self.memory) < self.batch_size: 
             #gaussian params is a random sampling on [0, N-1], repeated num_gaussians times
             idx = self.rng.choice(np.linspace(0, N-1, N), size = self.num_gaussian, replace = True)
             #note our action is a list ranging from 0 to N-1, each non-zero value means the number of gaussian placed at the corresponding position.
             action = np.zeros(N)
             for i in idx:
                 action[int(i)] += 1
-            print("exploring, gaussians applied on:", idx)
+            print("EXPLORING, gaussians applied on:", idx)
             return action
         
         #else: exploit
-        pos = torch.tensor(pos, dtype=torch.float32)
-        M = torch.tensor(M, dtype=torch.float32)
-        state = (pos, M)
-        Q_values = self.model(state) #shape in [batch_size, action_space]
-        _, topk_indices = torch.topk(Q_values, self.num_gaussian, dim=1)
-        
-        action = np.zeros(N)
-        for i in topk_indices.squeeze().numpy():
-            action[i] += 1
-        print("exploiting, gaussians applied on:", topk_indices.squeeze())
-        return action
+        else:
+            pos = torch.tensor(pos, dtype=torch.float32)
+            M = torch.tensor(M, dtype=torch.float32)
+            state = (pos, M)
+            Q_values = self.model(state) #shape in [batch_size, action_space]
+            _, topk_indices = torch.topk(Q_values, self.num_gaussian, dim=1)
+            
+            action = np.zeros(N)
+            for i in topk_indices.squeeze().numpy():
+                action[i] += 1
+            print("EXPLOITING, gaussians applied on:", topk_indices.squeeze())
+            return action
 
     def remember(self, state, action, reward, next_state, done):
         self.memory.append((state, action, reward, next_state, done))
@@ -155,6 +167,7 @@ class pos_M_DQNAgent:
     def train(self, env, episodes):
         rewards = [] #record rewards for each episode
         for e in range(episodes):
+            print("###########    Starting epoch: ", e,"    ###########")
             #set random seed
             set_randomseed(e)
             # Initialize environment and state
@@ -180,7 +193,8 @@ class pos_M_DQNAgent:
             if e % 10 == 0:
                 print(f"episode: {e}/{episodes}, score: {reward}, e: {self.epsilon:.2}")
 
-            torch.save(self.model.state_dict(), 'pos_M_DQN_model_11thJuly_1.pt')
+            if e % 100 == 0:
+                torch.save(self.model.state_dict(), 'pos_M_DQN_model_13July_2.pt')
         return rewards
 
 
