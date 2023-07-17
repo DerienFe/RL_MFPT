@@ -109,6 +109,11 @@ def calc_M(K, time_step, kT=0.596):
 def bias_M(M, total_bias, time_step, kT = 0.596):
     #we keep the logm(M) real part.
     K = logm(M).real / time_step
+
+    #normalize the K matrix
+    for i in range(K.shape[0]):
+        K[i,i] = -np.sum(K[:,i])
+
     K_biased = bias_K_1D(K, total_bias, kT)
     return expm(K_biased * time_step)
 
@@ -129,7 +134,7 @@ def simulate(state_start, state_end, M, steps = 1000):
         next_pos = np.random.choice(np.arange(len(M)), p=M[cur_pos])
         traj[i] = next_pos
         cur_pos = next_pos
-        if i % 5000 == 0:
+        if i % 500 == 0:
             print("exploring bias and simulating at step: ", i, "cuurent position is: ", cur_pos)
         if next_pos == state_end:
             print('simulation ended at end point')

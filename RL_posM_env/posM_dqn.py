@@ -21,7 +21,7 @@ class pos_M_DQN(nn.Module):
         self.conv1M = nn.Conv2d(1, 32, kernel_size=3, stride=1, padding=1)
         self.conv2M = nn.Conv2d(32, 64, kernel_size=3, stride=1, padding=1)
         self.conv2M_drop = nn.Dropout2d()
-        self.fc1M = nn.Linear(40000, hidden_size) # depends on the size of M
+        self.fc1M = nn.Linear(40000, hidden_size) # depends on the size of M, N=20, 1600 N = 100, 40000
         self.fc2M = nn.Linear(hidden_size, action_size[0])
 
         self.state_size = state_size
@@ -32,7 +32,7 @@ class pos_M_DQN(nn.Module):
         pos, M = x  # unpack state
         N = self.state_size[1][0]
 
-        M = M.view(-1, 1, N, N) # reshape M to be [batch_size, 1, N, N]
+        M = M.reshape(-1, 1, N, N) # reshape M to be [batch_size, 1, N, N]
         # Extract band around the diagonal to be done.
 
         xpos = F.relu(self.fc_pos1(pos.unsqueeze(0)))
@@ -60,7 +60,7 @@ class pos_M_DQNAgent:
                  epsilon_decay=0.995, #0.995
                  epsilon_min=0.05, 
                  learning_rate=1e-3, 
-                 batch_size=32):
+                 batch_size=4):
         self.state_size = state_size # state in shape ([1,], [N, N]) 
         self.action_size = action_size # action in shape [num_gaussian]
         self.num_gaussian = num_gaussian
@@ -78,32 +78,46 @@ class pos_M_DQNAgent:
         self.optimizer = optim.Adam(self.model.parameters(), lr=learning_rate)
         self.criterion = nn.SmoothL1Loss() #nn.MSELoss() #use L1 loss? MSE loss may behave bad.
         self.rng = np.random.default_rng()
-        self.max_num_model_update = 32 # number of model update permitted for each episode. because we never reach the terminal state, we need to limit the number of model update.
+        self.max_num_model_update = 4 # number of model update permitted for each episode. because we never reach the terminal state, we need to limit the number of model update.
         self.num_model_update = 0
 
-    def get_action(self, state):
+    def get_action(self, state, train=True):
         pos, M = state
         N = self.state_size[1][0]
         #explore
         r = np.random.rand()
-        if r <= self.epsilon: #?or len(self.memory) < self.batch_size: 
-            #gaussian params is a random sampling on [0, N-1], repeated num_gaussians times
-            idx = self.rng.choice(np.linspace(0, N-1, N), size = self.num_gaussian, replace = True)
-            #note our action is a list ranging from 0 to N-1, each non-zero value means the number of gaussian placed at the corresponding position.
-            action = np.zeros(N)
-            for i in idx:
-                action[int(i)] += 1
-            print("EXPLORING, gaussians applied on:", idx)
-            return action
-        
-        #else: exploit
+        if train == True:
+            if r <= self.epsilon: #?or len(self.memory) < self.batch_size: 
+                #gaussian params is a random sampling on [0, N-1], repeated num_gaussians times
+                idx = self.rng.choice(np.linspace(0, N-1, N), size = self.num_gaussian, replace = True)
+                #note our action is a list ranging from 0 to N-1, each non-zero value means the number of gaussian placed at the corresponding position.
+                action = np.zeros(N)
+                for i in idx:
+                    action[int(i)] += 1
+                print("EXPLORING, gaussians applied on:", idx)
+                return action
+            
+            #else: exploit
+            else:
+                pos = torch.tensor(pos, dtype=torch.float32)
+                M = torch.tensor(M, dtype=torch.float32)
+                state = (pos, M)
+                Q_values = self.model(state) #shape in [batch_size, action_space]
+                _, topk_indices = torch.topk(Q_values, self.num_gaussian, dim=1)
+                
+                action = np.zeros(N)
+                for i in topk_indices.squeeze().numpy():
+                    action[i] += 1
+                print("EXPLOITING, gaussians applied on:", topk_indices.squeeze())
+                return action
         else:
+            #use exploit only
             pos = torch.tensor(pos, dtype=torch.float32)
             M = torch.tensor(M, dtype=torch.float32)
             state = (pos, M)
             Q_values = self.model(state) #shape in [batch_size, action_space]
             _, topk_indices = torch.topk(Q_values, self.num_gaussian, dim=1)
-            
+                
             action = np.zeros(N)
             for i in topk_indices.squeeze().numpy():
                 action[i] += 1
@@ -146,7 +160,7 @@ class pos_M_DQNAgent:
         next_state_values = torch.zeros(self.batch_size)
 
         next_state_values[done_batch] = 0.0
-        next_state_values[~done_batch] = next_Q_values.max(1)[0].detach()
+        next_state_values[~done_batch] = next_Q_values.max(1)[0].detach()[~done_batch]
 
         expected_Q_values = reward_batch + (self.gamma * next_state_values)
 
@@ -194,7 +208,7 @@ class pos_M_DQNAgent:
                 print(f"episode: {e}/{episodes}, score: {reward}, e: {self.epsilon:.2}")
 
             if e % 100 == 0:
-                torch.save(self.model.state_dict(), 'pos_M_DQN_model_13July_2.pt')
+                torch.save(self.model.state_dict(), 'pos_M_DQN_model_14July_1_N20.pt')
         return rewards
 
 
