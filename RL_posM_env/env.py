@@ -92,10 +92,10 @@ class posM_env_1d:
         M = M / np.sum(M, axis=1)[:, None]
         
         #now we have the M matrix, we update the position.
-        [traj, steps_used, pos, done] = simulate(self.state_start, self.state_end, M, steps = self.simulation_steps)
+        [traj, steps_used, new_pos, done] = simulate(pos, self.state_end, M, steps = self.simulation_steps)
 
         #now we have the new position, we update the state.
-        state = [pos, M]
+        state = [new_pos, M]
         return (state, done)
     
     #define the step function
