@@ -1,29 +1,36 @@
-function[prob_dist] = DHAM_unbias(Record_states, x_eq, force_constant, kT, n_states, bias_order_win, cutoff)
-
-qspace = linspace(0.9,n_states+1,n_states+1);
-numsims=size(Record_states,1);
-datlength(1:numsims)=size(Record_states,2);
-numbins=n_states;
-
-lagtime=1;
-for k=1:numsims
-        ncount(k,:)=histc(Record_states(k,1:datlength(k)-lagtime),qspace);
+function[prob_dist,M0] = DHAM_unbias(trajectory, bias_traj, kT, N, datlength,cutoff,amp)
+%%
+qspace = linspace(0.9,N+1,N+1);
+numsims=size(datlength,2);
+numbins=N;
+j=0;
+for i=1:numsims
+    dl=datlength(i);
+    data(i,1:dl)=trajectory(j+1:j+dl);
+    bias(i,1:numbins)=get_bias(bias_traj{i},numbins,amp);
+    j=j+dl;
 end
-
+%%
+lagtime=1;
+%ncount=zeros(numsims,numbins+1);
+for k=1:numsims
+        ncount(k,:)=histc(data(k,1:datlength(k)-lagtime),qspace);
+end
+%%
 MM=zeros(numbins,numbins);
 for k=1:numsims
         for i=1:datlength(k)
-                [a,b(i)]=max(histc(Record_states(k,i),qspace));
+                [a,b(i)]=max(histc(data(k,i),qspace));
         end
         for i=1+lagtime:datlength(k)
                 msum=0;
                 for l=1:numsims
                     nc=ncount(l,b(i-lagtime));
-                    epot_j=0.5*force_constant*(bias_order_win(l,b(i))-x_eq(l))^2;
-                    epot_i=0.5*force_constant*(bias_order_win(l,b(i-lagtime))-x_eq(l))^2;
-                    delta_epot=max(-cutoff,epot_j-epot_i); %apply the cutoff here.
-                    delta_epot=min(cutoff,delta_epot); %apply the cutoff here.
-                    if (nc > 2 )
+                    epot_j=bias(l,b(i));
+                    epot_i=bias(l,b(i-lagtime));
+                    delta_epot=max(-cutoff,epot_j-epot_i);
+                    delta_epot=min(cutoff,delta_epot);
+                    if (nc > 3)
                         msum=msum+nc*exp(-delta_epot/kT/2);
                     end
                 end
@@ -32,7 +39,7 @@ for k=1:numsims
                 end
         end     
 end     
-
+%%
 msum=sum(MM');
 for i=1:numbins
     if msum(i) > 0
@@ -41,12 +48,19 @@ for i=1:numbins
         MM(i,:)=0;
     end
 end
-
+M0=MM;
+%%
 [v,d]=eig(MM');
 [eigvals,l]=sort(diag(d),'ascend');
 prob_dist=v(:,l(numbins))';
 prob_dist=prob_dist/sum(prob_dist);
 relax_time=-lagtime/log(eigvals(end-1));
-
-end
+mU2 = real(-kT*log(prob_dist));
+mU2 = mU2 - min(mU2(1:20));
+max(mU2);
+% figure
+plot(mU2,'LineWidth',2.5)
+% hold on 
+% plot(F)
+%end
 
