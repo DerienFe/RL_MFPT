@@ -14,7 +14,7 @@ K = create_K_1D(N, kT);
 [eq, F, eigenvectors, eigenvalues, eigenvalues_sorted, index] = compute_free_energy(K',kT);
 F=F-min(F);
 [mfpts] = mfpt_calc(eq,K);
-state_start=9;
+state_start=1;
 state_end = 89;
 mfpt0 = mfpts(state_start, state_end)
 %% Kemeny constant check
@@ -32,7 +32,7 @@ Kemeny_eig=-sum(1./eigenvalues_sorted(2:N))
 cutoff = 20;
 xx = linspace(1,N,N);
 
-Ngauss=5;
+Ngauss=20;
 for i=1:Ngauss
     C_g(i)=rand*100;
     std_g(i) = rand*25;
@@ -86,11 +86,11 @@ for Nopt=1:1000
     M_t = expm(K_biased*t); % transition matrix.
     Mmfpt=Markov_mfpt_calc(pi_biased',M_t);
     mfpt_mid = Mmfpt(state_start, state_end)*t;
-
-    %this line we update the optimized mfpt, and the bias along with it.
     if mfpt_mid < mfpt
         mfpt = mfpt_mid;
         bias_opt = bias;
+        v(1:Ngauss)=C_g(1:Ngauss);
+        v(Ngauss+1:2*Ngauss)=std_g(1:Ngauss);
     end
 end
 figure
@@ -130,3 +130,43 @@ mfpt_from_rates=mmm(state_start, state_end)
 M_t = expm(K_biased*t); % transition matrix.
 Mmfpt=Markov_mfpt_calc(pi_biased',M_t);
 mfpt_from_Markov=Mmfpt(state_start, state_end)*t
+%%%
+v0=v;
+%calculating numerically the optimal bias
+%[a,b,c]= fmincon(@(v) min_reltime(v,K,N,KbT),v,[],[],[],[],LB,UB); 
+[a,b,c]=fminsearch(@(v) min_mfpt(v,K,Ngauss,amp,kT,t,state_start,state_end),v0,optimset('MaxFunEvals',10000));
+%%
+v=a;
+b
+c
+%%
+C_g(1:Ngauss) = v(1:Ngauss);
+std_g(1:Ngauss) = v(Ngauss+1:2*Ngauss);
+bias=zeros(N,1);
+for i = 1:1:Ngauss
+    bias(1:N) = bias(1:N) + amp * exp(-(xx' - C_g(i)).^2/(2*std_g(i)^2));
+end
+for i = 1:N-1
+    u_ij=bias(i+1)-bias(i);
+    K_biased(i,i+1)=K(i,i+1)*exp(-u_ij/2/kT);
+    K_biased(i+1,i)=K(i+1,i)*exp(u_ij/2/kT);
+    K_biased(i,i)=0;
+end
+K_biased(N,N)=0;
+%% Normalizing the rate matrix.
+for i = 1:N
+    f=sum(K_biased(i,:));
+    K_biased(i,i) =  -f;
+end
+%% biased MFPTs
+[pi_biased, ~] = compute_free_energy(K_biased', kT);
+[mfpts] = mfpt_calc(pi_biased,K_biased);
+mfpt_mid = mfpts(state_start, state_end);
+M_t = expm(K_biased*t); % transition matrix.
+Mmfpt=Markov_mfpt_calc(pi_biased',M_t);
+mfpt_mid = Mmfpt(state_start, state_end)*t;
+figure
+plot(xx,F,'b', 'LineWidth', 2)
+hold on
+plot(xx,bias, 'r', 'LineWidth', 2)
+plot(xx,bias+F'-min(bias+F'), 'g--', 'LineWidth', 2)
