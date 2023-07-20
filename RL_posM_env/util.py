@@ -12,7 +12,10 @@ import random
 #original matlab code:  [pi, F, eigenvectors, eigenvalues, eigenvalues_sorted, index]=compute_free_energy(K, kT)
 
 def gaussian(x, a, b, c): #self-defined gaussian function
-    return a * np.exp(-(x - b)**2 / 2*(c**2)) 
+    """
+    x is the x-axis, np array.
+    """
+    return a * np.exp(-(x - b)**2 / 2 / c**2)
     
 def real_nonnegative(M): #filter to make sure the M matrix is all positive and real.
     M = M.real
@@ -125,7 +128,11 @@ def simulate(state_start, state_end, M, steps = 1000):
     i: the number of steps taken
     cur_pos: the state at the end of traj
     Finished: whether the simulation reaches the end state
+
+
+    #no need to use np.clip, because we pick next state based on the probability distribution.
     """
+    M = M.T
     traj = np.zeros(steps, dtype=np.int32) #record the trajectory
     traj[0] = state_start
 
@@ -135,13 +142,13 @@ def simulate(state_start, state_end, M, steps = 1000):
         traj[i] = next_pos
         cur_pos = next_pos
         if i % 500 == 0:
-            print("exploring bias and simulating at step: ", i, "cuurent position is: ", cur_pos)
+            print("simulating at step: ", i, "cuurent position is: ", cur_pos)
         if next_pos == state_end:
             print('simulation ended at end point')
-            return [traj, i, cur_pos, True]
+            return [traj, i+1, cur_pos, True]
     
     print("simulation ended at point:", cur_pos)
-    return [traj, i, cur_pos, False]
+    return [traj, i+1, cur_pos, False]
 
 def compute_free_energy(K, kT=0.596):
     """
