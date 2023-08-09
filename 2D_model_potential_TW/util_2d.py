@@ -81,7 +81,7 @@ def compute_free_energy(K, kT):
     #print('sum of the peq is:', np.sum(peq))
 
     #calculate the free energy
-    F = -kT * np.log(peq + 1e-9) #add a small number to avoid log(0))
+    F = -kT * np.log(peq + 1e-15) #add a small number to avoid log(0))
     F = F.reshape((N, N))
     return [peq, F, evectors, evalues, evalues_sorted, index]
 

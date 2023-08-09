@@ -134,13 +134,13 @@ def simulate(state_start, state_end, M, steps = 1000):
         next_pos = np.random.choice(np.arange(len(M)), p=M[cur_pos])
         traj[i] = next_pos
         cur_pos = next_pos
-        if i % 500 == 0:
-            print("exploring bias and simulating at step: ", i, "cuurent position is: ", cur_pos)
+        #if i % 500 == 0:
+        #    print("exploring bias and simulating at step: ", i, "cuurent position is: ", cur_pos)
         if next_pos == state_end:
             print('simulation ended at end point')
             return [traj, i, cur_pos, True]
     
-    print("simulation ended at point:", cur_pos)
+    #print("simulation ended at point:", cur_pos)
     return [traj, i, cur_pos, False]
 
 def compute_free_energy(K, kT=0.596):
