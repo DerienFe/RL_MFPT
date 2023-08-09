@@ -43,11 +43,11 @@ class pos_1D_env(gym.Env):
         self.K = create_K_1D(self.N)
 
         self.observation_space = spaces.Discrete(self.N)
-        #define env.observation_space.n as N.
-        self.observation_space.n = self.N
-        self.action_space = spaces.MultiDiscrete([self.num_gaussians] * self.N) #MultiDiscrete([m] * n), it will represent n discrete actions, each with m possible values (from 0 to m-1)
+        #self.observation_space.n = self.N
+        self.action_space = spaces.MultiDiscrete([self.num_gaussians]*self.N) #MultiDiscrete([m] * n), it will represent n discrete actions, each with m possible values (from 0 to m-1)
+        
         #define env.action_space.nvec as [num_gaussians] * self.N
-        self.action_space.nvec = [self.num_gaussians] * self.N
+        #self.action_space.nvec = [self.num_gaussians] * self.N
         assert render_mode is None or render_mode in self.metadata["render_modes"]
         self.render_mode = render_mode
         self.max_simulation_steps = 1e7
@@ -79,7 +79,7 @@ class pos_1D_env(gym.Env):
         self.episodic_info = info
         self.episodic_info["last_action"] = None
 
-        return observation, info
+        return observation#, info
 
     def step(self, action):
         """

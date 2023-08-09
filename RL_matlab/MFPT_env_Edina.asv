@@ -1,0 +1,91 @@
+           
+% Initialize Observation settings
+ObservationInfo = rlFiniteSetSpec([1:100]);
+ObservationInfo.Name = 'position';
+ObservationInfo.Description = 'x-axis position of the particle';
+
+%initialize the action space.
+% note we put 20 gaussian at one time. each gaussian has position and width.
+% we put upper/lower bound to the position and width. [1, N] and [0.5, 2]
+lowerLimits(1,1:20)=0;
+lowerLimits(2,1:20)=0.1;
+upperLimits(1,1:20)=100;
+upperLimits(2,1:20)=5;
+
+ActionInfo = rlNumericSpec([2,20],'LowerLimit', lowerLimits, 'UpperLimit',upperLimits);
+ActionInfo.Name = 'gaussian position and width';
+
+function [InitialObservation, LoggedSignal] = myResetFunction()
+% Reset function to place the system in starting state
+% Return initial environment state variables as logged signals.
+state_start = 8;
+LoggedSignal.State = state_start;
+InitialObservation = LoggedSignal.State;
+IsDone=false;
+
+end
+
+
+%this section define the step functionality under the environment object "this".
+function [NextObs,Reward,IsDone,LoggedSignals] = myStepFunction(Action,LoggedSignals)
+    N=100;
+    kT=0.596;
+    
+    total_bias = zeros(this.N,1);
+    for i = 1:length(C_gs)
+        total_bias = total_bias + gaussian_bias(C_gs(i), std_gs(i), this.N);
+    end
+
+    % Cache to avoid recomputation?
+
+    %now we have the total bias, we calculate the biased K matrix. and M matrix.
+    % then we use the M matrix, propagate system 1000 steps.
+    % update the new state as the propagated state.
+
+    K_biased = bias_K_1D(this.K, total_bias);
+    M = expm(K_biased * this.ts);
+    M = M./sum(M,2); %normalize the transition matrix.
+    
+    % Get current state index
+    currentStateIdx = find(this.state == 1);
+
+    % Propagate the system.
+    NextObservation = this.state;
+    for i = 1:this.sim_incr
+        p = M(currentStateIdx, :);
+        NextObservation(:) = 0;  % Reset the state vector
+        nextStateIdx = randsample(this.N, 1, true, p);
+        NextObservation(nextStateIdx) = 1;  % Set the next state in the state vector
+        currentStateIdx = nextStateIdx;
+    end
+
+    % Update system states
+    this.state = NextObservation;
+
+    %check if meets terminal condition
+    %if the state is the end state, then the episode is done.
+    if find(NextObservation == 1) == this.state_end
+        this.IsDone = true;
+    end
+
+    %get reward
+    Reward = getReward(this);
+    IsDone = this.IsDone;
+    notifyEnvUpdated(this);
+end
+
+        %this section define the getReward functionality under the environment object "this".
+        function [Reward] = getReward(this)
+            %Reward = this.state - this.state_end; %the reward is the distance to the end state.
+            if ~this.IsDone
+                Reward = 0; %at the end, reward is 0.
+            else
+                distance = find(NextObservation == 1) - this.state_end;
+                Reward = distance; %the reward is the distance between current pos to the end state pos.
+        end
+
+        end
+    end
+end
+
+%validateEnvironment(MFPT_env);
