@@ -4,7 +4,27 @@ from openmm.app import *
 from openmm.unit import *
 import tqdm
 import matplotlib.pyplot as plt
+import numpy as np 
+import os
+import csv
+total_stpes = 100000
+record_freq=50
 
+def update_metrics(run_type, run_number, frames, time):
+    filename = 'mm_metrics.csv'
+    file_exists = os.path.isfile(filename)
+
+    # Open the CSV file in append mode ('a'), so new rows can be added at the end
+    with open(filename, mode='a', newline='') as file:
+        writer = csv.writer(file)
+
+        # If the file didn't exist, write the header
+        if not file_exists:
+            writer.writerow(['Run Type', 'Run Number', 'NumFrames', 'Time'])
+
+        # Write the new row with the provided data
+        writer.writerow([run_type, run_number, frames,time])
+        print("metircs written")
 
 
 
@@ -43,22 +63,55 @@ x = BiasVariable(bias_bond, 2.0, 10, 0.5, True)
 meta = Metadynamics(system, [x], 300*kelvin, 8.0,
                     1.0*kilojoules_per_mole, 1000)
 
-platform = omm.Platform.getPlatformByName('CPU')
+platform = omm.Platform.getPlatformByName('CUDA')
 
 sim = Simulation(pdb.topology, system, LangevinIntegrator(300*kelvin, 1/picosecond,
                  0.002*picoseconds), platform=platform) 
 sim.context.setPositions(pdb.positions)
 
-for i in tqdm.tqdm(range(50)):
-    meta.step(sim, 100)
+for i in tqdm.tqdm(range(int(total_stpes/record_freq))):
+    meta.step(sim, record_freq)
     dist = meta.getCollectiveVariables(sim)
+    distance = dist[0]
+    if distance >= 0.7: 
+        print("reached 7: ", dist)
+        
+        # Calculate the total simulation time in picoseconds.
+        time_ns = (i * 50 * 2)/1000
+
+        # Convert the simulation time to nanoseconds.
+        
+        print(f"Simulation time when distance reached 7: {time_ns} ns")
+        run_type = "Metadynamics"
+        run_number = 19
+        final_frame = i*50
+        print("updating metrics") 
+        print(run_type, run_number, final_frame, time_ns)
+        update_metrics(run_type, run_number, final_frame, time_ns)
+        
+        sys.exit(1)
+
     distances.append(dist[0])
     state = sim.context.getState(getEnergy=True)
     potential_energy = state.getPotentialEnergy()
     bias_energy = potential_energy.value_in_unit(kilocalorie_per_mole)
     bias_energies.append(bias_energy)
 
+# Generate an array of positions, corresponding to the index in the 'distances' array
+distances = np.array(distances)
+positions = np.arange(len(distances))
 
+# Create a plot
+plt.figure(figsize=(10, 6))
+
+# Plot the distances against their positions in the array
+plt.scatter(positions, distances, c='blue', label='Distances')
+
+# Add labels and title
+plt.xlabel('Position in Array')
+plt.ylabel('Distance')
+plt.title('Distances vs Position in Array')
+plt.grid(True)
 
 #print(distances)
 print(len(bias_energies))
