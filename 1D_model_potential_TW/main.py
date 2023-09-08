@@ -121,7 +121,7 @@ def perturbation(K, kT, N, mfpt_poi_ref, iter_num, num_gaussian=num_gaussian):
 
 
 #here we repeat the perturbation process 1000 times. MC style.
-for i in range(1000): #100iter: Final MFPT:  3801.16;;; 3000iter: Final MFPT:  2690.27
+for i in range(10): #100iter: Final MFPT:  3801.16;;; 3000iter: Final MFPT:  2690.27 changed from 1000 to 2 for testing
     result = perturbation(K, kT, N, mfpt_poi_opt,i)
 
     if result[0] is not None:
