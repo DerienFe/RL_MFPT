@@ -69,8 +69,8 @@ def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981):
 
     #we only take points in image every ? steps so it has [N,N] shape.
     img = img[::int(img.shape[0]/N), ::int(img.shape[1]/N)]
-    plt.imshow(img)
-    plt.show()
+    #plt.imshow(img)
+    #plt.show()
     Z = img * amp
 
     #now we create the K matrix.

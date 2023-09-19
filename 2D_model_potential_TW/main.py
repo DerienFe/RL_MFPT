@@ -235,7 +235,7 @@ if __name__ == "__main__":
             # so we don't need to transform it back. only those calculated FES need to be transformed back.
 
             plt.figure()
-            plt.contourf(x,y,total_bias)
+            plt.contourf(x,y,total_bias, cmap="coolwarm", levels=100)
             plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
             plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
             plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
@@ -246,7 +246,7 @@ if __name__ == "__main__":
             
             
             plt.figure()
-            plt.contourf(x,y,transform_F(F_biased, N))
+            plt.contourf(x,y,transform_F(F_biased, N), cmap="coolwarm", levels=100)
             plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
             plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
             plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.

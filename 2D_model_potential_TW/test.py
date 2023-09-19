@@ -34,7 +34,7 @@ state_end_index = np.ravel_multi_index(state_end, (N,N), order='C')
 #plot the free energy surface
 
 plt.figure()
-plt.contourf(x,y,transform_F(F, N))#, levels=np.arange(0, 15, 0.5))
+plt.contourf(x,y,transform_F(F, N), cmap="coolwarm", levels=100)#, levels=np.arange(0, 15, 0.5))
 plt.colorbar()
 plt.title("unbiased fes digitized from Dialanine")
 plt.savefig("./figs/unbiased.png")

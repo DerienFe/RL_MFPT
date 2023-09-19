@@ -107,11 +107,17 @@ class DHAM:
                         else:
                             MM[i, j] = 0
             #MM = MM.T
-            epsilon_offset = 1e-15
-            MM = MM / (np.sum(MM, axis=1)[:, None]+epsilon_offset) #normalize the M matrix #this is returning NaN?.
+            #epsilon_offset = 1e-15
+            #MM = MM / (np.sum(MM, axis=1)[:, None]) #normalize the M matrix #this is returning NaN?.
+            for i in range(MM.shape[0]):
+                if np.sum(MM[i, :]) > 0:
+                    MM[i, :] = MM[i, :] / np.sum(MM[i, :])
+                else:
+                    MM[i, :] = 0
         else:
             raise NotImplementedError
         
+        print(MM)
         #plt.contourf(MM.real)
         return MM.real
 
@@ -157,7 +163,7 @@ class DHAM:
         mU2 = compute_free_energy(MM, self.KbT)[1]
 
         plt.figure()
-        plt.contourf(transform_F(mU2, self.numbins))
+        plt.contourf(transform_F(mU2, self.numbins), cmap="coolwarm", levels=100)
         plt.colorbar()
         plt.savefig(f"./figs/DHAM_{self.time_tag}_{self.prop_index}.png")
         plt.show()
