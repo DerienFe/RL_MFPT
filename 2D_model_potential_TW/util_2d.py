@@ -9,6 +9,7 @@ from scipy.optimize import minimize
 from math import pi
 from matplotlib import pyplot as plt
 
+from PIL import Image
 
 
 #first we define a 2d Gaussian function
@@ -22,7 +23,7 @@ def random_initial_bias_2d(initial_position, num_gaussians = 20):
     # note this is in 
     #returns a set of random ax,ay, bx, by, cx, cy for the 2d Gaussian function
     rng = np.random.default_rng()
-    a = np.ones(num_gaussians) * 0.1
+    a = np.ones(num_gaussians) * 0.1#* 4 #
     #ay = np.ones(num_gaussians) * 0.1 #there's only one amplitude!
     bx = rng.uniform(initial_position[0]-1, initial_position[0]+1, num_gaussians)
     by = rng.uniform(initial_position[1]-1, initial_position[1]+1, num_gaussians)
@@ -48,6 +49,51 @@ def get_total_bias_2d(x,y, gaussian_params):
 
     return total_bias
 
+def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981):
+    """
+    read in the png, digitize it, create a fes based on it.
+        the created fes is [N,N] in shape.
+        we made sure the fes is normalized to min/max of 0/1.
+        and then apply the amplitude of A = 4 to it.
+    and then create the K matrix from the fes. (2D)
+    """
+    amp = 4
+
+    img = Image.open("./fes_digitize.png")
+    img = np.array(img)
+
+    img_greyscale = 0.2989 * img[:,:,0] - 0.1140 * img[:,:,2] + 0.5870 * img[:,:,1]
+    img = img_greyscale
+    img = img/np.max(img)
+    img = img - np.min(img)
+
+    #we only take points in image every ? steps so it has [N,N] shape.
+    img = img[::int(img.shape[0]/N), ::int(img.shape[1]/N)]
+    plt.imshow(img)
+    plt.show()
+    Z = img * amp
+
+    #now we create the K matrix.
+    K = np.zeros((N*N, N*N))
+    for i in range(N):
+        for j in range(N):
+            index = np.ravel_multi_index((i,j), (N,N), order='C') # flatten 2D indices to 1D
+            if i < N - 1: # Transition rates between vertically adjacent cells
+                index_down = np.ravel_multi_index((i+1,j), (N,N), order='C') 
+                delta_z = Z[i+1,j] - Z[i,j]
+                K[index, index_down] = np.exp(delta_z / (2 * kT))
+                K[index_down, index] = np.exp(-delta_z / (2 * kT))
+            if j < N - 1: # Transition rates between horizontally adjacent cells
+                index_right = np.ravel_multi_index((i,j+1), (N,N), order='C')
+                delta_z = Z[i,j+1] - Z[i,j]
+                K[index, index_right] = np.exp(delta_z / (2 * kT))
+                K[index_right, index] = np.exp(-delta_z / (2 * kT))
+    
+    # Filling diagonal elements with negative sum of rest of row
+    for i in range(N*N):
+        K[i, i] = -np.sum(K[:,i])
+
+    return K
 
 def create_K_2D(N, kT):
     """
@@ -159,7 +205,7 @@ def mfpt_calc(peq, K):
     return mfpt
 
 
-def bias_K_2D(K, total_bias, kT=0.5981, cutoff = 20):
+def bias_K_2D(K, total_bias, kT=0.5981, cutoff = 20, norm = True):
     """
     K is the rate matrix in shape (N*N, N*N)
     total_bias is the total bias potential in shape (N, N)
@@ -187,9 +233,9 @@ def bias_K_2D(K, total_bias, kT=0.5981, cutoff = 20):
 
                 K_biased[index, index_right] = K[index, index_right] * np.exp(delta_z / (2 * kT))
                 K_biased[index_right, index] = K[index_right, index] * np.exp(-delta_z / (2 * kT))
-            
-    for i in range(N*N):
-        K_biased[i, i] = -np.sum(K_biased[:, i]) 
+    if norm == True:
+        for i in range(N*N):
+            K_biased[i, i] = -np.sum(K_biased[:, i]) 
     
     return K_biased
 
@@ -254,7 +300,7 @@ def Markov_mfpt_calc(peq, M):
     return mfpt
     
 
-def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_index=0, plot = False):
+def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, end_index=0, plot = False):
     """
     here we try different gaussian params 1000 times
     and use the best one (lowest mfpt) to local optimise the gaussian_params
@@ -272,23 +318,26 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     #here we find the index of working_indices.
     # e.g. the starting index in the working_indices is working_indices[start_state_working_index]
     # and the end is working_indices[end_state_working_index]
+    
+    N = N
     start_state_working_index = np.argmin(np.abs(working_indices - start_index))
     end_state_working_index = np.argmin(np.abs(working_indices - end_index))
     
-    start_state_working_index_xy = np.unravel_index(working_indices[start_state_working_index], (13, 13), order='C')
-    end_state_working_index_xy = np.unravel_index(working_indices[end_state_working_index], (13, 13), order='C')
+    start_state_working_index_xy = np.unravel_index(working_indices[start_state_working_index], (N, N), order='C')
+    end_state_working_index_xy = np.unravel_index(working_indices[end_state_working_index], (N, N), order='C')
     print("Try and Optim from state:", start_state_working_index_xy, "to state:", end_state_working_index_xy)
 
     #now our M/working_indices could be incontinues. #N = M.shape[0]
-    x,y = np.meshgrid(np.linspace(-3,3, 13), np.linspace(-3,3, 13)) #hard coded here. we need to change this.
-    best_mfpt = 1000000000000 #initialise the best mfpt np.inf
+    x,y = np.meshgrid(np.linspace(-3,3, N), np.linspace(-3,3, N)) #hard coded here. we need to change this.
+    best_mfpt = 1e12 #initialise the best mfpt np.inf
 
 
     #here we find the x,y maximum and minimun in xy coordinate space, with those working index
     #we use this to generate the random gaussian params.
-    working_indices_xy = np.unravel_index(working_indices, (13, 13), order='C')
-    
-    for try_num in range(2000):
+    working_indices_xy = np.unravel_index(working_indices, (N, N), order='C')
+    #we untransform the working_indices_xy correspondingly, because we rotated the total_bias.
+    working_indices_xy_rotated = (working_indices_xy[1], N - 1 - working_indices_xy[0])   
+    for try_num in range(1000):
         rng = np.random.default_rng()
         #a = rng.uniform(0.1, 1, num_gaussian)
         a = np.ones(num_gaussian)
@@ -297,11 +346,12 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         #bx = rng.uniform(x_min, x_max, num_gaussian)
         #by = rng.uniform(y_min, y_max, num_gaussian)
 
-        cx = rng.uniform(1.0, 5.0, num_gaussian)
-        cy = rng.uniform(1.0, 5.0, num_gaussian)
+        cx = rng.uniform(0.3, 1.5, num_gaussian)
+        cy = rng.uniform(0.3, 1.5, num_gaussian)
         gaussian_params = np.concatenate((a, bx, by, cx, cy))
 
         total_bias = get_total_bias_2d(x,y, gaussian_params)
+        total_bias = untransform_F(total_bias, N)
         
         #note our total bias is in N,N shape.
         # our M matrix is in flattened index. with some col/row removed.
@@ -310,7 +360,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         M_biased = np.zeros_like(M)
 
         #we truncate the total_bias to the working index.
-        working_bias = total_bias[working_indices_xy] #say M is in shape[51,51], working bias will be in [51] shape.
+        working_bias = total_bias[working_indices_xy_rotated] #say M is in shape[51,51], working bias will be in [51] shape.
 
         for i in range(M.shape[0]):
             for j in range(M.shape[1]):
@@ -318,10 +368,10 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
             M_biased[i,i] = M[i,i]
         #normalize M_biased
         epsilon_offset = 1e-15
-        M_biased = M_biased / (np.sum(M_biased, axis=1)[:, None])
+        M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None]+ epsilon_offset) 
         M_biased = M_biased.real
         #note our M_biased is in working index. M.shape = (num_working_states, num_working_states)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -339,10 +389,11 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
 
     def mfpt_helper(params, M, start_state_working_index = start_state_working_index, end_state_working_index = end_state_working_index, kT=0.5981, working_indices=working_indices):
         total_bias = get_total_bias_2d(x,y, gaussian_params)
+        total_bias = untransform_F(total_bias, N) #hardcoded, N = 20.
         
         M_biased = np.zeros_like(M)
         #we truncate the total_bias to the working index.
-        working_bias = total_bias[working_indices_xy] #say M is in shape[51,51], working bias will be in [51] shape.
+        working_bias = total_bias[working_indices_xy_rotated] #say M is in shape[51,51], working bias will be in [51] shape.
 
         for i in range(M.shape[0]):
             for j in range(M.shape[1]):
@@ -350,10 +401,10 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
             M_biased[i,i] = M[i,i]
         #normalize M_biased
         epsilon_offset = 1e-15
-        M_biased = M_biased / (np.sum(M_biased, axis=1)[:, None])
+        M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None]) + epsilon_offset
         M_biased = M_biased.real
         #note our M_biased is in working index. M.shape = (num_working_states, num_working_states)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -367,10 +418,28 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 4)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(1, 5)]*num_gaussian + [(1, 5)]*num_gaussian,
+                   bounds= [(0.1, 4)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
                    tol=1e-2)
     
     #print("local optimisation result:", res.x)
     return res.x 
 
 
+def transform_F(F, N):
+    """
+    we reshape F order = F.
+    then rot
+    """
+    F = np.reshape(F, (N,N), order = "F")
+    F = np.rot90(F, k=1, axes=(0, 1))
+    F = F - np.min(F)
+    return F
+
+def untransform_F(F,N):
+    """
+    we unrot F
+    then reshape F order = C
+    """
+    F = np.rot90(F, k=-1, axes=(0, 1))
+    #F = np.reshape(F, (N*N), order = "C")
+    return F

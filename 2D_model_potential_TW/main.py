@@ -14,23 +14,26 @@ plt.rcParams.update({'font.size': 16})
 
 
 #first we initialize some parameters.
-N = 13 #number of grid points, i.e. num of states.
+N = 20 #number of grid points, i.e. num of states.
 kT = 0.5981
 t_max = 10**7 #max time
 ts = 0.1 #time step
 
-state_start = (3, 3)
-state_end = (11, 11)
+state_start = (14, 14)
+state_end = (4, 6)
+
+#time tag for saving.
+time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
-propagation_step = 1000
+propagation_step = 2000
 max_propagation = 10
-num_bins = 13 #for qspace used in DHAM and etc.
+num_bins = 20 #for qspace used in DHAM and etc.
 num_gaussian = 10 #for the initial bias.
 
 def propagate(M, cur_pos,
               gaussian_params,
-              CV_total,prop_index,
+              CV_total,prop_index, time_tag,
               steps=propagation_step, 
               stepsize=ts):
     """
@@ -50,28 +53,26 @@ def propagate(M, cur_pos,
     CV_total.append(combined_CV)
     #plot where we have been, the CV space, in a heatmap, same size as the FES.
     #note this is in 2D, we unravel.
+    x, y = np.meshgrid(np.linspace(-3,3,N),np.linspace(-3,3,N))
     pos = np.unravel_index(combined_CV.astype(int), (N,N), order='C')
-    """
+
+    peq_M, F_M, evectors, evalues, evalues_sorted, index = compute_free_energy(M, kT)
+
+
+    # Applying the transformation to rotate points by 90 degrees clockwise
     plt.figure()
-    plt.hist2d(pos[0], pos[1], bins=(N+1, N+1), cmap=plt.cm.jet)
-    plt.plot(pos[0][0], pos[1][0], marker = 'x') #this is starting point.
-    plt.plot(pos[0][-1], pos[1][-1], marker = 'o') #this is ending point.
-    plt.colorbar()
+    #plt.contourf(transform_F(F_M, N))
+    plt.plot([y for y in pos[1]], [-x for x in pos[0]], alpha=0.3)
+    plt.plot(state_start[1], -state_start[0], marker='x')
+    plt.plot(state_end[1], -state_end[0], marker='o')
     plt.xlim(0, N)
-    plt.ylim(0, N)
-    plt.show()
-    """
-    plt.figure()
-    plt.plot(pos[0], pos[1], alpha=0.3)
-    plt.plot(state_start[0], state_start[1], marker = 'x') #this is starting point.
-    plt.plot(state_end[0], state_end[1], marker = 'o') #this is ending point.
-    plt.xlim(0, N)
-    plt.ylim(0, N)
+    plt.ylim(-N, 0)
+    plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
     plt.show()
     
     
     #here we use the DHAM. #tobe done.
-    F_M, MM = DHAM_it(combined_CV.reshape(-1,1), gaussian_params, T=300, lagtime=1, numbins=num_bins)
+    F_M, MM = DHAM_it(combined_CV.reshape(-1,1), gaussian_params, T=300, lagtime=1, numbins=num_bins, prop_index=prop_index, time_tag=time_tag)
     
     return F_M, cur_pos, MM, CV_total
 
@@ -93,9 +94,7 @@ def get_closest_state(qspace, target_state, working_indices):
     closest_state = working_states[np.argmin(np.abs(working_states - target_state))]
     return closest_state
 
-
-
-def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150):
+def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150, prop_index=0, time_tag=time_tag):
     """
     intput:
     CV: the collective variable we are interested in. now it's 2d.
@@ -108,7 +107,7 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150):
     Free energy surface probed by DHAM.
     """
     d = DHAM(gaussian_params)
-    d.setup(CV, T)
+    d.setup(CV, T, prop_index=prop_index, time_tag=time_tag)
 
     d.lagtime = lagtime
     d.numbins = numbins #num of bins, arbitrary.
@@ -146,7 +145,7 @@ def find_closest_index(working_indices, final_index, N):
 
 if __name__ == "__main__":
     
-    K = create_K_2D(N, kT) 
+    K = create_K_png(N)
 
     #test the functions.
     peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, kT)
@@ -156,9 +155,10 @@ if __name__ == "__main__":
     x,y = np.meshgrid(np.linspace(-3,3,N),np.linspace(-3,3,N)) #for DHAM in 2D as well.
     
     #test random initial bias here.
+    print("placing random gaussian at:", (x[state_start], y[state_start]))
     gaussian_params = random_initial_bias_2d(initial_position = [x[state_start], y[state_start]], num_gaussians=num_gaussian)
     total_bias = get_total_bias_2d(x,y, gaussian_params)
-    K_biased = bias_K_2D(K, total_bias)
+    K_biased = bias_K_2D(K, untransform_F(total_bias, N))
     peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
     mfpts_biased = mfpt_calc(peq_biased, K_biased)
     #kemeny_constant_check(mfpts_biased, peq_biased)
@@ -177,12 +177,12 @@ if __name__ == "__main__":
     CV_total = [[]] #initialise the CV list.
     cur_pos = np.ravel_multi_index(state_start, (N,N), order='C') #flattened index.
     #note from now on, all index is in raveled 'flattened' form.
-    for i_prop in range(max_propagation):
-        if i_prop == 0:
+    for prop_index in range(max_propagation):
+        if prop_index == 0:
             print("propagation number 0 STARTING.")
             gaussian_params = random_initial_bias_2d(initial_position = np.unravel_index(cur_pos, (N,N), order='C'), num_gaussians=num_gaussian)
             total_bias = get_total_bias_2d(x,y, gaussian_params)
-            K_biased = bias_K_2D(K, total_bias)
+            K_biased = bias_K_2D(K, untransform_F(total_bias, N))
 
             #get Markov matrix.
             M = expm(K_biased*ts)
@@ -193,9 +193,11 @@ if __name__ == "__main__":
             F_M, cur_pos, M_reconstructed, CV_total  = propagate(M, cur_pos,
                                                                 gaussian_params=gaussian_params, 
                                                                 CV_total = CV_total,
-                                                                prop_index=i_prop,
+                                                                prop_index=prop_index,
+                                                                time_tag=time_tag,
                                                                 steps=propagation_step, 
-                                                                stepsize=ts)
+                                                                stepsize=ts,
+                                                                )
             
             #our cur_pos is flattened 1D index.
             working_MM, working_indices = get_working_MM(M_reconstructed) #we call working_index the small index. its part of the full markov matrix.
@@ -208,7 +210,7 @@ if __name__ == "__main__":
             # then we ravel it back to 1D.
             closest_index = find_closest_index(working_indices, final_index, N) 
         else:
-            print(f"propagation number {i_prop} STARTING.")
+            print(f"propagation number {prop_index} STARTING.")
             #renew the gaussian params using returned MM.
 
             gaussian_params = try_and_optim_M(working_MM, 
@@ -223,30 +225,34 @@ if __name__ == "__main__":
             total_bias = get_total_bias_2d(x,y, gaussian_params)
 
             #we get the FES biased.
-            K_biased = bias_K_2D(K, total_bias)
+            K_biased = bias_K_2D(K, untransform_F(total_bias,N))
             peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
             #we plot the total bias being applied on original FES.
             closest_index_xy = np.unravel_index(closest_index, (N,N), order='C')
             cur_pos_xy = np.unravel_index(cur_pos, (N,N), order='C')
-            plt.figure()
-            plt.contourf(x,y,(F_biased-F_biased.min()).reshape(13,13))
-            plt.plot(x[state_start], y[state_start], marker = 'x') #this is starting point.
-            plt.plot(x[state_end], y[state_end], marker = 'o') #this is ending point.
-            plt.plot(x[0][closest_index_xy[0]], y[closest_index_xy[1]][0], marker = 'v') #this is local run farest point.
-            plt.plot()
-            plt.colorbar()
-            plt.savefig(f"./figs/fes_biased_{i_prop}.png")
-            plt.show()
+            
+            #plot the total bias. #the total bias is optimized in untransformed way.
+            # so we don't need to transform it back. only those calculated FES need to be transformed back.
 
-            #plot the total bias.
             plt.figure()
-            plt.contourf(x,y,(total_bias - total_bias.min()).reshape(13,13))
-            plt.plot(x[state_start], y[state_start], marker = 'x') #this is starting point.
-            plt.plot(x[state_end], y[state_end], marker = 'o') #this is ending point.
-            plt.plot(x[0][closest_index_xy[0]], y[closest_index_xy[1]][0], marker = 'v')
-            plt.plot(x[0][cur_pos_xy[0]], y[cur_pos_xy[1]][0], marker = 'v') #this is local run current position.
+            plt.contourf(x,y,total_bias)
+            plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
+            plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
+            plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
             plt.colorbar()
-            plt.savefig(f"./figs/total_bias_{i_prop}.png")
+            plt.title(f"optimized total bias, prop_index = {prop_index}")
+            plt.savefig(f"./figs/total_bias_{time_tag}_{prop_index}.png")
+            plt.show()
+            
+            
+            plt.figure()
+            plt.contourf(x,y,transform_F(F_biased, N))
+            plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
+            plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
+            plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
+            plt.colorbar()
+            plt.title(f"total bias applied on FES, prop_index = {prop_index}")
+            plt.savefig(f"./figs/fes_biased_{time_tag}_{prop_index}.png")
             plt.show()
 
             #apply the bias
@@ -259,7 +265,8 @@ if __name__ == "__main__":
             F_M, cur_pos, M_reconstructed, CV_total  = propagate(M, cur_pos,
                                                                 gaussian_params=gaussian_params, 
                                                                 CV_total = CV_total,
-                                                                prop_index=i_prop,
+                                                                prop_index=prop_index,
+                                                                time_tag=time_tag,
                                                                 steps=propagation_step, 
                                                                 stepsize=ts)
             
@@ -274,15 +281,19 @@ if __name__ == "__main__":
             closest_index = find_closest_index(working_indices, final_index, N) 
 
         if closest_index == final_index:
-            print(f"we have sampled the final state point, stop propagating at number {i_prop}")
+            print(f"we have sampled the final state point, stop propagating at number {prop_index}")
             #here we plot the trajectory. The CV_total[-1]
             pos = np.unravel_index(CV_total[-1].astype(int), (N,N), order='C')
-            plt.figure()
-            plt.plot(pos[0], pos[1], alpha=0.3)
-            plt.plot(state_start[0], state_start[1], marker = 'x') #this is starting point.
-            plt.plot(state_end[0], state_end[1], marker = 'o') #this is ending point.
+
+            #save the CV_total, for later statistics.
+            np.save(f"./data/CV_total_{time_tag}_{prop_index}.npy", CV_total[-1])
+
+            plt.plot([y for y in pos[1]], [-x for x in pos[0]], alpha=0.3)
+            plt.plot(state_start[1], -state_start[0], marker='x')
+            plt.plot(state_end[1], -state_end[0], marker='o')
             plt.xlim(0, N)
-            plt.ylim(0, N)
+            plt.ylim(-N, 0)
+            plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
             plt.show()
             
             break

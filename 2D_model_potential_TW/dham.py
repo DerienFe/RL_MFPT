@@ -57,7 +57,7 @@ class DHAM:
     k_val = None
     constr_val = None
     qspace = None
-    numbins = 13
+    numbins = 20
     lagtime = 1
 
     def __init__(self, gaussian_params):
@@ -71,12 +71,14 @@ class DHAM:
         x,y = np.meshgrid(np.linspace(-3,3, self.numbins), np.linspace(-3,3, self.numbins))
         self.x = x
         self.y = y
-        self.N = 13
+        self.N = 20
         return
 
-    def setup(self, CV, T):
+    def setup(self, CV, T, prop_index, time_tag):
         self.data = CV
         self.KbT = 0.001987204259 * T
+        self.prop_index = prop_index
+        self.time_tag = time_tag
         return
 
     def build_MM(self, sumtr, trvec, biased=False):
@@ -94,8 +96,8 @@ class DHAM:
                 for j in range(N*N):
                     if sumtr[i, j] > 0:
                         sump1 = 0.0
-                        i_x, i_y = np.unravel_index(i, (13, 13), order='C')
-                        j_x, j_y = np.unravel_index(j, (13, 13), order='C')
+                        i_x, i_y = np.unravel_index(i, (20, 20), order='C')
+                        j_x, j_y = np.unravel_index(j, (20, 20), order='C')
 
                         for k in range(trvec.shape[0]):
                             if trvec[k, i] > 0:
@@ -126,7 +128,7 @@ class DHAM:
         v_max = np.nanmax(self.data) + self.epsilon
         
         #digitialize the data into 2D mesh.
-        b = np.digitize(self.data, np.linspace(0, 169+1, self.numbins*self.numbins+1))
+        b = np.digitize(self.data, np.linspace(0, (self.N**2)+1, self.numbins*self.numbins+1))
         b = b.reshape(1,-1)
         #here we check the b trajectory.
         #unravel it.
@@ -140,6 +142,7 @@ class DHAM:
         sumtr, trvec = count_transitions(b, self.numbins * self.numbins, self.lagtime)
 
         MM = self.build_MM(sumtr, trvec, biased)
+        MM = MM.T  # to adapt our script pattern.
         #d, v = eig(MM.T)
         #mpeq = v[:, np.where(d == np.max(d))[0][0]]
         #mpeq = mpeq / np.sum(mpeq)
@@ -150,12 +153,13 @@ class DHAM:
         #A = rate / np.exp(- dG / self.KbT)
 
         from util_2d import compute_free_energy
-        mU2 = compute_free_energy(MM.T, self.KbT)[1]
+        from util_2d import transform_F, untransform_F
+        mU2 = compute_free_energy(MM, self.KbT)[1]
 
         plt.figure()
-        plt.contourf(mU2.reshape(self.numbins, self.numbins).T)
-        plt.savefig("./figs/DHAM.png")
+        plt.contourf(transform_F(mU2, self.numbins))
         plt.colorbar()
+        plt.savefig(f"./figs/DHAM_{self.time_tag}_{self.prop_index}.png")
         plt.show()
         
         
