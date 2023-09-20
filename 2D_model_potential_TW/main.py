@@ -26,7 +26,7 @@ state_end = (4, 6)
 time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
-propagation_step = 2000
+propagation_step = 1000
 max_propagation = 10
 num_bins = 20 #for qspace used in DHAM and etc.
 num_gaussian = 10 #for the initial bias.
@@ -213,10 +213,15 @@ if __name__ == "__main__":
             print(f"propagation number {prop_index} STARTING.")
             #renew the gaussian params using returned MM.
 
+            #find the most visited state in CV_total[-1][-prop_step:]
+            last_traj = np.array(CV_total[-1][-propagation_step:], dtype=int)
+            most_visited_state = np.argmax(np.bincount(last_traj)) #this is in flattened index.
+            most_visited_state_xy = np.unravel_index(most_visited_state, (N,N), order='C')
+            
             gaussian_params = try_and_optim_M(working_MM, 
                                               working_indices = working_indices,
                                               num_gaussian=10, 
-                                              start_index=cur_pos, 
+                                              start_index=most_visited_state, 
                                               end_index=closest_index,
                                               plot = True,
                                               )
@@ -224,32 +229,35 @@ if __name__ == "__main__":
             #renew the total bias.
             total_bias = get_total_bias_2d(x,y, gaussian_params)
 
-            #we get the FES biased.
-            K_biased = bias_K_2D(K, untransform_F(total_bias,N))
+                        #we get the FES biased.
+            K_biased = bias_K_2D(K, untransform_F(transform_F(total_bias.T,N),N))
+            #K_biased = bias_K_2D(K, total_bias)
             peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
             #we plot the total bias being applied on original FES.
             closest_index_xy = np.unravel_index(closest_index, (N,N), order='C')
             cur_pos_xy = np.unravel_index(cur_pos, (N,N), order='C')
-            
+
             #plot the total bias. #the total bias is optimized in untransformed way.
             # so we don't need to transform it back. only those calculated FES need to be transformed back.
 
             plt.figure()
-            plt.contourf(x,y,total_bias, cmap="coolwarm", levels=100)
-            plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
+            plt.contourf(x,y,transform_F(total_bias,N), cmap="coolwarm", levels=100)
+            plt.plot(y[state_start], -x[state_start], marker = 'o') #this is starting point.
             plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
             plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
+            plt.plot(y[most_visited_state_xy[1]][0], -x[0][most_visited_state_xy[0]], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"optimized total bias, prop_index = {prop_index}")
             plt.savefig(f"./figs/total_bias_{time_tag}_{prop_index}.png")
             plt.show()
-            
-            
+
+
             plt.figure()
             plt.contourf(x,y,transform_F(F_biased, N), cmap="coolwarm", levels=100)
-            plt.plot(y[state_start], -x[state_start], marker = 'x') #this is starting point.
+            plt.plot(y[state_start], -x[state_start], marker = 'o') #this is starting point.
             plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
             plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
+            plt.plot(y[most_visited_state_xy[1]][0], -x[0][most_visited_state_xy[0]], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"total bias applied on FES, prop_index = {prop_index}")
             plt.savefig(f"./figs/fes_biased_{time_tag}_{prop_index}.png")

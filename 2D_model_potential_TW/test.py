@@ -92,7 +92,44 @@ plt.colorbar()
 plt.show()
 
 print("hello")
+############################################
+best_mfpt = 1e8
+num_gaussian = 10
+for i in range(300):
+    rng = np.random.default_rng()
+    a = np.ones(num_gaussian) * 1
+    bx = rng.uniform(-3, 3, num_gaussian)
+    by = rng.uniform(-3, 3, num_gaussian)
+    cx = rng.uniform(1.0, 5.0, num_gaussian)
+    cy = rng.uniform(1.0, 5.0, num_gaussian)
+    gaussian_params = np.concatenate((a, bx, by, cx, cy))
 
+    total_bias = get_total_bias_2d(x,y, gaussian_params)
+
+    M_biased = bias_K_2D(M, untransform_F(total_bias, N))
+
+    peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(M_biased, kT)
+    mfpts = mfpt_calc(peq, K_biased)
+    kemeny_constant_check(mfpts, peq)
+    mfpt = mfpts[state_start_index, state_end_index]
+    if mfpt < best_mfpt:
+        best_mfpt = mfpt
+        best_params = gaussian_params
+        best_F = F
+        best_K = K_biased
+    
+    print(i, mfpt, best_mfpt)
+
+#examine the best one.
+total_bias = get_total_bias_2d(x,y, best_params)
+M_biased = bias_K_2D(M, untransform_F(total_bias, N), norm=False)
+peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(M_biased, kT)
+plt.figure()
+plt.contourf(x,y,total_bias, cmap="coolwarm", levels=100)#, levels=np.arange(0, 15, 0.5))
+plt.title("optimized bias to minimize MFPT")
+plt.colorbar()
+
+plt.show()
 
 #we test random try here.
 best_mfpt = 1e8
@@ -128,10 +165,18 @@ K_biased = bias_K_2D(K, untransform_F(total_bias, N))
 peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K_biased, kT)
 
 plt.figure()
-plt.contourf(x,y,transform_F(F, N))#, levels=np.arange(0, 15, 0.5))
+plt.contourf(x,y,transform_F(F, N), cmap="coolwarm", levels=100)#, levels=np.arange(0, 15, 0.5))
+plt.title("biased_fes to minimize MFPT")
 plt.colorbar()
+plt.savefig("./figs/biased_fes.png")
 plt.show()
 
+plt.figure()
+plt.contourf(x,y,total_bias, cmap="coolwarm", levels=100)#, levels=np.arange(0, 15, 0.5))
+plt.title("optimized bias to minimize MFPT")
+plt.colorbar()
+plt.savefig("./figs/optimized_bias.png")
+plt.show()
 
 print("hello")
 
