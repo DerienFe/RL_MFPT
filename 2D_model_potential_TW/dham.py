@@ -106,20 +106,19 @@ class DHAM:
                             MM[i, j] = sumtr[i, j] / sump1
                         else:
                             MM[i, j] = 0
-            #MM = MM.T
+
             #epsilon_offset = 1e-15
-            #MM = MM / (np.sum(MM, axis=1)[:, None]) #normalize the M matrix #this is returning NaN?.
-            for i in range(MM.shape[0]):
+            MM = MM / (np.sum(MM, axis=1)[:, None] + 1e-15) #normalize the M matrix #this is returning NaN?.
+            """for i in range(MM.shape[0]):
                 if np.sum(MM[i, :]) > 0:
                     MM[i, :] = MM[i, :] / np.sum(MM[i, :])
                 else:
-                    MM[i, :] = 0
+                    MM[i, :] = 0"""
         else:
             raise NotImplementedError
         
-        print(MM)
         #plt.contourf(MM.real)
-        return MM.real
+        return MM
 
     def run(self, plot=True, adjust=True, biased=False, conversion=2E-13):
         """
@@ -148,22 +147,21 @@ class DHAM:
         sumtr, trvec = count_transitions(b, self.numbins * self.numbins, self.lagtime)
 
         MM = self.build_MM(sumtr, trvec, biased)
-        MM = MM.T  # to adapt our script pattern.
-        #d, v = eig(MM.T)
-        #mpeq = v[:, np.where(d == np.max(d))[0][0]]
-        #mpeq = mpeq / np.sum(mpeq)
-        #mpeq = mpeq.real
+        #MM = MM.T  # to adapt our script pattern.
+        d, v = eig(MM.T)
+        mpeq = v[:, np.where(d == np.max(d))[0][0]]
+        mpeq = mpeq / np.sum(mpeq)
+        mpeq = mpeq.real
         #rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
-        #mU2 = - self.KbT * np.log(mpeq)
+        mU2 = - self.KbT * np.log(mpeq)
         #dG = np.max(mU2[:int(self.numbins)])
         #A = rate / np.exp(- dG / self.KbT)
 
-        from util_2d import compute_free_energy
-        from util_2d import transform_F, untransform_F
-        mU2 = compute_free_energy(MM, self.KbT)[1]
+        #from util_2d import compute_free_energy
+        #mU2 = compute_free_energy(MM, self.KbT)[1]
 
         plt.figure()
-        plt.contourf(transform_F(mU2, self.numbins), cmap="coolwarm", levels=100)
+        plt.imshow(mU2.reshape(self.N, self.N), cmap="coolwarm", extent=[-3,3,-3,3])
         plt.colorbar()
         plt.savefig(f"./figs/DHAM_{self.time_tag}_{self.prop_index}.png")
         plt.show()
@@ -183,7 +181,7 @@ class DHAM:
             #plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.numbins))
             #plt.show()
         """
-        return mU2, MM.T
+        return mU2, MM
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)

@@ -26,7 +26,7 @@ state_end = (4, 6)
 time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
-propagation_step = 1000
+propagation_step = 3000
 max_propagation = 10
 num_bins = 20 #for qspace used in DHAM and etc.
 num_gaussian = 10 #for the initial bias.
@@ -61,15 +61,14 @@ def propagate(M, cur_pos,
 
     # Applying the transformation to rotate points by 90 degrees clockwise
     plt.figure()
-    #plt.contourf(transform_F(F_M, N))
-    plt.plot([y for y in pos[1]], [-x for x in pos[0]], alpha=0.3)
-    plt.plot(state_start[1], -state_start[0], marker='x')
-    plt.plot(state_end[1], -state_end[0], marker='o')
-    plt.xlim(0, N)
-    plt.ylim(-N, 0)
+    plt.imshow(F_M.reshape(N,N), cmap="coolwarm", extent=[-3,3,-3,3])#, levels=np.arange(0, 15, 0.5))
+    #plot the traj in xy
+    plt.plot(x[pos], -y[pos], color='black', markersize=0.3, linewidth=0.15, alpha=0.5)
+    plt.plot(x[state_start], -y[state_start], marker='x')
+    plt.plot(x[state_end], -y[state_end], marker='o')
     plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
     plt.show()
-    
+
     
     #here we use the DHAM. #tobe done.
     F_M, MM = DHAM_it(combined_CV.reshape(-1,1), gaussian_params, T=300, lagtime=1, numbins=num_bins, prop_index=prop_index, time_tag=time_tag)
@@ -158,7 +157,7 @@ if __name__ == "__main__":
     print("placing random gaussian at:", (x[state_start], y[state_start]))
     gaussian_params = random_initial_bias_2d(initial_position = [x[state_start], y[state_start]], num_gaussians=num_gaussian)
     total_bias = get_total_bias_2d(x,y, gaussian_params)
-    K_biased = bias_K_2D(K, untransform_F(total_bias, N))
+    K_biased = bias_K_2D(K, total_bias)
     peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
     mfpts_biased = mfpt_calc(peq_biased, K_biased)
     #kemeny_constant_check(mfpts_biased, peq_biased)
@@ -182,7 +181,7 @@ if __name__ == "__main__":
             print("propagation number 0 STARTING.")
             gaussian_params = random_initial_bias_2d(initial_position = np.unravel_index(cur_pos, (N,N), order='C'), num_gaussians=num_gaussian)
             total_bias = get_total_bias_2d(x,y, gaussian_params)
-            K_biased = bias_K_2D(K, untransform_F(total_bias, N))
+            K_biased = bias_K_2D(K, total_bias)
 
             #get Markov matrix.
             M = expm(K_biased*ts)
@@ -225,13 +224,44 @@ if __name__ == "__main__":
                                               end_index=closest_index,
                                               plot = True,
                                               )
+            #save the gaussian_params.
+            np.save(f"./data/gaussian_params_{time_tag}_{prop_index}.npy", gaussian_params)
 
             #renew the total bias.
             total_bias = get_total_bias_2d(x,y, gaussian_params)
 
                         #we get the FES biased.
-            K_biased = bias_K_2D(K, untransform_F(transform_F(total_bias.T,N),N))
-            #K_biased = bias_K_2D(K, total_bias)
+            K_biased = bias_K_2D(K, total_bias)
+
+            #for plot we need the detailed digitization fes.
+            """ 
+            img = Image.open("./fes_digitize.png")
+            img = np.array(img)
+            img_greyscale = 0.8 * img[:,:,0] - 0.15 * img[:,:,1] - 0.2 * img[:,:,2]
+            img = img_greyscale
+            img = img/np.max(img)
+            img = img - np.min(img) #plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3]) #note this is different than contourf.
+            N_img = img.shape[0]
+            K_img = img[:N_img, :N_img] * 7
+
+            #we get x_img and y_img for gaussian to cast on.
+            x_img,y_img = np.meshgrid(np.linspace(-3, 3, N_img), np.linspace(-3, 3, N_img))
+
+            #now cast the gaussian on the x,y
+            gaussian_img = get_total_bias_2d(x_img,y_img, gaussian_params)
+
+            #add the gaussian to the img.
+
+            #plot the F_img_biased.
+            plt.figure()
+            plt.imshow(gaussian_img, cmap="coolwarm", extent=[-3,3,-3,3])
+            plt.title("detailed img_K biased")
+            #set colorbar 0 to 12
+            #plt.clim(0, 12)
+            plt.colorbar()
+            plt.show()"""
+
+
             peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
             #we plot the total bias being applied on original FES.
             closest_index_xy = np.unravel_index(closest_index, (N,N), order='C')
@@ -241,11 +271,11 @@ if __name__ == "__main__":
             # so we don't need to transform it back. only those calculated FES need to be transformed back.
 
             plt.figure()
-            plt.contourf(x,y,transform_F(total_bias,N), cmap="coolwarm", levels=100)
-            plt.plot(y[state_start], -x[state_start], marker = 'o') #this is starting point.
-            plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
-            plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
-            plt.plot(y[most_visited_state_xy[1]][0], -x[0][most_visited_state_xy[0]], marker = 'x') #this is local run farest point.
+            plt.imshow(total_bias.reshape(N,N), cmap="coolwarm", extent=[-3,3,-3,3])
+            plt.plot(x[state_start], -y[state_start], marker = 'o') #this is starting point.
+            plt.plot(x[state_end], -y[state_end], marker = 'o') #this is ending point.
+            plt.plot(x[closest_index_xy], -y[closest_index_xy], marker = 'v') #this is local run farest point.
+            plt.plot(x[most_visited_state_xy], -y[most_visited_state_xy], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"optimized total bias, prop_index = {prop_index}")
             plt.savefig(f"./figs/total_bias_{time_tag}_{prop_index}.png")
@@ -253,11 +283,11 @@ if __name__ == "__main__":
 
 
             plt.figure()
-            plt.contourf(x,y,transform_F(F_biased, N), cmap="coolwarm", levels=100)
-            plt.plot(y[state_start], -x[state_start], marker = 'o') #this is starting point.
-            plt.plot(y[state_end], -x[state_end], marker = 'o') #this is ending point.
-            plt.plot(y[closest_index_xy[1]][0], -x[0][closest_index_xy[0]], marker = 'v') #this is local run farest point.
-            plt.plot(y[most_visited_state_xy[1]][0], -x[0][most_visited_state_xy[0]], marker = 'x') #this is local run farest point.
+            plt.imshow(F_biased.reshape(N,N), cmap="coolwarm", extent=[-3,3,-3,3])
+            plt.plot(x[state_start], -y[state_start], marker = 'o') #this is starting point.
+            plt.plot(x[state_end], -y[state_end], marker = 'o') #this is ending point.
+            plt.plot(x[closest_index_xy], -y[closest_index_xy], marker = 'v') #this is local run farest point.
+            plt.plot(x[most_visited_state_xy], -y[most_visited_state_xy], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"total bias applied on FES, prop_index = {prop_index}")
             plt.savefig(f"./figs/fes_biased_{time_tag}_{prop_index}.png")
@@ -294,17 +324,13 @@ if __name__ == "__main__":
             pos = np.unravel_index(CV_total[-1].astype(int), (N,N), order='C')
 
             #save the CV_total, for later statistics.
-            np.save(f"./data/CV_total_{time_tag}_{prop_index}.npy", CV_total[-1])
-
-            plt.plot([y for y in pos[1]], [-x for x in pos[0]], alpha=0.3)
-            plt.plot(state_start[1], -state_start[0], marker='x')
-            plt.plot(state_end[1], -state_end[0], marker='o')
-            plt.xlim(0, N)
-            plt.ylim(-N, 0)
-            plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
-            plt.show()
-            
+            save_CV_total(CV_total, time_tag, prop_index)
             break
         else:
             print("continue propagating.")
             continue
+
+
+#helper function to save current CV_total.
+def save_CV_total(CV_total, time_tag, prop_index):
+    np.save(f"./data/CV_total_{time_tag}_{prop_index}.npy", CV_total[-1])
