@@ -24,64 +24,101 @@ img_greyscale = 0.8 * img[:,:,0] - 0.15 * img[:,:,1] - 0.2 * img[:,:,2]
 img = img_greyscale
 img = img/np.max(img)
 img = img - np.min(img)
-plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3])
+
+#get img square and multiply the amp = 7
+min_dim = min(img.shape)
+img = img[:min_dim, :min_dim]
+img = 7 * img
+
+plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12)
 plt.savefig("./figs/unbiased.png", dpi=600)
 plt.show()
 
 
-traj1 = np.load("./data/CV_total_20230920-125013_0.npy") #note this is ravelled.
+traj_all = np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
+traj_1 = traj_all[:3001]
+traj_2 = traj_all[3001:6002]
+traj_3 = traj_all[6002:9003]
 
-traj1_processed = np.zeros((traj1.shape[0],2)) #for x,y
-#we unravel the index, then map it to x,y.
-for i in range(traj1.shape[0]):
-    traj1_processed[i,0], traj1_processed[i,1] = np.unravel_index(int(traj1[i]), (N,N), order='C')
-    traj1_processed[i,0] = x[0][int(traj1_processed[i,0])]
-    traj1_processed[i,1] = y[int(traj1_processed[i,1])][0]
+#unravel the traj.
+traj_1 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_1])
+traj_2 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_2])
+traj_3 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_3])
 
-    traj1_processed[i,0], traj1_processed[i,1] = traj1_processed[i,1], traj1_processed[i,0]
-       
-    #flip the y
-    traj1_processed[i,1] = - traj1_processed[i,1]
+#load gaussian parameters
+gp1 = np.load("./data/gaussian_params_20230921-114158_1.npy")
+gp2 = np.load("./data/gaussian_params_20230921-114158_2.npy")
 
 
+#first we plot the unbiased FES and its traj.
+
+traj_1_x_indices = traj_1[:, 0]
+traj_1_y_indices = traj_1[:, 1]
+traj_1_x_coords = x[traj_1_x_indices, traj_1_y_indices]
+traj_1_y_coords = y[traj_1_x_indices, traj_1_y_indices]
 
 plt.figure()
-plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3])
-plt.plot(y[state_start[1]][0], -x[0][state_start[0]], marker = 'o', color = "red", markersize = 10) #this is starting point.
-plt.plot(y[state_end[1]][0], -x[0][state_end[0]], marker = 'x', color = "red", markersize = 10) #this is ending point.
-plt.scatter(traj1_processed[:,0], traj1_processed[:,1], color="yellow", linewidth=0.5, alpha = 0.3, s = 15)
-plt.title("")
+plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12)
+plt.plot(x[state_start], -y[state_start], marker = 'o', color = "red", markersize = 10) #this is starting point.
+plt.plot(x[state_end], -y[state_end],marker = 'x', color = "red", markersize = 10) #this is ending point.
+plt.plot(traj_1_x_coords, -traj_1_y_coords, color="yellow", linewidth=0.8, alpha = 0.8,)
+#plt.title("")
 plt.savefig("./figs/prod_figs/traj1.png")
-plt.show()
+#plt.show()
+plt.close()
 
+#next we plot the biased FES after traj1.
+from util_2d import *
+x_img, y_img = np.meshgrid(np.linspace(-3,3,min_dim), np.linspace(-3,3,min_dim))
+total_bias = get_total_bias_2d(x_img, y_img, gp1)
 
-#now we plot the traj.
+#add the bias to the unbiased FES.
+img_biased = img + total_bias
 
-traj2 = np.load("./data/CV_total_20230920-130859_1.npy") #note this is ravelled.
+#process traj_2
 
-traj2_processed = np.zeros((traj2.shape[0],2)) #for x,y
-#we unravel the index, then map it to x,y.
-for i in range(traj2.shape[0]):
-    traj2_processed[i,0], traj2_processed[i,1] = np.unravel_index(int(traj2[i]), (N,N), order='C')
-    traj2_processed[i,0] = x[0][int(traj2_processed[i,0])]
-    traj2_processed[i,1] = y[int(traj2_processed[i,1])][0]
-    
-    #transpose the x and y
-    traj2_processed[i,0], traj2_processed[i,1] = traj2_processed[i,1], traj2_processed[i,0]
-        
-    #flip the y
-    traj2_processed[i,1] = - traj2_processed[i,1]
-
-
+traj_2_x_indices = traj_2[:, 0]
+traj_2_y_indices = traj_2[:, 1]
+traj_2_x_coords = x[traj_2_x_indices, traj_2_y_indices]
+traj_2_y_coords = y[traj_2_x_indices, traj_2_y_indices]
 
 plt.figure()
-plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3])
-plt.plot(y[state_start[1]][0], -x[0][state_start[0]],  marker = 'o', color = "red", markersize = 10) #this is starting point.
-plt.plot(y[state_end[1]][0], -x[0][state_end[0]], marker = 'x', color = "red", markersize = 10) #this is ending point.
-plt.scatter(traj2_processed[:,0], traj2_processed[:,1], color="yellow", linewidth=0.5, alpha = 0.3, s = 15)
-plt.title("")
+plt.imshow(img_biased, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12)
+plt.plot(x[state_start], -y[state_start], marker = 'o', color = "red", markersize = 10) #this is starting point.
+plt.plot(x[state_end], -y[state_end],marker = 'x', color = "red", markersize = 10) #this is ending point.
+plt.plot(traj_1_x_coords, -traj_1_y_coords, color="yellow", linewidth=0.8, alpha = 0.4,)
+plt.plot(traj_2_x_coords, -traj_2_y_coords, color="yellow", linewidth=0.8, alpha = 0.8,)
+#plot the last position of traj_2
+plt.plot(traj_2_x_coords[-1], -traj_2_y_coords[-1], marker = 'o', color = "red", markersize = 10)
+#plt.show()
 plt.savefig("./figs/prod_figs/traj2.png")
-plt.show()
+plt.close()
+
+
+#next we plot the biased FES after traj2.
+total_bias = get_total_bias_2d(x_img, y_img, gp2)
+img_biased = img + total_bias
+#process traj_3
+traj_3_x_indices = traj_3[:, 0]
+traj_3_y_indices = traj_3[:, 1]
+traj_3_x_coords = x[traj_3_x_indices, traj_3_y_indices]
+traj_3_y_coords = y[traj_3_x_indices, traj_3_y_indices]
+
+plt.imshow(img_biased, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12)
+plt.plot(x[state_start], -y[state_start], marker = 'o', color = "red", markersize = 10) #this is starting point.
+plt.plot(x[state_end], -y[state_end],marker = 'x', color = "red", markersize = 10) #this is ending point.
+plt.plot(traj_1_x_coords, -traj_1_y_coords, color="yellow", linewidth=0.8, alpha = 0.4,)
+plt.plot(traj_2_x_coords, -traj_2_y_coords, color="yellow", linewidth=0.8, alpha = 0.4,)
+plt.plot(traj_3_x_coords, -traj_3_y_coords, color="yellow", linewidth=0.8, alpha = 0.8,)
+plt.plot(traj_3_x_coords[-1], -traj_3_y_coords[-1], marker = 'o', color = "red", markersize = 10)
+#plt.show()
+plt.savefig("./figs/prod_figs/traj3.png")
+plt.close()
+
+
+
+
+
 
 
 
