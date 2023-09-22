@@ -17,7 +17,7 @@ plt.rcParams.update({'font.size': 16})
 N = 20 #number of grid points, i.e. num of states.
 kT = 0.5981
 t_max = 10**7 #max time
-ts = 0.1 #time step
+ts = 0.01 #time step
 
 state_start = (14, 14)
 state_end = (4, 6)
@@ -26,10 +26,10 @@ state_end = (4, 6)
 time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
-propagation_step = 3000
+propagation_step = 500
 max_propagation = 10
 num_bins = 20 #for qspace used in DHAM and etc.
-num_gaussian = 10 #for the initial bias.
+num_gaussian = 20 #for the initial bias.
 
 def propagate(M, cur_pos,
               gaussian_params,
@@ -162,17 +162,6 @@ if __name__ == "__main__":
     mfpts_biased = mfpt_calc(peq_biased, K_biased)
     #kemeny_constant_check(mfpts_biased, peq_biased)
 
-    """    
-    plt.figure()
-    plt.contourf(x,y,(F-F.min()).reshape(13,13), levels=np.arange(0, 15, 0.5))
-    plt.colorbar()
-    plt.show()
-    plt.figure()
-    plt.contourf(x,y,(total_bias-total_bias.min()).reshape(13,13))
-    plt.colorbar()
-    plt.show()
-    """
-
     CV_total = [[]] #initialise the CV list.
     cur_pos = np.ravel_multi_index(state_start, (N,N), order='C') #flattened index.
     #note from now on, all index is in raveled 'flattened' form.
@@ -217,11 +206,11 @@ if __name__ == "__main__":
             most_visited_state = np.argmax(np.bincount(last_traj)) #this is in flattened index.
             most_visited_state_xy = np.unravel_index(most_visited_state, (N,N), order='C')
             
-            gaussian_params = try_and_optim_M(working_MM, 
+            gaussian_params = try_and_optim_M_K(working_MM, 
                                               working_indices = working_indices,
                                               num_gaussian=10, 
-                                              start_index=most_visited_state, 
-                                              end_index=closest_index,
+                                              start_index=cur_pos, 
+                                              end_index=final_index,
                                               plot = True,
                                               )
             #save the gaussian_params.
@@ -279,7 +268,7 @@ if __name__ == "__main__":
             plt.colorbar()
             plt.title(f"optimized total bias, prop_index = {prop_index}")
             plt.savefig(f"./figs/total_bias_{time_tag}_{prop_index}.png")
-            plt.show()
+            plt.close()
 
 
             plt.figure()
@@ -291,7 +280,7 @@ if __name__ == "__main__":
             plt.colorbar()
             plt.title(f"total bias applied on FES, prop_index = {prop_index}")
             plt.savefig(f"./figs/fes_biased_{time_tag}_{prop_index}.png")
-            plt.show()
+            plt.close()
 
             #apply the bias
             M = expm(K_biased*ts)
