@@ -66,7 +66,7 @@ def propagate(M, cur_pos,
     plt.plot(x[pos], -y[pos], color='black', markersize=0.3, linewidth=0.15, alpha=0.5)
     plt.plot(x[state_start], -y[state_start], marker='x')
     plt.plot(x[state_end], -y[state_end], marker='o')
-    plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
+    plt.savefig(f"./figs/{time_tag}_{prop_index}_traj.png")
     #plt.show()
     plt.close()
 
@@ -215,7 +215,7 @@ if __name__ == "__main__":
                                               plot = True,
                                               )
             #save the gaussian_params.
-            np.save(f"./data/gaussian_params_{time_tag}_{prop_index}.npy", gaussian_params)
+            np.save(f"./data/{time_tag}_{prop_index}_gaussian_params.npy", gaussian_params)
 
             #renew the total bias.
             total_bias = get_total_bias_2d(x,y, gaussian_params)
@@ -268,7 +268,7 @@ if __name__ == "__main__":
             plt.plot(x[most_visited_state_xy], -y[most_visited_state_xy], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"optimized total bias, prop_index = {prop_index}")
-            plt.savefig(f"./figs/total_bias_{time_tag}_{prop_index}.png")
+            plt.savefig(f"./figs/{time_tag}_{prop_index}_total_bias.png")
             plt.close()
 
 
@@ -280,7 +280,7 @@ if __name__ == "__main__":
             plt.plot(x[most_visited_state_xy], -y[most_visited_state_xy], marker = 'x') #this is local run farest point.
             plt.colorbar()
             plt.title(f"total bias applied on FES, prop_index = {prop_index}")
-            plt.savefig(f"./figs/fes_biased_{time_tag}_{prop_index}.png")
+            plt.savefig(f"./figs/{time_tag}_{prop_index}_fes_biased.png")
             plt.close()
 
             #apply the bias
@@ -319,8 +319,3 @@ if __name__ == "__main__":
         else:
             print("continue propagating.")
             continue
-
-
-#helper function to save current CV_total.
-def save_CV_total(CV_total, time_tag, prop_index):
-    np.save(f"./data/CV_total_{time_tag}_{prop_index}.npy", CV_total[-1])

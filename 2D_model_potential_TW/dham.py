@@ -163,7 +163,7 @@ class DHAM:
         plt.figure()
         plt.imshow(mU2.reshape(self.N, self.N), cmap="coolwarm", extent=[-3,3,-3,3])
         plt.colorbar()
-        plt.savefig(f"./figs/DHAM_{self.time_tag}_{self.prop_index}.png")
+        plt.savefig(f"./figs/{self.time_tag}_{self.prop_index}_DHAM.png")
         #plt.show()
         plt.close()
         
