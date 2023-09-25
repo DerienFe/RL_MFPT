@@ -66,7 +66,7 @@ meta = Metadynamics(system, [x], 300*kelvin, 8.0,
 platform = omm.Platform.getPlatformByName('CUDA')
 
 sim = Simulation(pdb.topology, system, LangevinIntegrator(300*kelvin, 1/picosecond,
-                 0.002*picoseconds), platform=platform) 
+                 0.002*picoseconds), platform=platform)
 sim.context.setPositions(pdb.positions)
 
 for i in tqdm.tqdm(range(int(total_stpes/record_freq))):
