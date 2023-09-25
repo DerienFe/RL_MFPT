@@ -35,20 +35,91 @@ plt.savefig("./figs/unbiased.png", dpi=600)
 plt.show()
 
 
-traj_all = np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
-traj_1 = traj_all[:3001]
-traj_2 = traj_all[3001:6002]
-traj_3 = traj_all[6002:9003]
+traj_all = np.load("./data/20230925-131244_9_CV_total.npy")#np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
+traj_1 = traj_all[:501]
+traj_2 = traj_all[501:1002]
+traj_3 = traj_all[1002:1503]
+traj_4 = traj_all[1503:2004]
+traj_5 = traj_all[2004:2505]
+traj_6 = traj_all[2505:3006]
+traj_7 = traj_all[3006:3507]
+traj_8 = traj_all[3507:4008]
+traj_9 = traj_all[4008:4509]
 
 #unravel the traj.
 traj_1 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_1])
 traj_2 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_2])
 traj_3 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_3])
+traj_4 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_4])
+traj_5 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_5])
+traj_6 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_6])
+traj_7 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_7])
+traj_8 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_8])
+traj_9 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_9])
 
 #load gaussian parameters
-gp1 = np.load("./data/gaussian_params_20230921-114158_1.npy")
-gp2 = np.load("./data/gaussian_params_20230921-114158_2.npy")
+gp1 = np.load("./data/20230925-131244_1_gaussian_params.npy")
+gp2 = np.load("./data/20230925-131244_2_gaussian_params.npy")
+gp3 = np.load("./data/20230925-131244_3_gaussian_params.npy")
+gp4 = np.load("./data/20230925-131244_4_gaussian_params.npy")
+gp5 = np.load("./data/20230925-131244_5_gaussian_params.npy")
+gp6 = np.load("./data/20230925-131244_6_gaussian_params.npy")
+gp7 = np.load("./data/20230925-131244_7_gaussian_params.npy")
+gp8 = np.load("./data/20230925-131244_8_gaussian_params.npy")
+gp9 = np.load("./data/20230925-131244_9_gaussian_params.npy")
 
+#we define a funtion to plot.
+def plot_traj(traj_list, img, gp, state_start, state_end, title, save_name, first_plot = False, show_plot = False):
+    plt.figure()
+    for i, traj in enumerate(traj_list):
+        traj_x_indices = traj[:, 0]
+        traj_y_indices = traj[:, 1]
+        traj_x_coords = x[traj_x_indices, traj_y_indices]
+        traj_y_coords = y[traj_x_indices, traj_y_indices]
+        if i != len(traj_list) - 1:
+            plt.plot(traj_x_coords, -traj_y_coords, color="yellow", linewidth=1.8, alpha = 0.4,)
+        else:
+            plt.plot(traj_x_coords, -traj_y_coords, color="yellow", linewidth=1.8, alpha = 0.8,)
+            if not first_plot:
+                plt.plot(traj_x_coords[-1], -traj_y_coords[-1], marker = 'o', color = "red", markersize = 10)
+    #plt.imshow(img, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12) #this is the unbiased FES.
+    #plot the biased FES.
+    x_img, y_img = np.meshgrid(np.linspace(-3,3,min_dim), np.linspace(-3,3,min_dim))
+    total_bias = get_total_bias_2d(x_img, y_img, gp)
+    img_biased = img + total_bias
+    plt.imshow(img_biased, cmap="coolwarm", extent=[-3,3,-3,3], vmin=0, vmax=12)
+    if first_plot:
+        plt.plot(x[state_start], -y[state_start], marker = 'o', color = "red", markersize = 10) #this is starting point.
+    plt.plot(x[state_end], -y[state_end],marker = 'x', color = "red", markersize = 10) #this is ending point.
+    
+    plt.title(title)
+    if show_plot:
+        plt.show()
+    plt.savefig(save_name, dpi=600)
+    plt.close()
+
+#prepare the traj_list for plotting.
+traj_list_1 = [traj_1]
+traj_list_2 = [traj_1, traj_2]
+traj_list_3 = [traj_1, traj_2, traj_3]
+traj_list_4 = [traj_1, traj_2, traj_3, traj_4]
+traj_list_5 = [traj_1, traj_2, traj_3, traj_4, traj_5]
+traj_list_6 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6]
+traj_list_7 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7]
+traj_list_8 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7, traj_8]
+traj_list_9 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7, traj_8, traj_9]
+
+#plot the traj.
+plot_traj(traj_list_1, img, gp1, state_start, state_end, "1st traj", "./figs/prod_figs/traj1.png", first_plot = True)
+plot_traj(traj_list_2, img, gp2, state_start, state_end, "2nd traj", "./figs/prod_figs/traj2.png")
+plot_traj(traj_list_3, img, gp3, state_start, state_end, "3rd traj", "./figs/prod_figs/traj3.png")
+plot_traj(traj_list_4, img, gp4, state_start, state_end, "4th traj", "./figs/prod_figs/traj4.png")
+plot_traj(traj_list_5, img, gp5, state_start, state_end, "5th traj", "./figs/prod_figs/traj5.png")
+plot_traj(traj_list_6, img, gp6, state_start, state_end, "6th traj", "./figs/prod_figs/traj6.png")
+plot_traj(traj_list_7, img, gp7, state_start, state_end, "7th traj", "./figs/prod_figs/traj7.png")
+plot_traj(traj_list_8, img, gp8, state_start, state_end, "8th traj", "./figs/prod_figs/traj8.png")
+plot_traj(traj_list_9, img, gp9, state_start, state_end, "9th traj", "./figs/prod_figs/traj9.png")
+"""
 
 #first we plot the unbiased FES and its traj.
 
@@ -115,11 +186,5 @@ plt.plot(traj_3_x_coords[-1], -traj_3_y_coords[-1], marker = 'o', color = "red",
 plt.savefig("./figs/prod_figs/traj3.png")
 plt.close()
 
-
-
-
-
-
-
-
+"""
 print("done")
