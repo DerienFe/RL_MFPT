@@ -460,14 +460,14 @@ def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, 
                          0.5981), 
                    method='Nelder-Mead', 
                    bounds= [(0.1, 3)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e-2)
+                   tol=1e0)
     
     #print("local optimisation result:", res.x)
     return res.x 
 
 
 def save_CV_total(CV_total, time_tag, prop_index):
-    np.save(f"./data/CV_total_{time_tag}_{prop_index}.npy", CV_total[-1])
+    np.save(f"./data/{time_tag}_{prop_index}_CV_total.npy", CV_total[-1])
 
 def save_gaussian_params(gaussian_params, time_tag, prop_index):
-    np.save(f"./data/gaussian_params_{time_tag}_{prop_index}.npy", gaussian_params)
+    np.save(f"./data/{time_tag}_{prop_index}_gaussian_params.npy", gaussian_params)
