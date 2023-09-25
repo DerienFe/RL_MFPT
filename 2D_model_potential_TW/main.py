@@ -17,7 +17,7 @@ plt.rcParams.update({'font.size': 16})
 N = 20 #number of grid points, i.e. num of states.
 kT = 0.5981
 t_max = 10**7 #max time
-ts = 0.01 #time step
+ts = 0.001 #time step
 
 state_start = (14, 14)
 state_end = (4, 6)
@@ -67,7 +67,8 @@ def propagate(M, cur_pos,
     plt.plot(x[state_start], -y[state_start], marker='x')
     plt.plot(x[state_end], -y[state_end], marker='o')
     plt.savefig(f"./figs/traj_{time_tag}_{prop_index}.png")
-    plt.show()
+    #plt.show()
+    plt.close()
 
     
     #here we use the DHAM. #tobe done.

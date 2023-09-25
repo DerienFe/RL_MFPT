@@ -164,7 +164,8 @@ class DHAM:
         plt.imshow(mU2.reshape(self.N, self.N), cmap="coolwarm", extent=[-3,3,-3,3])
         plt.colorbar()
         plt.savefig(f"./figs/DHAM_{self.time_tag}_{self.prop_index}.png")
-        plt.show()
+        #plt.show()
+        plt.close()
         
         
         """
@@ -182,41 +183,3 @@ class DHAM:
             #plt.show()
         """
         return mU2, MM
-
-    def bootstrap_error(self, size, iter=100, plotall=False, save=None):
-        full = self.run(plot=False)
-        results = []
-        data = np.copy(self.data)
-        for _ in range(iter):
-            idx = np.random.randint(data.shape[0], size=size)
-            self.data = data[idx, :]
-            try:
-                results.append(self.run(plot=False, adjust=False))
-            except ValueError:
-                print(idx)
-        r = np.array(results).astype(np.float_)
-        r = r[~np.isnan(r).any(axis=(1, 2))]
-        r = r[~np.isinf(r).any(axis=(1, 2))]
-        if plotall:
-            f, a = plt.subplots()
-            for i in range(r.shape[0]):
-                a.plot(r[i, 0], r[i, 1])
-            plt.show()
-        # interpolation
-        newU = np.empty(shape=r[:, 1, :].shape, dtype=np.float_)
-        for i in range(r.shape[0]):
-            newU[i, :] = np.interp(full[0], r[i, 0], r[i, 1])
-            # realign
-            offset = align(newU[i, :], full[1])
-            newU[i, :] += offset
-        stderr = np.std(newU, axis=0)
-        f, a = plt.subplots()
-        a.plot(full[0], full[1])
-        a.fill_between(full[0], full[1] - stderr, full[1] + stderr, alpha=0.2)
-        plt.title("lagtime={0:d} bins={1:d}".format(self.lagtime, self.numbins))
-        if save is None:
-            plt.show()
-        else:
-            plt.savefig(save)
-        self.data = data
-        return
