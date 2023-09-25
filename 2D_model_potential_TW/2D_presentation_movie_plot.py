@@ -1,5 +1,6 @@
-#here we use the "explore_bias_NaCl_gen.py" style, explor the FES of theoretical 2D system
-#by TW 9th Aug.
+#a python script similar to main.py
+#but we do it for presentation.
+
 from math import pi
 from matplotlib import pyplot as plt
 import numpy as np
@@ -27,11 +28,9 @@ state_1 = (10, 13)
 state_2 = (8, 13)
 state_3 = (6, 14)
 state_4 = (6, 6)
-
+intermediate_states = [state_1, state_2, state_3, state_4]
 #time tag for saving.
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-
-presentation_plot = True #a bool to do the presentation calculation and plotting.
 
 #for exploration.
 propagation_step = 500
@@ -43,9 +42,7 @@ def propagate(M, cur_pos,
               gaussian_params,
               CV_total,prop_index, time_tag,
               steps=propagation_step, 
-              stepsize=ts,
-              presentation_plot=presentation_plot,
-              intermediate_state = None,):
+              stepsize=ts,):
     """
     here we use the Markov matrix to propagate the system.
     save the CV and append it into the CV_total.
@@ -54,17 +51,21 @@ def propagate(M, cur_pos,
     """
     N = int(np.sqrt(M.shape[0]))
     CV = [cur_pos]
-    if not presentation_plot:
-        for i in tqdm(range(steps)):
-            next_pos = int(np.random.choice(N*N, p = M[:, cur_pos]))
-            CV.append(next_pos)
-            cur_pos = next_pos
-    else:
-        for i in tqdm(range(steps)):
-            next_pos = int(np.random.choice(N*N, p = M[:, cur_pos]))
-            CV.append(next_pos)
-            cur_pos = next_pos
+
+    for i in tqdm(range(steps)):
+        next_pos = int(np.random.choice(N*N, p = M[:, cur_pos]))
+        CV.append(next_pos)
+        cur_pos = next_pos
+        for intermediate_state in intermediate_states:
+            intermediate_state = np.ravel_multi_index(intermediate_state, (N,N), order='C')
             if cur_pos == intermediate_state: #stop
+                print(f"we have sampled the intermediate state pointat steps {i}")
+                intermediate_states.pop(0)
+                break
+            #or in the ravelled 1D index we've passed the intermediate state, we stop.
+            elif intermediate_state is not None and cur_pos < intermediate_state:
+                print(f"we have passed the intermediate state pointat steps {i}")
+                intermediate_states.pop(0)
                 break
 
     combined_CV = np.concatenate((CV_total[-1], CV))
@@ -76,8 +77,6 @@ def propagate(M, cur_pos,
 
     peq_M, F_M, evectors, evalues, evalues_sorted, index = compute_free_energy(M, kT)
 
-
-    # Applying the transformation to rotate points by 90 degrees clockwise
     plt.figure()
     plt.imshow(F_M.reshape(N,N), cmap="coolwarm", extent=[-3,3,-3,3])#, levels=np.arange(0, 15, 0.5))
     #plot the traj in xy
