@@ -58,7 +58,7 @@ def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981):
         and then apply the amplitude of A = 4 to it.
     and then create the K matrix from the fes. (2D)
     """
-    amp = 4
+    amp = 7
 
     img = Image.open("./fes_digitize.png")
     img = np.array(img)
