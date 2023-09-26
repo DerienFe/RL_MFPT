@@ -18,7 +18,7 @@ plt.rcParams.update({'font.size': 16})
 N = 20 #number of grid points, i.e. num of states.
 kT = 0.5981
 t_max = 10**7 #max time
-ts = 0.001 #time step
+ts = 0.01 #time step
 
 state_start = (14, 14)
 state_end = (4, 6)
