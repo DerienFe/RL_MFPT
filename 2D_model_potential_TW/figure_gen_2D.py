@@ -36,26 +36,11 @@ plt.show()
 
 
 traj_all = np.load("./data/20230925-131244_9_CV_total.npy")#np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
-traj_1 = traj_all[:501]
-traj_2 = traj_all[501:1002]
-traj_3 = traj_all[1002:1503]
-traj_4 = traj_all[1503:2004]
-traj_5 = traj_all[2004:2505]
-traj_6 = traj_all[2505:3006]
-traj_7 = traj_all[3006:3507]
-traj_8 = traj_all[3507:4008]
-traj_9 = traj_all[4008:4509]
 
-#unravel the traj.
-traj_1 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_1])
-traj_2 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_2])
-traj_3 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_3])
-traj_4 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_4])
-traj_5 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_5])
-traj_6 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_6])
-traj_7 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_7])
-traj_8 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_8])
-traj_9 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_9])
+#now traj_all is a list of array
+# we unravel it element-wise
+for i, traj in enumerate(traj_all):
+    traj_all[i] = np.array([np.unravel_index(int(i), (N,N)) for i in traj])
 
 #load gaussian parameters
 gp1 = np.load("./data/20230925-131244_1_gaussian_params.npy")
@@ -69,7 +54,7 @@ gp8 = np.load("./data/20230925-131244_8_gaussian_params.npy")
 gp9 = np.load("./data/20230925-131244_9_gaussian_params.npy")
 
 #we define a funtion to plot.
-def plot_traj(traj_list, img, gp, state_start, state_end, title, save_name, first_plot = False, show_plot = False):
+def plot_traj(traj_all, index, img, gp, state_start, state_end, title, save_name, first_plot = False, show_plot = False):
     plt.figure()
     for i, traj in enumerate(traj_list):
         traj_x_indices = traj[:, 0]
@@ -97,17 +82,6 @@ def plot_traj(traj_list, img, gp, state_start, state_end, title, save_name, firs
         plt.show()
     plt.savefig(save_name, dpi=600)
     plt.close()
-
-#prepare the traj_list for plotting.
-traj_list_1 = [traj_1]
-traj_list_2 = [traj_1, traj_2]
-traj_list_3 = [traj_1, traj_2, traj_3]
-traj_list_4 = [traj_1, traj_2, traj_3, traj_4]
-traj_list_5 = [traj_1, traj_2, traj_3, traj_4, traj_5]
-traj_list_6 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6]
-traj_list_7 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7]
-traj_list_8 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7, traj_8]
-traj_list_9 = [traj_1, traj_2, traj_3, traj_4, traj_5, traj_6, traj_7, traj_8, traj_9]
 
 #plot the traj.
 plot_traj(traj_list_1, img, gp1, state_start, state_end, "1st traj", "./figs/prod_figs/traj1.png", first_plot = True)
