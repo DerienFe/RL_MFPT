@@ -416,7 +416,7 @@ def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, 
     for try_num in tqdm(range(1000)):
         rng = np.random.default_rng()
         #a = rng.uniform(0.1, 1, num_gaussian)
-        a = np.ones(num_gaussian) *4
+        a = np.ones(num_gaussian) * 2
         bx = rng.uniform(-3, 3, num_gaussian)
         by = rng.uniform(-3, 3, num_gaussian)
         cx = rng.uniform(0.3, 1.5, num_gaussian)
@@ -459,8 +459,8 @@ def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, 
                          end_index,
                          0.5981), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 5)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e1)
+                   bounds= [(1, 5)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   tol=1e0)
     
     #print("local optimisation result:", res.x)
     return res.x # best_params#

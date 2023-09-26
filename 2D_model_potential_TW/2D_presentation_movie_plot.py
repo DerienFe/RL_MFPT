@@ -33,7 +33,7 @@ intermediate_states = [state_1, state_2, state_3, state_4]
 time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
-propagation_step = 500
+propagation_step = 1000
 max_propagation = 10
 num_bins = 20 #for qspace used in DHAM and etc.
 num_gaussian = 20 #for the initial bias.
@@ -329,10 +329,10 @@ if __name__ == "__main__":
             print(f"we have sampled the final state point, stop propagating at number {prop_index}")
             #here we plot the trajectory. The CV_total[-1]
             pos = np.unravel_index(CV_total[-1].astype(int), (N,N), order='C')
-
             #save the CV_total, for later statistics.
             save_CV_total(CV_total, time_tag, prop_index)
             break
         else:
             print("continue propagating.")
+            save_CV_total(CV_total, time_tag, prop_index)
             continue
