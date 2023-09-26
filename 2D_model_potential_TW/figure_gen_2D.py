@@ -35,7 +35,7 @@ plt.savefig("./figs/unbiased.png", dpi=600)
 plt.show()
 
 
-traj_all = np.load("./data/20230925-131244_9_CV_total.npy")#np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
+traj_all = np.load("./data/20230925-145434_9_CV_total.npy")#np.load("./data/CV_total_20230921-114158_2.npy") #note this is ravelled.
 traj_1 = traj_all[:501]
 traj_2 = traj_all[501:1002]
 traj_3 = traj_all[1002:1503]
@@ -58,15 +58,15 @@ traj_8 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_8])
 traj_9 = np.array([np.unravel_index(int(i), (N,N)) for i in traj_9])
 
 #load gaussian parameters
-gp1 = np.load("./data/20230925-131244_1_gaussian_params.npy")
-gp2 = np.load("./data/20230925-131244_2_gaussian_params.npy")
-gp3 = np.load("./data/20230925-131244_3_gaussian_params.npy")
-gp4 = np.load("./data/20230925-131244_4_gaussian_params.npy")
-gp5 = np.load("./data/20230925-131244_5_gaussian_params.npy")
-gp6 = np.load("./data/20230925-131244_6_gaussian_params.npy")
-gp7 = np.load("./data/20230925-131244_7_gaussian_params.npy")
-gp8 = np.load("./data/20230925-131244_8_gaussian_params.npy")
-gp9 = np.load("./data/20230925-131244_9_gaussian_params.npy")
+gp1 = np.load("./data/20230925-145434_1_gaussian_params.npy")
+gp2 = np.load("./data/20230925-145434_2_gaussian_params.npy")
+gp3 = np.load("./data/20230925-145434_3_gaussian_params.npy")
+gp4 = np.load("./data/20230925-145434_4_gaussian_params.npy")
+gp5 = np.load("./data/20230925-145434_5_gaussian_params.npy")
+gp6 = np.load("./data/20230925-145434_6_gaussian_params.npy")
+gp7 = np.load("./data/20230925-145434_7_gaussian_params.npy")
+gp8 = np.load("./data/20230925-145434_8_gaussian_params.npy")
+gp9 = np.load("./data/20230925-145434_9_gaussian_params.npy")
 
 #we define a funtion to plot.
 def plot_traj(traj_list, img, gp, state_start, state_end, title, save_name, first_plot = False, show_plot = False):
