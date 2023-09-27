@@ -19,9 +19,10 @@ N = 20 #number of grid points, i.e. num of states.
 kT = 0.5981
 t_max = 10**7 #max time
 ts = 0.01 #time step
-
+amp = 7 #when creating the K from png. also affects the cufoff_mode in biase_K_2D.
 state_start = (14, 14)
 state_end = (4, 6)
+cutoff_mode = True
 
 #define 4 intermediate states between start and end.
 state_1 = (10, 13)
@@ -162,7 +163,7 @@ def find_closest_index(working_indices, final_index, N):
 
 if __name__ == "__main__":
     
-    K = create_K_png(N)
+    K = create_K_png(N, amp=amp)
 
     #test the functions.
     peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, kT)
@@ -175,7 +176,7 @@ if __name__ == "__main__":
     print("placing random gaussian at:", (x[state_start], y[state_start]))
     gaussian_params = random_initial_bias_2d(initial_position = [x[state_start], y[state_start]], num_gaussians=num_gaussian)
     total_bias = get_total_bias_2d(x,y, gaussian_params)
-    K_biased = bias_K_2D(K, total_bias)
+    K_biased = bias_K_2D(K, total_bias, cutoff_mode=cutoff_mode, kT=0.5981, F = F, amp = amp)
     peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
     mfpts_biased = mfpt_calc(peq_biased, K_biased)
     #kemeny_constant_check(mfpts_biased, peq_biased)
@@ -230,6 +231,9 @@ if __name__ == "__main__":
                                               start_index=cur_pos, 
                                               end_index=final_index,
                                               plot = True,
+                                              cutoff_mode=cutoff_mode,
+                                              F = F,
+                                              amp = amp,
                                               )
             #save the gaussian_params.
             np.save(f"./data/{time_tag}_{prop_index}_gaussian_params.npy", gaussian_params)

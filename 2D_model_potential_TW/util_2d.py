@@ -50,7 +50,7 @@ def get_total_bias_2d(x,y, gaussian_params):
 
     return np.flipud(total_bias)
 
-def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981):
+def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981, amp = 7):
     """
     read in the png, digitize it, create a fes based on it.
         the created fes is [N,N] in shape.
@@ -58,7 +58,6 @@ def create_K_png(N, img_path = "./fes_digitize.png", kT = 0.5981):
         and then apply the amplitude of A = 4 to it.
     and then create the K matrix from the fes. (2D)
     """
-    amp = 7
 
     img = Image.open("./fes_digitize.png")
     img = np.array(img)
@@ -209,7 +208,7 @@ def mfpt_calc(peq, K):
     return mfpt
 
 
-def bias_K_2D(K, total_bias, kT=0.5981, cutoff = 20, norm = True):
+def bias_K_2D(K, total_bias, kT=0.5981, cutoff_mode = False, norm = True, F = None, amp = None):
     """
     K is the rate matrix in shape (N*N, N*N)
     total_bias is the total bias potential in shape (N, N)
@@ -221,22 +220,56 @@ def bias_K_2D(K, total_bias, kT=0.5981, cutoff = 20, norm = True):
     N = np.sqrt(K.shape[0]).astype(int)
 
     K_biased = np.zeros((N*N, N*N))
+    
+    if cutoff_mode == False:
+        for i in range(N):
+            for j in range(N):
+                index = np.ravel_multi_index((i,j), (N,N), order='C')
+                if i < N - 1: 
+                    index_down = np.ravel_multi_index((i+1,j), (N,N), order='C') 
+                    delta_z = total_bias[i+1,j] - total_bias[i,j]
 
-    for i in range(N):
-        for j in range(N):
-            index = np.ravel_multi_index((i,j), (N,N), order='C')
-            if i < N - 1: 
-                index_down = np.ravel_multi_index((i+1,j), (N,N), order='C') 
-                delta_z = total_bias[i+1,j] - total_bias[i,j]
+                    K_biased[index, index_down] = K[index, index_down] * np.exp(delta_z / (2 * kT))
+                    K_biased[index_down, index] = K[index_down, index] * np.exp(-delta_z / (2 * kT))
+                if j < N - 1:
+                    index_right = np.ravel_multi_index((i,j+1), (N,N), order='C')
+                    delta_z = total_bias[i,j+1] - total_bias[i,j]
 
-                K_biased[index, index_down] = K[index, index_down] * np.exp(delta_z / (2 * kT))
-                K_biased[index_down, index] = K[index_down, index] * np.exp(-delta_z / (2 * kT))
-            if j < N - 1:
-                index_right = np.ravel_multi_index((i,j+1), (N,N), order='C')
-                delta_z = total_bias[i,j+1] - total_bias[i,j]
+                    K_biased[index, index_right] = K[index, index_right] * np.exp(delta_z / (2 * kT))
+                    K_biased[index_right, index] = K[index_right, index] * np.exp(-delta_z / (2 * kT))
+    else:
+        #here we apply the cutoff mode, add a maximum cap on the fes+total_bias, say the amplitude *1.2
+        # requires F and amp to be passed in.
+        assert F is not None, "F is not passed in!"
+        assert amp is not None, "amp is not passed in!"
 
-                K_biased[index, index_right] = K[index, index_right] * np.exp(delta_z / (2 * kT))
-                K_biased[index_right, index] = K[index_right, index] * np.exp(-delta_z / (2 * kT))
+        biased_F = F + total_bias
+        biased_F = np.clip(biased_F, a_min = None, a_max = amp * 1.2)
+
+        #calculate the clipped total bias
+        clipped_total_bias = biased_F - F
+        
+        #make sure the clipped total bias is not negative
+        clipped_total_bias = np.clip(clipped_total_bias, a_min = 0, a_max = None)
+
+        #apply the clipped total bias to the K matrix
+        for i in range(N):
+            for j in range(N):
+                index = np.ravel_multi_index((i,j), (N,N), order='C')
+                if i < N - 1: 
+                    index_down = np.ravel_multi_index((i+1,j), (N,N), order='C') 
+                    delta_z = clipped_total_bias[i+1,j] - clipped_total_bias[i,j]
+
+                    K_biased[index, index_down] = K[index, index_down] * np.exp(delta_z / (2 * kT))
+                    K_biased[index_down, index] = K[index_down, index] * np.exp(-delta_z / (2 * kT))
+                if j < N - 1:
+                    index_right = np.ravel_multi_index((i,j+1), (N,N), order='C')
+                    delta_z = clipped_total_bias[i,j+1] - clipped_total_bias[i,j]
+
+                    K_biased[index, index_right] = K[index, index_right] * np.exp(delta_z / (2 * kT))
+                    K_biased[index_right, index] = K[index_right, index] * np.exp(-delta_z / (2 * kT))
+
+
     if norm == True:
         for i in range(N*N):
             K_biased[i, i] = -np.sum(K_biased[:, i]) 
@@ -382,7 +415,7 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
     #print("local optimisation result:", res.x)
     return res.x 
 
-def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, end_index=0, plot = False):
+def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, end_index=0, plot = False, cutoff_mode = False, amp = None, F = None):
     """
     here we try different gaussian params 1000 times
     and use the best one (lowest mfpt) to local optimise the gaussian_params
@@ -424,9 +457,9 @@ def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, 
         gaussian_params = np.concatenate((a, bx, by, cx, cy))
         total_bias = get_total_bias_2d(x,y, gaussian_params)
 
-        K_biased = bias_K_2D(K, total_bias, kT=0.5981)
+        K_biased = bias_K_2D(K, total_bias, cutoff_mode=cutoff_mode, kT=0.5981, F = F, amp = amp)
 
-        peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K_biased, kT=0.5981)
+        peq = compute_free_energy(K_biased, kT=0.5981)[0]
         mfpts = mfpt_calc(peq, K_biased)
         #kemeny_constant_check(mfpts, peq)
         mfpt = mfpts[start_index, end_index]
@@ -444,9 +477,9 @@ def try_and_optim_M_K(M, working_indices, N=20, num_gaussian=10, start_index=0, 
 
     def mfpt_helper(gaussian_params, K, start_index = start_index, end_index = end_index, kT=0.5981):
         total_bias = get_total_bias_2d(x,y, gaussian_params)
-        K_biased = bias_K_2D(K, total_bias, kT=0.5981)
+        K_biased = bias_K_2D(K, total_bias, cutoff_mode=cutoff_mode, kT=0.5981, F = F, amp = amp)
 
-        peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K_biased, kT)
+        peq = compute_free_energy(K_biased, kT)[0]
         mfpts = mfpt_calc(peq, K_biased)
         mfpt = mfpts[start_index, end_index]
         return mfpt
