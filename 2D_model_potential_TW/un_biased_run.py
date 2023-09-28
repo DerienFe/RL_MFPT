@@ -17,11 +17,11 @@ N = 20
 kT = 0.5981
 ts = 0.01 #time step
 state_start = (14, 14)
-state_end = (4, 6)
+state_end = (4, 7)
 
 num_simulations = 20
 
-
+time_tag = time.strftime("%Y%m%d-%H%M%S")
 if __name__ == "__main__":
 
     K = create_K_png(N)
@@ -52,8 +52,8 @@ if __name__ == "__main__":
     mean = np.mean(results)
     std = np.std(results)
     print("mean is {}, std is {}".format(mean, std))
-    np.savetxt("./data/unbiased_mfpt_raw_{}_{}.txt".format(state_start, state_end), results)
-    np.savetxt("./data/unbiased_mfpt_mean_std_{}_{}.txt".format(state_start, state_end), np.array([mean, std]))
+    np.savetxt("./data/unbiased_mfpt_raw_{}_{}_{}.txt".format(state_start, state_end, time_tag), results)
+    np.savetxt("./data/unbiased_mfpt_mean_std_{}_{}_{}.txt".format(state_start, state_end, time_tag), np.array([mean, std]))
         
         
 
