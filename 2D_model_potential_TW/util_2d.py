@@ -243,11 +243,11 @@ def bias_K_2D(K, total_bias, kT=0.5981, cutoff_mode = False, norm = True, F = No
         assert F is not None, "F is not passed in!"
         assert amp is not None, "amp is not passed in!"
 
-        biased_F = F + total_bias
+        biased_F = F.reshape((20,20)) + total_bias
         biased_F = np.clip(biased_F, a_min = None, a_max = amp * 1.2)
 
         #calculate the clipped total bias
-        clipped_total_bias = biased_F - F
+        clipped_total_bias = biased_F - F.reshape((20,20))
         
         #make sure the clipped total bias is not negative
         clipped_total_bias = np.clip(clipped_total_bias, a_min = 0, a_max = None)
