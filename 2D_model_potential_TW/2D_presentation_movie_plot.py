@@ -21,7 +21,7 @@ t_max = 10**7 #max time
 ts = 0.01 #time step
 amp = 7 #when creating the K from png. also affects the cufoff_mode in biase_K_2D.
 state_start = (14, 14)
-state_end = (4, 6)
+state_end = (4, 7)
 cutoff_mode = True
 
 #define 4 intermediate states between start and end.
@@ -35,7 +35,7 @@ time_tag = time.strftime("%Y%m%d-%H%M%S")
 
 #for exploration.
 propagation_step = 1000
-max_propagation = 10
+max_propagation = 50
 num_bins = 20 #for qspace used in DHAM and etc.
 num_gaussian = 20 #for the initial bias.
 
