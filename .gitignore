@@ -1,3 +1,4 @@
 *.pyc
 __pycache__/
 RL_CLEANRL/cleanrl
+/2D_model_potential_TW/__pycache__/*
