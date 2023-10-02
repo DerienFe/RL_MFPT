@@ -41,7 +41,9 @@ num_gaussian = 20 #for the initial bias.
 
 def propagate(M, cur_pos,
               gaussian_params,
-              CV_total,prop_index, time_tag,
+              CV_total,
+              prop_index, 
+              time_tag = None,
               steps=propagation_step, 
               stepsize=ts,
               time_to_reach = 0,
@@ -115,7 +117,7 @@ def get_closest_state(qspace, target_state, working_indices):
     closest_state = working_states[np.argmin(np.abs(working_states - target_state))]
     return closest_state
 
-def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150, prop_index=0, time_tag=time_tag):
+def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150, prop_index=0, time_tag=None):
     """
     intput:
     CV: the collective variable we are interested in. now it's 2d.
@@ -165,31 +167,30 @@ def find_closest_index(working_indices, final_index, N):
 ###############################################
 
 if __name__ == "__main__":
-    
-    K = create_K_png(N, amp=amp)
-
-    #test the functions.
-    peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, kT)
-    mfpts = mfpt_calc(peq, K)
-    #kemeny_constant_check(mfpts, peq)
-
-    x,y = np.meshgrid(np.linspace(-3,3,N),np.linspace(-3,3,N)) #for DHAM in 2D as well.
-    
-    #test random initial bias here.
-    print("placing random gaussian at:", (x[state_start], y[state_start]))
-    gaussian_params = random_initial_bias_2d(initial_position = [x[state_start], y[state_start]], num_gaussians=num_gaussian)
-    total_bias = get_total_bias_2d(x,y, gaussian_params)
-    K_biased = bias_K_2D(K, total_bias, cutoff_mode=cutoff_mode, kT=0.5981, F = F, amp = amp)
-    peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
-    mfpts_biased = mfpt_calc(peq_biased, K_biased)
-    #kemeny_constant_check(mfpts_biased, peq_biased)
-
-    CV_total = [[]] #initialise the CV list.
-    cur_pos = np.ravel_multi_index(state_start, (N,N), order='C') #flattened index.
-
     time_to_reach_list = []
     #note from now on, all index is in raveled 'flattened' form.
     for i_sum in range(num_simulation):
+        K = create_K_png(N, amp=amp)
+
+        #test the functions.
+        peq, F, evectors, evalues, evalues_sorted, index = compute_free_energy(K, kT)
+        mfpts = mfpt_calc(peq, K)
+        #kemeny_constant_check(mfpts, peq)
+
+        x,y = np.meshgrid(np.linspace(-3,3,N),np.linspace(-3,3,N)) #for DHAM in 2D as well.
+        
+        #test random initial bias here.
+        print("placing random gaussian at:", (x[state_start], y[state_start]))
+        gaussian_params = random_initial_bias_2d(initial_position = [x[state_start], y[state_start]], num_gaussians=num_gaussian)
+        total_bias = get_total_bias_2d(x,y, gaussian_params)
+        K_biased = bias_K_2D(K, total_bias, cutoff_mode=cutoff_mode, kT=0.5981, F = F, amp = amp)
+        peq_biased, F_biased, evectors_biased, evalues_biased, evalues_sorted_biased, index_biased = compute_free_energy(K_biased, kT)
+        mfpts_biased = mfpt_calc(peq_biased, K_biased)
+        #kemeny_constant_check(mfpts_biased, peq_biased)
+
+        CV_total = [[]] #initialise the CV list.
+        cur_pos = np.ravel_multi_index(state_start, (N,N), order='C') #flattened index.
+
         time_tag = time.strftime("%Y%m%d-%H%M%S")
         time_to_reach = 0
         print(f"simulation number {i_sum} STARTING, time_tag = {time_tag}")
