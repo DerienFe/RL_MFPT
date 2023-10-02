@@ -203,7 +203,7 @@ if __name__ == "__main__":
                 #get Markov matrix.
                 M = expm(K_biased*ts)
                 #normalize M.
-                for i in range(M.shape[0]): 
+                for i in range(M.shape[0]):
                     M[:,i] = M[:,i]/np.sum(M[:,i])
 
                 F_M, cur_pos, M_reconstructed, CV_total, time_to_reach  = propagate(M, cur_pos,
