@@ -21,6 +21,7 @@ from util import *
 sys.path.append("..")
 from openmm.app import *
 #from openmm.unit import *
+#from openmm.unit import *
 from dham import DHAM
 import csv
 import os
@@ -28,7 +29,11 @@ import sys
 from PIL import Image
 from matplotlib import animation
 import time
+import time
 
+platform = omm.Platform.getPlatformByName('CPU') #CUDA
+psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
+pdb_file = 'toppar/step3_input25A.pdb' # Path # gro # inpcrd
 platform = omm.Platform.getPlatformByName('CPU') #CUDA
 psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
 pdb_file = 'toppar/step3_input25A.pdb' # Path # gro # inpcrd
@@ -127,8 +132,10 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=num_bins):
     d.lagtime = lagtime
     d.numbins = numbins #num of bins, arbitrary.
     results = d.run(biased = True, plot=False)
+    results = d.run(biased = True, plot=False)
     return results
 
+def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=10000, dcdfreq=100,  platform=platform, stepsize=stepsize, num_bins=num_bins,):
 def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=10000, dcdfreq=100,  platform=platform, stepsize=stepsize, num_bins=num_bins,):
     """
     propagate the system for a number of steps.
@@ -142,6 +149,7 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     """
     
     file_handle = open(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", 'bw')
+    file_handle = open(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", 'bw')
     dcd_file = omm_app.dcdfile.DCDFile(file_handle, psf.topology, dt = stepsize)
 
     for _ in range(int(steps/dcdfreq)):
@@ -154,12 +162,14 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     
     top = mdtraj.load_psf(psf_file)
     traj = mdtraj.load_dcd(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", top=top)
+    traj = mdtraj.load_dcd(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", top=top)
     num_frames.append(traj.n_frames)
 
     dist = mdtraj.compute_distances(traj, [[0, 1]]) *10 #unit in A #get distance over the traj (in this propagation)
     print("this is prop index", prop_index, "this is raw dist: ", dist)
     np.savetxt(f"trajectories/NaCl_exploring_traj_{prop_index}.txt", dist) #save the distance to a txt file. 
     print(f"Inside the propagate function, lenght of dist is: {len(dist)}")
+
 
     #we concatenate the new dist to the old dist.
     # NaCl_dist is a list of renewed dist.
@@ -271,11 +281,49 @@ if __name__ == "__main__":
                 print("propagation number 0 STARTING.")
                 gaussian_params = random_initial_bias(initial_position = 2.65)
                 biased_system = add_bias(system, gaussian_params)
+    for i_sim in range(num_simulations):
+        system = forcefield.createSystem(psf.topology,
+                                        nonbondedCutoff=1.0*unit.nanometers,
+                                        constraints=omm_app.HBonds)
+        platform = omm.Platform.getPlatformByName('CUDA')
+        
+        #### setup an OpenMM context
+        integrator = omm.LangevinIntegrator(T*unit.kelvin, #Desired Integrator
+                                            fricCoef/unit.picoseconds,
+                                            stepsize*unit.femtoseconds) 
+        qspace = np.linspace(2.4, 9, num_bins+1) #hard coded for now.
+        NaCl_dist = [[]] #initialise the NaCl distance list.
+        time_tag = time.strftime("%Y%m%d-%H%M%S")
+
+        for i in range(max_propagation):
+            total_steps = 0
+            if i == 0:
+                print("propagation number 0 STARTING.")
+                gaussian_params = random_initial_bias(initial_position = 2.65)
+                biased_system = add_bias(system, gaussian_params)
 
                 ## construct an OpenMM context
                 context = omm.Context(biased_system, integrator)   
                 context, energy = minimize(context)         #minimize the system
+                ## construct an OpenMM context
+                context = omm.Context(biased_system, integrator)   
+                context, energy = minimize(context)         #minimize the system
 
+                ## MD run "propagation"
+                cur_pos, NaCl_dist, M= propagate(context, 
+                                                gaussian_params=gaussian_params, 
+                                                NaCl_dist = NaCl_dist,
+                                                time_tag = time_tag,
+                                                prop_index=i,
+                                                steps=propagation_step, 
+                                                dcdfreq=dcdfreq, 
+                                                platform=platform, 
+                                                stepsize=stepsize,
+                                                )
+                matrices.append(M)
+                #save the Nacl_dist
+                analytic_matrix = np.linalg.matrix_power(M, 10000)
+                matricies_analytic.append(analytic_matrix)
                 ## MD run "propagation"
                 cur_pos, NaCl_dist, M= propagate(context, 
                                                 gaussian_params=gaussian_params, 
@@ -297,15 +345,47 @@ if __name__ == "__main__":
                 #trim the zero rows and columns markov matrix to avoid 0 rows.
                 #!!!do everything in index space. !!!
                 cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
+                
+                #finding the closest element in MM to the end point. 7A in np.linspace(2.4, 9, 150+1)
+                #trim the zero rows and columns markov matrix to avoid 0 rows.
+                #!!!do everything in index space. !!!
+                cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
 
+                working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
+                final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
                 working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
                 final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
 
 
                 farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
+                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
 
                 total_steps += 1
+                total_steps += 1
 
+            else:
+                print(f"propagation number {i} STARTING.")
+                #renew the gaussian params using returned MM.
+                
+                print("getting gaussina parameters")
+                gaussian_params = try_and_optim_M(working_MM, 
+                                                working_indices = working_indices,
+                                                num_gaussian=10, 
+                                                start_state=cur_pos_index, 
+                                                end_state=farest_index,
+                                                plot = True,
+                                                )
+
+
+                #save the gaussian params to a txt file.
+                np.savetxt(f"gaussian_params/{time_tag}_gaussian_params_{i}.txt", gaussian_params)
+
+                ## construct an OpenMM context
+                #we use context.setParameters() to update the bias potential.
+                for j in range(10):
+                    context.setParameter(f'a{j}', gaussian_params[j])
+                    context.setParameter(f'b{j}', gaussian_params[j+10])
+                    context.setParameter(f'c{j}', gaussian_params[j+20])
             else:
                 print(f"propagation number {i} STARTING.")
                 #renew the gaussian params using returned MM.
@@ -336,7 +416,18 @@ if __name__ == "__main__":
                     test_gaussian_params.append(context.getParameter(f'a{j}'))
                     test_gaussian_params.append(context.getParameter(f'b{j}'))
                     test_gaussian_params.append(context.getParameter(f'c{j}'))
+                #we plot the total bias.
+                test_gaussian_params = []
+                for j in range(10):
+                    test_gaussian_params.append(context.getParameter(f'a{j}'))
+                    test_gaussian_params.append(context.getParameter(f'b{j}'))
+                    test_gaussian_params.append(context.getParameter(f'c{j}'))
 
+                test_total_bias = np.zeros_like(qspace)
+                for n in range(len(test_gaussian_params)//3):
+                    test_total_bias += gaussian(qspace, test_gaussian_params[3*n], test_gaussian_params[3*n+1], test_gaussian_params[3*n+2])
+                #plt.plot(qspace, test_total_bias)
+                #plt.show()
                 test_total_bias = np.zeros_like(qspace)
                 for n in range(len(test_gaussian_params)//3):
                     test_total_bias += gaussian(qspace, test_gaussian_params[3*n], test_gaussian_params[3*n+1], test_gaussian_params[3*n+2])
@@ -358,7 +449,24 @@ if __name__ == "__main__":
                 analytic_matrix = np.linalg.matrix_power(M, 10000)
                 matricies_analytic.append(analytic_matrix)
                 cur_pos_index = np.digitize(cur_pos, qspace) #update cur_pos_index
+                ## MD run "propagation"
+                cur_pos, NaCl_dist, M= propagate(context, 
+                                                gaussian_params=gaussian_params, 
+                                                NaCl_dist = NaCl_dist,
+                                                time_tag = time_tag,
+                                                prop_index=i,
+                                                steps=propagation_step, 
+                                                dcdfreq=dcdfreq, 
+                                                platform=platform, 
+                                                stepsize=stepsize,
+                                                )
+                matrices.append(M)
+                analytic_matrix = np.linalg.matrix_power(M, 10000)
+                matricies_analytic.append(analytic_matrix)
+                cur_pos_index = np.digitize(cur_pos, qspace) #update cur_pos_index
 
+                working_MM, working_indices = get_working_MM(M)
+                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index
                 working_MM, working_indices = get_working_MM(M)
                 farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index
 
@@ -376,8 +484,12 @@ if __name__ == "__main__":
             else:
                 print("continue propagating.")
                 continue
+            else:
+                print("continue propagating.")
+                continue
 
 
+        
         
     
     
