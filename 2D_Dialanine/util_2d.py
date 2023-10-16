@@ -389,5 +389,3 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     
     #print("local optimisation result:", res.x)
     return res.x 
-
-

@@ -310,8 +310,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
 
         return mfpt_biased
 
-    res = minimize(mfpt_helper, 
-                   best_params, 
+    res = minimize(mfpt_helper, #minimize comes from scipy.
+                   best_params, #gaussian params
                    args=(M,
                          start_state_working_index, 
                          end_state_working_index,

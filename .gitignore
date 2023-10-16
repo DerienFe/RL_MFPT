@@ -2,3 +2,5 @@
 __pycache__/
 RL_CLEANRL/cleanrl
 /2D_model_potential_TW/__pycache__/*
+/1D_NaCl_TW/trajectories/*
+/1D_NaCl_TW/__pycache__/*
