@@ -1,1 +1,0 @@
-#this is a mannual attempt to reconstruct a di-alanine potential.
