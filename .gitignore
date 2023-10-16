@@ -8,6 +8,7 @@ RL_CLEANRL/cleanrl
 /2D_model_potential_TW/langevin_approach/traj/*
 /2D_model_potential_TW/langevin_approach/data/*
 /2D_model_potential_TW/langevin_approach/figs*
+/2D_model_potential_TW/langevin_approach/MetaD_auxfiles/*
 /2D_model_potential_TW/data*
 /2D_model_potential_TW/figs*
 
