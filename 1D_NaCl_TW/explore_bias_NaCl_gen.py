@@ -20,24 +20,25 @@ import mdtraj
 from util import *
 sys.path.append("..")
 from openmm.app import *
-from openmm.unit import *
+#from openmm.unit import *
 from dham import DHAM
 import csv
 import os
 import sys
 from PIL import Image
 from matplotlib import animation
+import time
 
-
-platform = omm.Platform.getPlatformByName('CPU')
-psf_file = 'toppar/step3_input.psf' # Path
-pdb_file = 'toppar/step3_input25A.pdb' # Path
+platform = omm.Platform.getPlatformByName('CPU') #CUDA
+psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
+pdb_file = 'toppar/step3_input25A.pdb' # Path # gro # inpcrd
 T = 298.15      # temperature in K
 fricCoef = 10   # friction coefficient in 1/ps
 stepsize = 2    # MD integration step size in fs
 dcdfreq = 100   # save coordinates at every 100 step
 propagation_step = 10000
-max_propagation = 10
+max_propagation = 20 
+num_simulations = 20
 num_bins = 150 #for qspace used in DHAM and etc.
 num_frames = []
 fig, ax = plt.subplots()
@@ -125,10 +126,10 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=num_bins):
 
     d.lagtime = lagtime
     d.numbins = numbins #num of bins, arbitrary.
-    results = d.run(biased = True, plot=True)
+    results = d.run(biased = True, plot=False)
     return results
 
-def propagate(context, gaussian_params, prop_index, NaCl_dist, steps=10000, dcdfreq=100,  platform=platform, stepsize=stepsize, num_bins=num_bins):
+def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=10000, dcdfreq=100,  platform=platform, stepsize=stepsize, num_bins=num_bins,):
     """
     propagate the system for a number of steps.
     we have to start from loading the molecule, FF
@@ -140,8 +141,7 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, steps=10000, dcdf
     repeat.
     """
     
-    
-    file_handle = open(f"trajectories/explore_traj/NaCl_exploring_traj_{prop_index}.dcd", 'bw')
+    file_handle = open(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", 'bw')
     dcd_file = omm_app.dcdfile.DCDFile(file_handle, psf.topology, dt = stepsize)
 
     for _ in tqdm(range(int(steps/dcdfreq)), desc=f"Propagation {prop_index}"):
@@ -153,7 +153,7 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, steps=10000, dcdf
     #now we have the trajectory, we can calculate the Markov matrix.
     
     top = mdtraj.load_psf(psf_file)
-    traj = mdtraj.load_dcd(f"trajectories/explore_traj/NaCl_exploring_traj_{prop_index}.dcd", top=top)
+    traj = mdtraj.load_dcd(f"trajectories/explore_traj/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", top=top)
     num_frames.append(traj.n_frames)
 
     dist = mdtraj.compute_distances(traj, [[0, 1]]) *10 #unit in A #get distance over the traj (in this propagation)
@@ -161,8 +161,6 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, steps=10000, dcdf
     np.savetxt(f"trajectories/NaCl_exploring_traj_{prop_index}.txt", dist) #save the distance to a txt file. 
     print(f"Inside the propagate function, lenght of dist is: {len(dist)}")
 
-    
-    
     #we concatenate the new dist to the old dist.
     # NaCl_dist is a list of renewed dist.
     combined_dist = np.concatenate((NaCl_dist[-1], dist), axis=None)
@@ -253,139 +251,146 @@ if __name__ == "__main__":
 
     """
     forcefield = omm_app.ForceField('amber14-all.xml', 'amber14/tip3p.xml')
-
-    system = forcefield.createSystem(psf.topology,
-                                     nonbondedCutoff=1.0*nanometers,
-                                     constraints=omm_app.HBonds)
-    platform = omm.Platform.getPlatformByName('CPU')
-    
-    #### setup an OpenMM context
-    integrator = omm.LangevinIntegrator(T*kelvin, #Desired Integrator
-                                        fricCoef/picoseconds,
-                                        stepsize*femtoseconds) 
-    qspace = np.linspace(2.4, 9, num_bins+1) #hard coded for now.
-    NaCl_dist = [[]] #initialise the NaCl distance list.
-    for i in range(max_propagation):
-        total_steps = 0
-        if i == 0:
-            print("propagation number 0 STARTING.")
-            gaussian_params = random_initial_bias(initial_position = 2.65)
-            biased_system = add_bias(system, gaussian_params)
-
-            ## construct an OpenMM context
-            context = omm.Context(biased_system, integrator)   
-            context, energy = minimize(context)         #minimize the system
-
-            ## MD run "propagation"
-            cur_pos, NaCl_dist, M= propagate(context, 
-                                              gaussian_params=gaussian_params, 
-                                              NaCl_dist = NaCl_dist,
-                                              prop_index=i,
-                                              steps=propagation_step, 
-                                              dcdfreq=dcdfreq, 
-                                              platform=platform, 
-                                              stepsize=stepsize)
-            matrices.append(M)
-
-            analytic_matrix = np.linalg.matrix_power(M, 10000)
-            matricies_analytic.append(analytic_matrix)
-
-            
-            #finding the closest element in MM to the end point. 7A in np.linspace(2.4, 9, 150+1)
-            #trim the zero rows and columns markov matrix to avoid 0 rows.
-            #!!!do everything in index space. !!!
-            cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
-
-            working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
-            final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
-
-
-            farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
-
-            total_steps += 1
-
-        else:
-            print(f"propagation number {i} STARTING.")
-            #renew the gaussian params using returned MM.
-            
-            print("getting gaussina parameters")
-            gaussian_params = try_and_optim_M(working_MM, 
-                                              working_indices = working_indices,
-                                              num_gaussian=10, 
-                                              start_state=cur_pos_index, 
-                                              end_state=farest_index,
-                                              plot = True,
-                                              )
+    for i_sim in range(num_simulations):
+        system = forcefield.createSystem(psf.topology,
+                                        nonbondedCutoff=1.0*unit.nanometers,
+                                        constraints=omm_app.HBonds)
+        platform = omm.Platform.getPlatformByName('CUDA')
         
-            ## construct an OpenMM context
-            #we use context.setParameters() to update the bias potential.
-            for j in range(10):
-                context.setParameter(f'a{j}', gaussian_params[j])
-                context.setParameter(f'b{j}', gaussian_params[j+10])
-                context.setParameter(f'c{j}', gaussian_params[j+20])
+        #### setup an OpenMM context
+        integrator = omm.LangevinIntegrator(T*unit.kelvin, #Desired Integrator
+                                            fricCoef/unit.picoseconds,
+                                            stepsize*unit.femtoseconds) 
+        qspace = np.linspace(2.4, 9, num_bins+1) #hard coded for now.
+        NaCl_dist = [[]] #initialise the NaCl distance list.
+        time_tag = time.strftime("%Y%m%d-%H%M%S")
 
-            #we plot the total bias.
-            test_gaussian_params = []
-            for j in range(10):
-                test_gaussian_params.append(context.getParameter(f'a{j}'))
-                test_gaussian_params.append(context.getParameter(f'b{j}'))
-                test_gaussian_params.append(context.getParameter(f'c{j}'))
+        for i in range(max_propagation):
+            total_steps = 0
+            if i == 0:
+                print("propagation number 0 STARTING.")
+                gaussian_params = random_initial_bias(initial_position = 2.65)
+                biased_system = add_bias(system, gaussian_params)
 
-            test_total_bias = np.zeros_like(qspace)
-            for n in range(len(test_gaussian_params)//3):
-                test_total_bias += gaussian(qspace, test_gaussian_params[3*n], test_gaussian_params[3*n+1], test_gaussian_params[3*n+2])
-            #plt.plot(qspace, test_total_bias)
-            #plt.show()
+                ## construct an OpenMM context
+                context = omm.Context(biased_system, integrator)   
+                context, energy = minimize(context)         #minimize the system
 
-            ## MD run "propagation"
-            cur_pos, NaCl_dist, M= propagate(context, 
-                                              gaussian_params=gaussian_params, 
-                                              NaCl_dist = NaCl_dist,
-                                              prop_index=i,
-                                              steps=propagation_step, 
-                                              dcdfreq=dcdfreq, 
-                                              platform=platform, 
-                                              stepsize=stepsize)
-            matrices.append(M)
-            analytic_matrix = np.linalg.matrix_power(M, 10000)
-            matricies_analytic.append(analytic_matrix)
-            cur_pos_index = np.digitize(cur_pos, qspace) #update cur_pos_index
+                ## MD run "propagation"
+                cur_pos, NaCl_dist, M= propagate(context, 
+                                                gaussian_params=gaussian_params, 
+                                                NaCl_dist = NaCl_dist,
+                                                time_tag = time_tag,
+                                                prop_index=i,
+                                                steps=propagation_step, 
+                                                dcdfreq=dcdfreq, 
+                                                platform=platform, 
+                                                stepsize=stepsize,
+                                                )
+                matrices.append(M)
+                #save the Nacl_dist
+                analytic_matrix = np.linalg.matrix_power(M, 10000)
+                matricies_analytic.append(analytic_matrix)
 
-            working_MM, working_indices = get_working_MM(M)
-            farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index
+                
+                #finding the closest element in MM to the end point. 7A in np.linspace(2.4, 9, 150+1)
+                #trim the zero rows and columns markov matrix to avoid 0 rows.
+                #!!!do everything in index space. !!!
+                cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
 
-
-        if working_indices[-1] > final_index or working_indices[-1] == final_index:
-            # Loop through the matrices and create the frames
-            # Create animation
-            print("number of frames is: ", len(matrices))
-            fig = plt.figure()
-            anim = animation.FuncAnimation(fig, animate, frames=len(matrices), interval=500) 
-
-            # Save animation
-            anim.save('markov_animation.gif', writer='imagemagick') 
-
-            plt.show()
-
-            # Save the frames as a GIF
-            frames[0].save('matrices.gif', save_all=True, append_images=frames[1:], duration=200, loop=0)
-
-            plt.close()
+                working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
+                final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
 
 
+                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
+
+                total_steps += 1
+
+            else:
+                print(f"propagation number {i} STARTING.")
+                #renew the gaussian params using returned MM.
+                
+                print("getting gaussina parameters")
+                gaussian_params = try_and_optim_M(working_MM, 
+                                                working_indices = working_indices,
+                                                num_gaussian=10, 
+                                                start_state=cur_pos_index, 
+                                                end_state=farest_index,
+                                                plot = True,
+                                                )
 
 
-            break
-            #here we count the distance first reaching 7A
-            #we load all the exploring traj here into traj
-            #use mdtraj calculate distance between atom 0-1, count the steps.
+                #save the gaussian params to a txt file.
+                np.savetxt(f"gaussian_params/{time_tag}_gaussian_params_{i}.txt", gaussian_params)
 
-        else:
-            print("continue propagating.")
-            continue
+                ## construct an OpenMM context
+                #we use context.setParameters() to update the bias potential.
+                for j in range(10):
+                    context.setParameter(f'a{j}', gaussian_params[j])
+                    context.setParameter(f'b{j}', gaussian_params[j+10])
+                    context.setParameter(f'c{j}', gaussian_params[j+20])
+
+                #we plot the total bias.
+                test_gaussian_params = []
+                for j in range(10):
+                    test_gaussian_params.append(context.getParameter(f'a{j}'))
+                    test_gaussian_params.append(context.getParameter(f'b{j}'))
+                    test_gaussian_params.append(context.getParameter(f'c{j}'))
+
+                test_total_bias = np.zeros_like(qspace)
+                for n in range(len(test_gaussian_params)//3):
+                    test_total_bias += gaussian(qspace, test_gaussian_params[3*n], test_gaussian_params[3*n+1], test_gaussian_params[3*n+2])
+                #plt.plot(qspace, test_total_bias)
+                #plt.show()
+
+                ## MD run "propagation"
+                cur_pos, NaCl_dist, M= propagate(context, 
+                                                gaussian_params=gaussian_params, 
+                                                NaCl_dist = NaCl_dist,
+                                                time_tag = time_tag,
+                                                prop_index=i,
+                                                steps=propagation_step, 
+                                                dcdfreq=dcdfreq, 
+                                                platform=platform, 
+                                                stepsize=stepsize,
+                                                )
+                matrices.append(M)
+                analytic_matrix = np.linalg.matrix_power(M, 10000)
+                matricies_analytic.append(analytic_matrix)
+                cur_pos_index = np.digitize(cur_pos, qspace) #update cur_pos_index
+
+                working_MM, working_indices = get_working_MM(M)
+                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index
 
 
-    
+            if working_indices[-1] > final_index or working_indices[-1] == final_index:
+                # Loop through the matrices and create the frames
+                #### Create animation ####
+                #print("number of frames is: ", len(matrices)) #in animation.
+                fig = plt.figure()
+                anim = animation.FuncAnimation(fig, animate, frames=len(matrices), interval=500)
+                anim.save('markov_animation.gif', writer='imagemagick') 
+                #plt.show()
+                frames[0].save('matrices.gif', save_all=True, append_images=frames[1:], duration=200, loop=0)
+                plt.close()
+
+
+                #save the Nacl_dist, note its shape is not square.
+                np.savetxt(f"visited_state/{time_tag}_NaCl_dist.txt", NaCl_dist)
+
+                #break out this loop and start a new simulation.
+                print("we reached the end of the simulation.")
+                break
+                #here we count the distance first reaching 7A
+                #we load all the exploring traj here into traj
+                #use mdtraj calculate distance between atom 0-1, count the steps.
+
+            else:
+                print("continue propagating.")
+                continue
+
+
+        
     
     
     
