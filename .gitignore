@@ -2,3 +2,17 @@
 __pycache__/
 RL_CLEANRL/cleanrl
 /2D_model_potential_TW/__pycache__/*
+/2D_Dialanine/trajectories/*
+/1D_NaCl_TW/trajectories/*
+/1D_NaCl_TW/__pycache__/*
+/2D_model_potential_TW/langevin_approach/traj/*
+/2D_model_potential_TW/langevin_approach/data/*
+/2D_model_potential_TW/langevin_approach/figs*
+/2D_model_potential_TW/data*
+/2D_model_potential_TW/figs*
+
+/1D_NaCl_TW/gaussian_params/*
+/1D_NaCl_TW/trajectories/*
+/1D_NaCl_TW/visited_state/*
+/1D_NaCl_TW/trajectories/*
+/1D_NaCl_TW/__pycache__/*
