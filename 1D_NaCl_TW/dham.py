@@ -33,12 +33,12 @@ def count_transitions(b, numbins, lagtime, endpt=None):
     for k in range(b.shape[0]):
         for i in range(lagtime, b.shape[1]):
             try:
-                Ntr[k, b[k, i - lagtime] - 1, endpt[k, i] - 1] += 1
+                Ntr[k, b[k, i - lagtime], endpt[k, i]] += 1
             except IndexError:
                 continue
     sumtr = np.sum(Ntr, axis=0)
     trvec = np.sum(Ntr, axis=2)
-    #sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
+    sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
     # anti = 0.5 * (sumtr - np.transpose(sumtr))
     # print("Degree of symmetry:",
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))
@@ -65,9 +65,10 @@ class DHAM:
         self.c = gaussian_params[2*num_gaussian:]
         return
 
-    def setup(self, CV, T):
+    def setup(self, CV, T,prop_index):
         self.data = CV
         self.KbT = 0.001987204259 * T
+        self.prop_index = prop_index
         return
 
     def build_MM(self, sumtr, trvec, biased=False):
@@ -132,11 +133,12 @@ class DHAM:
         if plot:
             unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
             #plot the unbiased profile from 2.4 to 9 A.
-            #plt.plot(unb_bins, unb_profile, label="ground truth")
-            #plt.plot(x, mU2, label="reconstructed M by DHAMsym")
-            #plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.numbins))
-            #plt.show()
-        return x, mU2, A, MM
+            plt.plot(unb_bins, unb_profile, label="ground truth")
+            plt.plot(x, mU2, label="reconstructed M by DHAMsym")
+            plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.numbins))
+            plt.xlim(2.4, 9)
+            plt.savefig(f"./test_dham_{self.prop_index}.png")
+        return x, mU2, A, MM # mU2 is in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)
