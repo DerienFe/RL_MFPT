@@ -243,17 +243,14 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
     qspace = np.linspace(2.4, 9, 150+1) #hard coded for now.
     best_mfpt = 1000000000000 #initialise the best mfpt np.inf
 
-    b_min = qspace[working_indices[0]] #the min of the working indices
-    b_max = qspace[working_indices[-1]] #the max of the working indices
-
 
     for i in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
         a = np.ones(num_gaussian)
-        b = rng.uniform(0, 9, num_gaussian) #fix this so it place gaussian at the working indices. it has to be in angstrom. because we need return these.
+        b = rng.uniform(0, 7, num_gaussian) #fix this so it place gaussian at the working indices. it has to be in angstrom. because we need return these.
         #b = rng.uniform(b_min, b_max, num_gaussian)
-        c = rng.uniform(0.1, 2.5, num_gaussian) 
+        c = rng.uniform(0.3, 1, num_gaussian) 
         
         #we convert the working_indices to the qspace.
 
@@ -277,9 +274,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
-        if mfpt_biased < 0:
-            print("MFPT biased is negative", sys.exit())
-            
+
         if i % 100 == 0:
             print("random try:", i, "mfpt:", mfpt_biased)
 
@@ -287,16 +282,14 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         if best_mfpt > mfpt_biased:
             best_mfpt = mfpt_biased
             best_params = np.concatenate((a, b, c)) #we concatenate the params into a single array. in shape (30,)
-        if best_mfpt < 0: 
-            print("best MFPT is negative")
-            sys.exit()
+
             
     print("best mfpt:", best_mfpt)
-        
+    
     #now we use the best params to local optimise the gaussian params
 
     def mfpt_helper(params, M, start_state = start_state, end_state = end_state, kT=0.5981, working_indices=working_indices):
-        a = params[:num_gaussian]
+        a = params[:num_gaussian] * 2
         b = params[num_gaussian:2*num_gaussian]
         c = params[2*num_gaussian:]
         total_bias = np.zeros_like(qspace[working_indices])
@@ -317,8 +310,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0, 1)]*10 + [(0,9)]*10 + [(0.1, 2.5)]*10, #add bounds to the parameters
-                   tol=1e-1)
+                   bounds= [(0.3, 5)]*10 + [(0,7)]*10 + [(0.3, 1)]*10, #add bounds to the parameters
+                   tol=1e-3)
 
     if plot:
 
@@ -347,5 +340,5 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
     #    plt.plot(qspace[working_indices[start_state_working_index]], F[start_state_working_index], "o", label="start state")
     #    plt.plot(qspace[working_indices[end_state_working_index]], F[end_state_working_index], "x", label="end state")
     #    plt.legend()
-    #ß    plt.show()
+    #    plt.show()
     return res.x    #, best_params

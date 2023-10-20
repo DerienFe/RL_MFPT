@@ -12,8 +12,14 @@ RL_CLEANRL/cleanrl
 /2D_model_potential_TW/data*
 /2D_model_potential_TW/figs*
 
+/1D_NaCl_TW/bias_plots/*
+/1D_NaCl_TW/MetaD_auxfiles/*
 /1D_NaCl_TW/gaussian_params/*
-/1D_NaCl_TW/trajectories/*
 /1D_NaCl_TW/visited_state/*
 /1D_NaCl_TW/trajectories/*
 /1D_NaCl_TW/__pycache__/*
+
+/2D_langevin_sim/MetaD_auxfiles/*
+/2D_langevin_sim/traj/*
+/2D_langevin_sim/figs/*
+
