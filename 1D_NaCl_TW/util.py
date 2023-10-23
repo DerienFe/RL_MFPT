@@ -337,7 +337,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.3, 4.5)]*10 + [(0,7)]*10 + [(0.3, 1)]*10, #add bounds to the parameters
+                   bounds= [(0.3, 4.5)]*10 + [(0,7)]*10 + [(0.3, 1.5)]*10, #add bounds to the parameters
                    tol=1e-3)
 
     if plot:
