@@ -28,7 +28,7 @@ import sys
 from PIL import Image
 import time
 
-platform = omm.Platform.getPlatformByName('CUDA') #CUDA
+platform = omm.Platform.getPlatformByName('CPU') #CUDA
 psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
 pdb_file = 'toppar/step3_input25A.pdb' # Path # gro # inpcrd
 T = 298.15      # temperature in K
@@ -38,8 +38,7 @@ dcdfreq = 1   # save coordinates at every 100 step
 propagation_step = 1000
 max_propagation = 50
 num_simulations = 20
-num_bins = 150 #for qspace used in DHAM and etc.
-num_frames = []
+num_bins = 100 #for qspace used in DHAM and etc.
 fig, ax = plt.subplots()
 
 
@@ -48,9 +47,9 @@ def random_initial_bias(initial_position):
     # initial position is in Anstrom
     rng = np.random.default_rng()
     #a = np.ones(10)
-    a = np.ones(10) * 0.01
-    b = rng.uniform(initial_position-0.5, initial_position+0.5, 10) #min/max of preloaded NaCl fes x-axis.
-    c = rng.uniform(1, 5.0, 10)
+    a = np.ones(10) * 0.01 * 4.184 #convert to kJ/mol
+    b = rng.uniform(initial_position-0.5, initial_position+0.5, 10) /10 #min/max of preloaded NaCl fes x-axis.
+    c = rng.uniform(1, 5.0, 10) /10
     return np.concatenate((a,b,c), axis=None)
     
 def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=num_bins, prop_index = None):
@@ -88,19 +87,20 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     file_handle = open(f"trajectories/explore/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", 'bw')
     dcd_file = omm_app.dcdfile.DCDFile(file_handle, psf.topology, dt = stepsize)
 
+    dist = []
     for _ in range(int(steps/dcdfreq)):
         integrator.step(dcdfreq) #advance dcd freq steps and stop to record.
         state = context.getState(getPositions=True)
         dcd_file.writeModel(state.getPositions(asNumpy=True))
+        pos1 = state.getPositions(asNumpy=True)[0]
+        pos2 = state.getPositions(asNumpy=True)[1]
+        dist.append(np.linalg.norm(pos1-pos2) * 10) #convert to angstrom
     file_handle.close()
 
     #now we have the trajectory, we can calculate the Markov matrix.
-    
-    top = mdtraj.load_psf(psf_file)
-    traj = mdtraj.load_dcd(f"trajectories/explore/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", top=top)
-    num_frames.append(traj.n_frames)
-
-    dist = mdtraj.compute_distances(traj, [[0, 1]]) *10 #unit in A #get distance over the traj (in this propagation)
+    #top = mdtraj.load_psf(psf_file)
+    #traj = mdtraj.load_dcd(f"trajectories/explore/{time_tag}_NaCl_exploring_traj_{prop_index}.dcd", top=top)
+    #dist = mdtraj.compute_distances(traj, [[0, 1]]) *10 #unit in A #get distance over the traj (in this propagation)
     #print("this is prop index", prop_index, "this is raw dist: ", dist)
     np.savetxt(f"distance/{time_tag}_NaCl_exploring_traj_{prop_index}.txt", dist) #save the distance to a txt file. 
     #print(f"Inside the propagate function, lenght of dist is: {len(dist)}")
@@ -157,9 +157,9 @@ def add_bias(system, gaussian_params, num_gaussian=10):
     custom_bias = omm.CustomBondForce(potential)
     
     for i in range(num_gaussian):
-        custom_bias.addGlobalParameter(f'a{i}', a[i]*4.184) #unit is kj/mol. a is in kcal/mol. so we multiply by 4.184
-        custom_bias.addGlobalParameter(f'b{i}', b[i]/10) #in openmm distance unit is nm. b is in A. so we divide by 10.
-        custom_bias.addGlobalParameter(f'c{i}', c[i]/10) # same to b.
+        custom_bias.addGlobalParameter(f'a{i}', a[i]) #unit is kj/mol. a is in kcal/mol. so we multiply by 4.184
+        custom_bias.addGlobalParameter(f'b{i}', b[i]) #in openmm distance unit is nm. b is in A. so we divide by 10.
+        custom_bias.addGlobalParameter(f'c{i}', c[i]) # same to b.
     
     custom_bias.addBond(0, 1)
     system.addForce(custom_bias)
@@ -210,7 +210,7 @@ if __name__ == "__main__":
                                     nonbondedCutoff=1.0*unit.nanometers,
                                     constraints=omm_app.HBonds)
 
-        platform = omm.Platform.getPlatformByName('CUDA')
+        platform = omm.Platform.getPlatformByName('CPU')
         
         #### setup an OpenMM context
         integrator = omm.LangevinIntegrator(T*unit.kelvin, #Desired Integrator
@@ -229,11 +229,11 @@ if __name__ == "__main__":
                 break
             if i == 0:
                 print("propagation number 0 STARTING.")
-                gaussian_params = random_initial_bias(initial_position = 2.3)
+                gaussian_params = random_initial_bias(initial_position = 2.3) #here the gaussian params are in unit KJ/mol and nm.
                 biased_system = add_bias(system, gaussian_params)
 
                 ## construct an OpenMM context
-                context = omm.Context(biased_system, integrator)   
+                context = omm.Context(biased_system, integrator)
                 context, energy = minimize(context)         #minimize the system
 
                 ## MD run "propagation"
@@ -268,13 +268,15 @@ if __name__ == "__main__":
                 #avg_last50 = np.mean(NaCl_dist[-1][-50:])
                 #avg_last50_digitized = np.digitize(avg_last50, qspace)
                 
+                print("farest index is: ", farest_index)
+                print("cur_pos_index is: ", cur_pos_index)
 
                 gaussian_params = try_and_optim_M(working_MM, 
                                                 working_indices = working_indices,
                                                 num_gaussian=10, 
-                                                start_state=cur_pos_index,
-                                                end_state=farest_index,
-                                                plot = True,
+                                                start_state=cur_pos_index, #this is in large index.
+                                                end_state=farest_index, #this is in large index also.
+                                                plot = False,
                                                 )
 
                 #save the gaussian params to a txt file.
@@ -303,6 +305,8 @@ if __name__ == "__main__":
                 mU2 = mU2 * 4.184 #convert to kJ/mol
                 plt.plot(qspace[:num_bins], mU2, label="reconstructed M_FES by DHAMsym")
                 plt.plot(qspace, test_total_bias, label = "total bias")
+                #plot the cur_pos
+                plt.axvline(x=cur_pos, color='r', linestyle='--', label="current position")
                 plt.xlim(2.0, 9)
                 plt.xlabel("NaCl distance (A)")
                 plt.ylabel("Free energy (kJ/mol)")
@@ -322,7 +326,12 @@ if __name__ == "__main__":
                                                 stepsize=stepsize,
                                                 )
 
-                cur_pos_index = np.digitize(cur_pos, qspace) #update cur_pos_index
+                cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
+
+                working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
+                final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
+                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
+                
                 i += 1
                 
 
