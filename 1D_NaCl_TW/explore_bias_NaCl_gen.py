@@ -48,7 +48,7 @@ def random_initial_bias(initial_position):
     # initial position is in Anstrom
     rng = np.random.default_rng()
     #a = np.ones(10)
-    a = np.ones(10) * 0.1
+    a = np.ones(10) * 0.01
     b = rng.uniform(initial_position-0.5, initial_position+0.5, 10) #min/max of preloaded NaCl fes x-axis.
     c = rng.uniform(1, 5.0, 10)
     return np.concatenate((a,b,c), axis=None)
