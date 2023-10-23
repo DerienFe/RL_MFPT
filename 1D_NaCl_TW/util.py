@@ -111,6 +111,19 @@ def compute_free_energy(K, kT=0.5981):
 
     return [peq, F, evectors, evalues, evalues_sorted, index]
 
+def compute_free_energy_power_method(K, kT=0.5981):
+    """
+    this use the power method to calculate the equilibrium distribution.
+    num_iter is the number of iterations.
+    """
+    num_iter = 10000
+    N = K.shape[0]
+    peq = np.ones(N) / N #initialise the peq
+    for i in range(num_iter):
+        peq = np.dot(peq, K)
+        peq = peq / np.sum(peq)
+    F = -kT * np.log(peq)
+    return [peq, F]
 
 def try_and_optim(K=None, num_gaussian=10, start_state=0, end_state=0):
    #print("inside try_and_optim")
