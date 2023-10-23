@@ -1,0 +1,4 @@
+/home/tj/WORK/RL_MFPT/1D_NaCl_TW/dham.py:128: RuntimeWarning: divide by zero encountered in log
+  mU2 = - self.KbT * np.log(mpeq)
+/home/tj/WORK/RL_MFPT/1D_NaCl_TW/dham.py:128: RuntimeWarning: invalid value encountered in log
+  mU2 = - self.KbT * np.log(mpeq)

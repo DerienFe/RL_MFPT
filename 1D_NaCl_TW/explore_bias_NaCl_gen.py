@@ -28,14 +28,14 @@ import sys
 from PIL import Image
 import time
 
-platform = omm.Platform.getPlatformByName('CPU') #CUDA
+platform = omm.Platform.getPlatformByName('CUDA') #CUDA
 psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
 pdb_file = 'toppar/step3_input25A.pdb' # Path # gro # inpcrd
 T = 298.15      # temperature in K
 fricCoef = 10   # friction coefficient in 1/ps
 stepsize = 2    # MD integration step size in fs
 dcdfreq = 1   # save coordinates at every 100 step
-propagation_step = 1000
+propagation_step = 3000
 max_propagation = 50
 num_simulations = 20
 num_bins = 150 #for qspace used in DHAM and etc.
@@ -70,7 +70,7 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=num_bins, prop_index 
 
     d.lagtime = lagtime
     d.numbins = numbins #num of bins, arbitrary.
-    results = d.run(biased = True, plot=False)
+    results = d.run(biased = True, plot=False) #result is [mU2, MM]
     return results
 
 def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=10000, dcdfreq=100,  platform=platform, stepsize=stepsize, num_bins=num_bins, reach = None):
@@ -118,11 +118,11 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     #plot it.
     #plt.plot(combined_dist)
     #plt.show()
-    x, mU2, A, MM = DHAM_it(combined_dist.reshape(-1, 1), gaussian_params, T=300, lagtime=1, numbins=num_bins, prop_index = prop_index)
+    F_M, MM = DHAM_it(combined_dist.reshape(-1, 1), gaussian_params, T=300, lagtime=1, numbins=num_bins, prop_index = prop_index)
 
     cur_pos = combined_dist[-1] #the last position of the traj. not our cur_pos is the CV distance.
     
-    return cur_pos, NaCl_dist, MM, reach, mU2 #return the CV traj and the MM.
+    return cur_pos, NaCl_dist, MM, reach, F_M #return the CV traj and the MM.
 
 def minimize(context):
     st = time.time()
@@ -151,15 +151,15 @@ def add_bias(system, gaussian_params, num_gaussian=10):
     a = gaussian_params[:num_gaussian]  #convert to kJ/mol
     b = gaussian_params[num_gaussian:2*num_gaussian]
     c = gaussian_params[2*num_gaussian:]
-    potential = ' + '.join(f'a{i} * 4.184 *  exp(-(r-b{i})^2/(2*c{i}^2))' for i in range(num_gaussian)) #in openmm the energy terms in kJ/mol
+    potential = ' + '.join(f'a{i}* exp(-(r-b{i})^2/(2*c{i}^2))' for i in range(num_gaussian)) #in openmm the energy terms in kJ/mol
 
     print(potential)
     custom_bias = omm.CustomBondForce(potential)
     
     for i in range(num_gaussian):
-        custom_bias.addGlobalParameter(f'a{i}', a[i])
-        custom_bias.addGlobalParameter(f'b{i}', b[i])
-        custom_bias.addGlobalParameter(f'c{i}', c[i])
+        custom_bias.addGlobalParameter(f'a{i}', a[i]*4.184) #unit is kj/mol. a is in kcal/mol. so we multiply by 4.184
+        custom_bias.addGlobalParameter(f'b{i}', b[i]/10) #in openmm distance unit is nm. b is in A. so we divide by 10.
+        custom_bias.addGlobalParameter(f'c{i}', c[i]/10) # same to b.
     
     custom_bias.addBond(0, 1)
     system.addForce(custom_bias)
@@ -175,7 +175,7 @@ def get_working_MM(M):
 
 def get_closest_state(qspace, target_state, working_indices):
     """
-    usesage: qspace = np.linspace(2.4, 9, 150+1)
+    usesage: qspace = np.linspace(2.0, 9, 150+1)
     target_state = 7 #find the closest state to 7A.
     """
 
@@ -216,7 +216,7 @@ if __name__ == "__main__":
         integrator = omm.LangevinIntegrator(T*unit.kelvin, #Desired Integrator
                                             fricCoef/unit.picoseconds,
                                             stepsize*unit.femtoseconds)
-        qspace = np.linspace(2.4, 9, num_bins+1) #hard coded for now.
+        qspace = np.linspace(2.0, 9, num_bins+1) #hard coded for now.
         NaCl_dist = [[]] #initialise the NaCl distance list.
         time_tag = time.strftime("%Y%m%d-%H%M%S")
         reach = None
@@ -224,9 +224,12 @@ if __name__ == "__main__":
         total_steps = None  #recorder to count the total steps reaching target.
         #for i in range(max_propagation):
         while reach is None:
+            if i > max_propagation:
+                print("max propagation reached.")
+                break
             if i == 0:
                 print("propagation number 0 STARTING.")
-                gaussian_params = random_initial_bias(initial_position = 2.65)
+                gaussian_params = random_initial_bias(initial_position = 2.3)
                 biased_system = add_bias(system, gaussian_params)
 
                 ## construct an OpenMM context
@@ -245,29 +248,31 @@ if __name__ == "__main__":
                                                 stepsize=stepsize,
                                                 )
                 
-                #finding the closest element in MM to the end point. 7A in np.linspace(2.4, 9, 150+1)
+                #finding the closest element in MM to the end point. 7A in np.linspace(2.0, 9, 150+1)
                 #trim the zero rows and columns markov matrix to avoid 0 rows.
                 #!!!do everything in index space. !!!
                 cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
 
                 working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
                 final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
-                working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
-                final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
                 farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
-                farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
-
+                
                 i += 1
                 
             else:
                 print(f"propagation number {i} STARTING.")
                 #renew the gaussian params using returned MM.
-                
                 print("getting gaussian parameters")
+
+                #here instead of the cur_pos_index, we use the average of the last 50 positions.
+                #avg_last50 = np.mean(NaCl_dist[-1][-50:])
+                #avg_last50_digitized = np.digitize(avg_last50, qspace)
+                
+
                 gaussian_params = try_and_optim_M(working_MM, 
                                                 working_indices = working_indices,
                                                 num_gaussian=10, 
-                                                start_state=cur_pos_index, 
+                                                start_state=cur_pos_index,
                                                 end_state=farest_index,
                                                 plot = True,
                                                 )
@@ -278,29 +283,30 @@ if __name__ == "__main__":
                 ## construct an OpenMM context
                 #we use context.setParameters() to update the bias potential.
                 for j in range(10):
-                    context.setParameter(f'a{j}', gaussian_params[j]) #unit in openmm is kJ/mol, the a is fitted in kcal/mol
-                    context.setParameter(f'b{j}', gaussian_params[j+10])
-                    context.setParameter(f'c{j}', gaussian_params[j+20])
+                    context.setParameter(f'a{j}', gaussian_params[j] * 4.184) #unit in openmm is kJ/mol, the a is fitted in kcal/mol, so we multiply by 4.184
+                    context.setParameter(f'b{j}', gaussian_params[j+10] / 10) #unit openmm is nm, the b is fitted in A, so we divide by 10.
+                    context.setParameter(f'c{j}', gaussian_params[j+20] / 10) #same to b.
                 
                 #we plot the total bias.
                 test_gaussian_params = []
                 for j in range(10):
-                    test_gaussian_params.append(context.getParameter(f'a{j}'))
-                    test_gaussian_params.append(context.getParameter(f'b{j}'))
-                    test_gaussian_params.append(context.getParameter(f'c{j}'))
+                    test_gaussian_params.append(context.getParameter(f'a{j}')) #we keep energy in kj/mol in plot.
+                    test_gaussian_params.append(context.getParameter(f'b{j}')*10) #b, c in A. 
+                    test_gaussian_params.append(context.getParameter(f'c{j}')*10)
 
                 test_total_bias = np.zeros_like(qspace)
                 for n in range(len(test_gaussian_params)//3):
                     test_total_bias += gaussian(qspace, test_gaussian_params[3*n], test_gaussian_params[3*n+1], test_gaussian_params[3*n+2])
                 
                 plt.figure()
-                plt.plot(unb_bins, unb_profile, label="ground truth")
+                plt.plot(unb_bins, unb_profile, label="ground truth (LJ unmodified FES)")
                 mU2 = mU2 * 4.184 #convert to kJ/mol
-                plt.plot(qspace[:num_bins], mU2, label="reconstructed M by DHAMsym")
-                plt.plot(qspace, test_total_bias)
-                plt.xlim(2.4, 9)
+                plt.plot(qspace[:num_bins], mU2, label="reconstructed M_FES by DHAMsym")
+                plt.plot(qspace, test_total_bias, label = "total bias")
+                plt.xlim(2.0, 9)
                 plt.xlabel("NaCl distance (A)")
                 plt.ylabel("Free energy (kJ/mol)")
+                plt.legend()
                 plt.savefig(f"bias_plots/{time_tag}_bias_{i}.png")
                 plt.close()
 

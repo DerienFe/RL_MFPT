@@ -14,13 +14,11 @@ from util import gaussian
 def rmsd(offset, a, b):
     return np.sqrt(np.mean(np.square((a + offset) - b)))
 
-
 def align(query, ref):
     offset = -10.0
     res = minimize(rmsd, offset, args=(query, ref))
     print(res.x[0], res.fun)
     return res.x[0]
-
 
 def count_transitions(b, numbins, lagtime, endpt=None):
     """
@@ -42,8 +40,7 @@ def count_transitions(b, numbins, lagtime, endpt=None):
     # anti = 0.5 * (sumtr - np.transpose(sumtr))
     # print("Degree of symmetry:",
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))
-    return sumtr, trvec
-
+    return sumtr.real, trvec
 
 class DHAM:
     KbT = 0.001987204259 * 300  # energy unit: kcal/mol
@@ -75,32 +72,36 @@ class DHAM:
         MM = np.empty(shape=sumtr.shape, dtype=np.longdouble)
         if biased:
             MM = np.zeros(shape=sumtr.shape, dtype=np.longdouble)
+
+            #compute total bias u. used for dham unbias.
+            u = np.zeros_like(self.qspace)
+            for n in range(len(self.a)):
+                u += gaussian(self.qspace, self.a[n], self.b[n], self.c[n])
             #qsp = self.qspace[1] - self.qspace[0] #step size between bins
             for i in range(sumtr.shape[0]):
                 for j in range(sumtr.shape[1]):
                     if sumtr[i, j] > 0:
                         sump1 = 0.0
                         for k in range(trvec.shape[0]):
-                            #u = 0.5 * self.k_val[k] * np.square(self.constr_val[k] - self.qspace - qsp / 2) / self.KbT #change this line to adapt our 10-gaussian bias.
-                            #here we use the 10-gaussian bias. a,b,c are given.
-                            u = np.zeros_like(self.qspace)
-                            for n in range(len(self.a)):
-                                u += gaussian(self.qspace, self.a[n], self.b[n], self.c[n])
-                            #u = u - qsp/2 #adjust the bias so it is at the bin center.
                             if trvec[k, i] > 0:
-                                sump1 += trvec[k, i] * np.exp(-(u[j] - u[i]) / 2)
+                                sump1 += trvec[k, i] * np.exp(-(u[j] - u[i]) / (2*self.KbT))
                         if sump1 > 0:
                             MM[i, j] = sumtr[i, j] / sump1
                         else:
                             MM[i, j] = 0
-            epsilon_offset = 1e-15
-            MM = MM / (np.sum(MM, axis=1)[:, None]+epsilon_offset) #normalize the M matrix #this is returning NaN?.
-            
+            #epsilon_offset = 1e-15
+            #MM = MM / (np.sum(MM, axis=1)[:, None])#+epsilon_offset) #normalize the M matrix #this is returning NaN?.
+            for i in range(MM.shape[0]):
+                row_sum = np.sum(MM[i,:])
+                if row_sum > 0:
+                    MM[i,:] = MM[i,:] / row_sum
+                else:
+                    MM[i,:] = 0
         else:
-            MM[:, :] = sumtr / np.sum(sumtr, axis=1)[:, None]
+            raise NotImplementedError
         return MM
 
-    def run(self, plot=True, adjust=True, biased=False, conversion=2E-13):
+    def run(self, plot=False, adjust=True, biased=False, conversion=2E-13):
         """
 
         :param plot:
@@ -111,34 +112,36 @@ class DHAM:
         """
         v_min = np.nanmin(self.data) - self.epsilon
         v_max = np.nanmax(self.data) + self.epsilon
-        qspace = np.linspace(2.4, 9, self.numbins + 1) #hard coded for now.
+        qspace = np.linspace(2.0, 9, self.numbins + 1) #hard coded for now.
         self.qspace = qspace
         b = np.digitize(self.data[:, :], qspace)
         b = b.reshape(1, -1)
         sumtr, trvec = count_transitions(b, self.numbins, self.lagtime)
-        print("Number of transitions:", np.sum(sumtr))
-        print("Transition vector:", np.sum(trvec, axis=0))
+        #print("Number of transitions:", np.sum(sumtr))
+        #print("Transition vector:", np.sum(trvec, axis=0))
         MM = self.build_MM(sumtr, trvec, biased)
-        d, v = eig(np.transpose(MM))
+        """d, v = eig(MM.T)
         mpeq = v[:, np.where(d == np.max(d))[0][0]]
         mpeq = mpeq / np.sum(mpeq)
         mpeq = mpeq.real
-        rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
-        mU2 = - self.KbT * np.log(mpeq)
-        if adjust:
-            mU2 -= np.min(mU2[:int(self.numbins)])
-        dG = np.max(mU2[:int(self.numbins)])
-        A = rate / np.exp(- dG / self.KbT) 
-        x = qspace[:self.numbins]# + (qspace[1] - qspace[0])
-        if plot:
+        #rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
+        mU2 = - self.KbT * np.log(mpeq)"""
+
+        from util import compute_free_energy
+        peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
+        print(peq)
+        print(sum(peq))
+
+        if False:
             unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
             #plot the unbiased profile from 2.4 to 9 A.
             plt.plot(unb_bins, unb_profile, label="ground truth")
+            x = np.linspace(2.0, 9, self.numbins)
             plt.plot(x, mU2, label="reconstructed M by DHAMsym")
             plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.numbins))
-            plt.xlim(2.4, 9)
+            plt.xlim(2.0, 9)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
-        return x, mU2, A, MM # mU2 is in unit kcal/mol.
+        return mU2, MM # mU2 is in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)

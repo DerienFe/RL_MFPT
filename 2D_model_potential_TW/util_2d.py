@@ -283,7 +283,7 @@ def Markov_mfpt_calc(peq, M):
     Idn = np.diag(onevec[:, 0])
     A = (peq.reshape(-1, 1)) @ onevec.T #was peq.T @ onevec.T
     A = A.T
-    Qinv = inv(Idn + A - M)
+    Qinv = np.linalg.inv(Idn + A - M)
     mfpt = np.zeros((N, N))
     for j in range(N):
         for i in range(N):
