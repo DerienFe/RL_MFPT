@@ -17,9 +17,10 @@ RL_CLEANRL/cleanrl
 /1D_NaCl_TW/gaussian_params/*
 /1D_NaCl_TW/visited_state/*
 /1D_NaCl_TW/trajectories/*
+/1D_NaCl_TW/distance/*
 /1D_NaCl_TW/__pycache__/*
 
 /2D_langevin_sim/MetaD_auxfiles/*
 /2D_langevin_sim/traj/*
 /2D_langevin_sim/figs/*
-
+/2D_langevin_sim/data/*

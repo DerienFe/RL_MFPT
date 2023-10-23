@@ -215,7 +215,7 @@ if __name__ == "__main__":
             # first we unravel all the index to 2D.
             # then we use the lowest manhattan distance to find the closest state.
             # then we ravel it back to 1D.
-            closest_index = find_closest_index(working_indices, final_index, N) 
+            closest_index = find_closest_index(working_indices, final_index, N)
         else:
             print(f"propagation number {prop_index} STARTING.")
             #renew the gaussian params using returned MM.
