@@ -127,8 +127,9 @@ class DHAM:
         #rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
         mU2 = - self.KbT * np.log(mpeq)"""
 
-        from util import compute_free_energy
-        peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
+        from util import compute_free_energy, compute_free_energy_power_method
+        #peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
+        peq, mU2 = compute_free_energy_power_method(MM)
         print(peq)
         print(sum(peq))
 
