@@ -28,6 +28,9 @@ def random_initial_bias_2d(initial_position, num_gaussians = 20):
     # initial position is a list e.g. [3,3]
     # note this is in 
     #returns a set of random ax,ay, bx, by, cx, cy for the 2d Gaussian function
+
+    #we convert the initial position from openmm quantity object to array with just the value.
+    initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm.
     rng = np.random.default_rng()
     a = np.ones(num_gaussians) * 0.1#* 4 #
     #ay = np.ones(num_gaussians) * 0.1 #there's only one amplitude!
@@ -35,6 +38,7 @@ def random_initial_bias_2d(initial_position, num_gaussians = 20):
     by = rng.uniform(initial_position[1]-1, initial_position[1]+1, num_gaussians)
     cx = rng.uniform(1.0, 5.0, num_gaussians)
     cy = rng.uniform(1.0, 5.0, num_gaussians)
+    #"gaussian_param should be in A, x0, y0, sigma_x, sigma_y format."
     return np.concatenate((a, bx, by, cx, cy))
 
 def get_total_bias_2d(x,y, gaussian_params):
@@ -53,7 +57,7 @@ def get_total_bias_2d(x,y, gaussian_params):
     for i in range(num_gaussians):
         total_bias = total_bias + gaussian_2D([a[i], bx[i], by[i], cx[i], cy[i]], x, y,)
 
-    return np.flipud(total_bias)
+    return total_bias
 
 def compute_free_energy(K, kT):
     """
@@ -159,7 +163,6 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
     # e.g. the starting index in the working_indices is working_indices[start_state_working_index]
     # and the end is working_indices[end_state_working_index]
     
-    N = N
     start_state_working_index = np.argmin(np.abs(working_indices - start_index))
     end_state_working_index = np.argmin(np.abs(working_indices - end_index))
     
@@ -168,8 +171,8 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
     print("Try and Optim from state:", start_state_working_index_xy, "to state:", end_state_working_index_xy)
 
     #now our M/working_indices could be incontinues. #N = M.shape[0]
-    x,y = np.meshgrid(np.linspace(-3,3, N), np.linspace(-3,3, N)) #hard coded here. we need to change this.
-    best_mfpt = 1e12 #initialise the best mfpt np.inf
+    x,y = np.meshgrid(np.linspace(0, 2*np.pi, N), np.linspace(0, 2*np.pi, N)) #hard coded here. we need to change this.
+    best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     #here we find the x,y maximum and minimun in xy coordinate space, with those working index
     #we use this to generate the random gaussian params.
@@ -177,13 +180,9 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
 
     for try_num in range(1000):
         rng = np.random.default_rng()
-        #a = rng.uniform(0.1, 1, num_gaussian)
         a = np.ones(num_gaussian)
-        bx = rng.uniform(-3, 3, num_gaussian)
-        by = rng.uniform(-3, 3, num_gaussian)
-        #bx = rng.uniform(x_min, x_max, num_gaussian)
-        #by = rng.uniform(y_min, y_max, num_gaussian)
-
+        bx = rng.uniform(0, 2*np.pi, num_gaussian)
+        by = rng.uniform(0, 2*np.pi, num_gaussian)
         cx = rng.uniform(0.3, 1.5, num_gaussian)
         cy = rng.uniform(0.3, 1.5, num_gaussian)
         gaussian_params = np.concatenate((a, bx, by, cx, cy))
@@ -197,17 +196,22 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
         #now we have a discontinues M matrix. we need to apply the bias to the working index.
         for i in range(M.shape[0]):
             for j in range(M.shape[1]):
-                M_biased[i,j] = M[i,j] * np.exp(-(working_bias[j] - working_bias[i]) / (2*0.5981))
-                M_biased[j,i] = M[j,i] * np.exp((working_bias[i] - working_bias[j]) / (2*0.5981))
+                u_ij = working_bias[j] - working_bias[i]
+                M_biased[i,j] = M[i,j] * np.exp(-u_ij / (2*0.5981))
             M_biased[i,i] = M[i,i]
-        #normalize M_biased
         #epsilon_offset = 1e-15
-        M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None] + 1e-15)
-
-        #M_biased = M_biased.real
-        #note our M_biased is in working index. M.shape = (num_working_states, num_working_states)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased, kT=0.5981)
+        #M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None] + 1e-15)
+        for i in range(M_biased.shape[0]):
+            if np.sum(M_biased[i, :]) > 0:
+                M_biased[i, :] = M_biased[i, :] / np.sum(M_biased[i, :])
+            else:
+                M_biased[i, :] = 0
         
+        #note our M_biased is in working index. M.shape = (num_working_states, num_working_states)
+        peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        #print(peq)
+        #print(sum(peq))
+
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
 
@@ -226,20 +230,26 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
         #print("Try and Optim from state:", start_state_working_index_xy, "to state:", end_state_working_index_xy)
         total_bias = get_total_bias_2d(x,y, gaussian_params)
         M_biased = np.zeros_like(M)
+
         #we truncate the total_bias to the working index.
         working_bias = total_bias[working_indices_xy] #say M is in shape[51,51], working bias will be in [51] shape.
 
+        #now we have a discontinues M matrix. we need to apply the bias to the working index.
         for i in range(M.shape[0]):
             for j in range(M.shape[1]):
-                M_biased[i,j] = M[i,j] * np.exp(-(working_bias[j] - working_bias[i]) / (2*0.5981))
-                M_biased[j,i] = M[j,i] * np.exp((working_bias[i] - working_bias[j]) / (2*0.5981))
+                u_ij = working_bias[j] - working_bias[i]
+                M_biased[i,j] = M[i,j] * np.exp(-u_ij / (2*0.5981))
             M_biased[i,i] = M[i,i]
-        #normalize M_biased
         #epsilon_offset = 1e-15
-        M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None] + 1e-15)
-        #M_biased = M_biased.real
+        #M_biased = M_biased / (np.sum(M_biased, axis=0)[:, None] + 1e-15)
+        for i in range(M_biased.shape[0]):
+            if np.sum(M_biased[i, :]) > 0:
+                M_biased[i, :] = M_biased[i, :] / np.sum(M_biased[i, :])
+            else:
+                M_biased[i, :] = 0
+        
         #note our M_biased is in working index. M.shape = (num_working_states, num_working_states)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased, kT=0.5981)
+        peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -253,11 +263,11 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 3)]*num_gaussian + [(-3,3)]*num_gaussian + [(-3,3)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   bounds= [(0.1, 4)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
                    tol=1e1)
     
     #print("local optimisation result:", res.x)
-    return res.x 
+    return res.x
 
 def save_CV_total(CV_total, time_tag, prop_index):
     np.save(f"./data/{time_tag}_{prop_index}_CV_total.npy", CV_total[-1])
@@ -271,7 +281,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     """
     this function apply the bias given by the gaussian_param to the system.
     """
-    pi = np.pi * 10 #we need convert this into nm.
+    pi = np.pi #we need convert this into nm.
     #unpack gaussian parameters
     if mode == "gaussian":
         num_gaussians = int(len(gaussian_param)/5)
@@ -343,15 +353,15 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             num_barrier = 1
 
             #here's the well params
-            A_i = np.array([0.9, 0.3, 0.5, 1, 0.2, 0.4, 0.9, 0.9, 0.9]) * amp * 4.184
-            x0_i = [1.12, 1, 3, 4.15, 4, 5.27, 5.5, 6, 1]
+            A_i = np.array([0.9, 0.3, 0.5, 1, 0.2, 0.4, 0.9, 0.9, 0.9]) * amp #this is in kcal/mol.
+            x0_i = [1.12, 1, 3, 4.15, 4, 5.27, 5.5, 6, 1] # this is in nm.
             y0_i = [1.34, 2.25, 2.31, 3.62, 5, 4.14, 4.5, 1.52, 5]
             sigma_x_i = [0.5, 0.3, 0.4, 2, 0.9, 1, 0.3, 0.5, 0.5]
             sigma_y_i = [0.5, 0.3, 1, 0.8, 0.2, 0.3, 1, 0.6, 0.7]
 
             #here's the barrier params
             # for example we define a diagonal barrier at x = pi
-            A_j = np.array([0.3]) * amp * 4.184
+            A_j = np.array([0.3]) * amp
             x0_j = [np.pi]
             y0_j = [np.pi]
             sigma_x_j = [3]
@@ -361,6 +371,8 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             #note all energy is in Kj/mol unit.
             energy = str(amp * 4.184) #flat surface
             force = openmm.CustomExternalForce(energy)
+            force.addParticle(particle_idx)
+            system.addForce(force)
             for i in range(num_wells):
                 energy = f"-A{i}*exp(-(x-x0{i})^2/(2*sigma_x{i}^2) - (y-y0{i})^2/(2*sigma_y{i}^2))"
                 force = openmm.CustomExternalForce(energy)
@@ -369,7 +381,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
 
                 print(force.getEnergyFunction())
 
-                force.addGlobalParameter(f"A{i}", A_i[i])
+                force.addGlobalParameter(f"A{i}", A_i[i] * 4.184) #convert kcal to kj
                 force.addGlobalParameter(f"x0{i}", x0_i[i])
                 force.addGlobalParameter(f"y0{i}", y0_i[i])
                 force.addGlobalParameter(f"sigma_x{i}", sigma_x_i[i])
@@ -407,10 +419,10 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 for i in range(num_barrier):
                     Z += A_j[i] * np.exp(-(X-x0_j[i])**2/(2*sigma_x_j[i]**2) - (Y-y0_j[i])**2/(2*sigma_y_j[i]**2))
                 plt.figure()
-                plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp *12/7 * 4.184, origin="lower")
+                plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp* 12/7 * 4.184, origin="lower")
                 plt.xlabel("x")
-                plt.xlim([-1, 2*np.pi+1])
-                plt.ylim([-1, 2*np.pi+1])
+                plt.xlim([0, 2*np.pi])
+                plt.ylim([0, 2*np.pi])
                 plt.ylabel("y")
                 plt.title("FES mode = multiwell, pbc=False")
                 plt.colorbar()
@@ -523,3 +535,76 @@ def sum_of_gaussians(params, x, y, n_gaussians, N=100):
     for i in range(n_gaussians):
         total += gaussian_2D([A[i], x0[i], y0[i], sigma_x[i], sigma_y[i]], x, y)
     return total
+
+def apply_bias(system, particle_idx, gaussian_param, pbc = False, name = "BIAS", num_gaussians = 20):
+    """
+    this applies a bias using customexternal force class. similar as apply_fes.
+    note this leaves a set of global parameters Ag, x0g, y0g, sigma_xg, sigma_yg.
+    as these parameters can be called and updated later.
+    note this is done while preparing the system before assembling the context.
+    """
+    assert len(gaussian_param) == 5 * num_gaussians, "gaussian_param should be in A, x0, y0, sigma_x, sigma_y format."
+
+    #unpack gaussian parameters gaussian_params = np.concatenate((a, bx, by, cx, cy))
+    num_gaussians = len(gaussian_param)//5
+    A = gaussian_param[:num_gaussians]
+    x0 = gaussian_param[num_gaussians:2*num_gaussians]
+    y0 = gaussian_param[2*num_gaussians:3*num_gaussians]
+    sigma_x = gaussian_param[3*num_gaussians:4*num_gaussians]
+    sigma_y = gaussian_param[4*num_gaussians:5*num_gaussians]
+
+    #now we add the force for all gaussians. with num_gaussians terms.
+    energy = "0"
+    force = openmm.CustomExternalForce(energy)
+    for i in range(num_gaussians):
+        if pbc:
+            raise NotImplementedError("pbc not implemented for gaussian potential.")
+            energy = f"Ag{i}*exp(-periodicdistance(x,0,0, x0g{i},0,0)^2/(2*sigma_xg{i}^2) - periodicdistance(0,y,0, 0,y0g{i},0)^2/(2*sigma_yg{i}^2))"
+            force = openmm.CustomExternalForce(energy)
+        else:
+            energy = f"Ag{i}*exp(-(x-x0g{i})^2/(2*sigma_xg{i}^2) - (y-y0g{i})^2/(2*sigma_yg{i}^2))" #in openmm unit, kj/mol, nm.
+            force = openmm.CustomExternalForce(energy)
+
+        #examine the current energy term within force.
+
+        print(force.getEnergyFunction())
+
+        force.addGlobalParameter(f"Ag{i}", A[i] * 4.184) #convert to kJ/mol
+        force.addGlobalParameter(f"x0g{i}", x0[i]) #convert to nm
+        force.addGlobalParameter(f"y0g{i}", y0[i])
+        force.addGlobalParameter(f"sigma_xg{i}", sigma_x[i])
+        force.addGlobalParameter(f"sigma_yg{i}", sigma_y[i])
+        force.addParticle(particle_idx)
+        #we append the force to the system.
+        system.addForce(force)
+    
+    print("system added with bias.")
+    return system
+
+def update_bias(simulation, gaussian_param, name = "BIAS", num_gaussians = 20):
+    """
+    given the gaussian_param, update the bias
+    note this requires the context object. or a simulation object.
+    # the context object can be accessed by simulation.context.
+    """
+    assert len(gaussian_param) == 5 * num_gaussians, "gaussian_param should be in A, x0, y0, sigma_x, sigma_y format."
+
+    #unpack gaussian parameters gaussian_params = np.concatenate((a, bx, by, cx, cy))
+    num_gaussians = len(gaussian_param)//5
+    A = gaussian_param[:num_gaussians]
+    x0 = gaussian_param[num_gaussians:2*num_gaussians]
+    y0 = gaussian_param[2*num_gaussians:3*num_gaussians]
+    sigma_x = gaussian_param[3*num_gaussians:4*num_gaussians]
+    sigma_y = gaussian_param[4*num_gaussians:5*num_gaussians]
+
+    #now we update the GlobalParameter for all gaussians. with num_gaussians terms. and update them in the system.
+    #note globalparameter does NOT need to be updated in the context.
+    for i in range(num_gaussians):
+        simulation.context.setParameter(f"Ag{i}", A[i] * 4.184) #convert to kJ/mol
+        simulation.context.setParameter(f"x0g{i}", x0[i]) #convert to nm
+        simulation.context.setParameter(f"y0g{i}", y0[i])
+        simulation.context.setParameter(f"sigma_xg{i}", sigma_x[i])
+        simulation.context.setParameter(f"sigma_yg{i}", sigma_y[i])
+    
+    print("system bias updated")
+    return simulation

@@ -27,6 +27,7 @@ import os
 import sys
 from PIL import Image
 import time
+from tqdm import tqdm
 
 platform = omm.Platform.getPlatformByName('CPU') #CUDA
 psf_file = 'toppar/step3_input.psf' # Path #tpr #prmtop
@@ -36,7 +37,7 @@ fricCoef = 10   # friction coefficient in 1/ps
 stepsize = 2    # MD integration step size in fs
 dcdfreq = 1   # save coordinates at every 100 step
 propagation_step = 1000
-max_propagation = 50
+max_propagation = 150
 num_simulations = 20
 num_bins = 100 #for qspace used in DHAM and etc.
 fig, ax = plt.subplots()
@@ -88,7 +89,7 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     dcd_file = omm_app.dcdfile.DCDFile(file_handle, psf.topology, dt = stepsize)
 
     dist = []
-    for _ in range(int(steps/dcdfreq)):
+    for _ in tqdm(range(int(steps/dcdfreq))):
         integrator.step(dcdfreq) #advance dcd freq steps and stop to record.
         state = context.getState(getPositions=True)
         dcd_file.writeModel(state.getPositions(asNumpy=True))
@@ -247,7 +248,7 @@ if __name__ == "__main__":
                                                 platform=platform, 
                                                 stepsize=stepsize,
                                                 )
-                
+                print(M.shape)
                 #finding the closest element in MM to the end point. 7A in np.linspace(2.0, 9, 150+1)
                 #trim the zero rows and columns markov matrix to avoid 0 rows.
                 #!!!do everything in index space. !!!
@@ -325,11 +326,10 @@ if __name__ == "__main__":
                                                 platform=platform, 
                                                 stepsize=stepsize,
                                                 )
-
+                print(M.shape)
                 cur_pos_index = np.digitize(cur_pos, qspace) #the big index on full markov matrix.
 
                 working_MM, working_indices = get_working_MM(M) #we call working_index the small index. its part of the full markov matrix.
-                final_index = np.digitize(7, qspace) #get the big index of desired 7A NaCl distance.
                 farest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #get the closest to the final index in qspace.
                 
                 i += 1

@@ -1,0 +1,356 @@
+-A0*exp(-(x-x00)^2/(2*sigma_x0^2) - (y-y00)^2/(2*sigma_y0^2))
+-A1*exp(-(x-x01)^2/(2*sigma_x1^2) - (y-y01)^2/(2*sigma_y1^2))
+-A2*exp(-(x-x02)^2/(2*sigma_x2^2) - (y-y02)^2/(2*sigma_y2^2))
+-A3*exp(-(x-x03)^2/(2*sigma_x3^2) - (y-y03)^2/(2*sigma_y3^2))
+-A4*exp(-(x-x04)^2/(2*sigma_x4^2) - (y-y04)^2/(2*sigma_y4^2))
+-A5*exp(-(x-x05)^2/(2*sigma_x5^2) - (y-y05)^2/(2*sigma_y5^2))
+-A6*exp(-(x-x06)^2/(2*sigma_x6^2) - (y-y06)^2/(2*sigma_y6^2))
+-A7*exp(-(x-x07)^2/(2*sigma_x7^2) - (y-y07)^2/(2*sigma_y7^2))
+-A8*exp(-(x-x08)^2/(2*sigma_x8^2) - (y-y08)^2/(2*sigma_y8^2))
+A9*exp(-(x-x09)^2/(2*sigma_x9^2) - (y-y09)^2/(2*sigma_y9^2))
+propagation 0 starting
+Ag0*exp(-(x-x0g0)^2/(2*sigma_xg0^2) - (y-y0g0)^2/(2*sigma_yg0^2))
+Ag1*exp(-(x-x0g1)^2/(2*sigma_xg1^2) - (y-y0g1)^2/(2*sigma_yg1^2))
+Ag2*exp(-(x-x0g2)^2/(2*sigma_xg2^2) - (y-y0g2)^2/(2*sigma_yg2^2))
+Ag3*exp(-(x-x0g3)^2/(2*sigma_xg3^2) - (y-y0g3)^2/(2*sigma_yg3^2))
+Ag4*exp(-(x-x0g4)^2/(2*sigma_xg4^2) - (y-y0g4)^2/(2*sigma_yg4^2))
+Ag5*exp(-(x-x0g5)^2/(2*sigma_xg5^2) - (y-y0g5)^2/(2*sigma_yg5^2))
+Ag6*exp(-(x-x0g6)^2/(2*sigma_xg6^2) - (y-y0g6)^2/(2*sigma_yg6^2))
+Ag7*exp(-(x-x0g7)^2/(2*sigma_xg7^2) - (y-y0g7)^2/(2*sigma_yg7^2))
+Ag8*exp(-(x-x0g8)^2/(2*sigma_xg8^2) - (y-y0g8)^2/(2*sigma_yg8^2))
+Ag9*exp(-(x-x0g9)^2/(2*sigma_xg9^2) - (y-y0g9)^2/(2*sigma_yg9^2))
+Ag10*exp(-(x-x0g10)^2/(2*sigma_xg10^2) - (y-y0g10)^2/(2*sigma_yg10^2))
+Ag11*exp(-(x-x0g11)^2/(2*sigma_xg11^2) - (y-y0g11)^2/(2*sigma_yg11^2))
+Ag12*exp(-(x-x0g12)^2/(2*sigma_xg12^2) - (y-y0g12)^2/(2*sigma_yg12^2))
+Ag13*exp(-(x-x0g13)^2/(2*sigma_xg13^2) - (y-y0g13)^2/(2*sigma_yg13^2))
+Ag14*exp(-(x-x0g14)^2/(2*sigma_xg14^2) - (y-y0g14)^2/(2*sigma_yg14^2))
+Ag15*exp(-(x-x0g15)^2/(2*sigma_xg15^2) - (y-y0g15)^2/(2*sigma_yg15^2))
+Ag16*exp(-(x-x0g16)^2/(2*sigma_xg16^2) - (y-y0g16)^2/(2*sigma_yg16^2))
+Ag17*exp(-(x-x0g17)^2/(2*sigma_xg17^2) - (y-y0g17)^2/(2*sigma_yg17^2))
+Ag18*exp(-(x-x0g18)^2/(2*sigma_xg18^2) - (y-y0g18)^2/(2*sigma_yg18^2))
+Ag19*exp(-(x-x0g19)^2/(2*sigma_xg19^2) - (y-y0g19)^2/(2*sigma_yg19^2))
+system added with bias.
+Propagation 0:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 0:   1%|          | 109/10000 [00:00<00:09, 1084.49it/s]Propagation 0:   2%|▏         | 222/10000 [00:00<00:08, 1105.63it/s]Propagation 0:   4%|▎         | 353/10000 [00:00<00:08, 1193.30it/s]Propagation 0:   5%|▍         | 474/10000 [00:00<00:07, 1197.21it/s]Propagation 0:   6%|▌         | 594/10000 [00:00<00:08, 1129.50it/s]Propagation 0:   7%|▋         | 708/10000 [00:00<00:08, 1082.08it/s]Propagation 0:   8%|▊         | 819/10000 [00:00<00:08, 1090.33it/s]Propagation 0:   9%|▉         | 929/10000 [00:00<00:08, 1074.74it/s]Propagation 0:  10%|█         | 1043/10000 [00:00<00:08, 1093.42it/s]Propagation 0:  12%|█▏        | 1153/10000 [00:01<00:08, 1090.20it/s]Propagation 0:  13%|█▎        | 1263/10000 [00:01<00:08, 1082.13it/s]Propagation 0:  14%|█▎        | 1372/10000 [00:01<00:08, 1058.43it/s]Propagation 0:  15%|█▍        | 1479/10000 [00:01<00:08, 1021.12it/s]Propagation 0:  16%|█▌        | 1582/10000 [00:01<00:08, 1015.79it/s]Propagation 0:  17%|█▋        | 1684/10000 [00:01<00:08, 976.18it/s] Propagation 0:  18%|█▊        | 1788/10000 [00:01<00:08, 993.39it/s]Propagation 0:  19%|█▉        | 1888/10000 [00:01<00:08, 988.48it/s]Propagation 0:  20%|█▉        | 1988/10000 [00:01<00:08, 953.30it/s]Propagation 0:  21%|██        | 2084/10000 [00:02<00:08, 930.39it/s]Propagation 0:  22%|██▏       | 2183/10000 [00:02<00:08, 945.06it/s]Propagation 0:  23%|██▎       | 2281/10000 [00:02<00:08, 954.70it/s]Propagation 0:  24%|██▍       | 2377/10000 [00:02<00:08, 951.50it/s]Propagation 0:  25%|██▍       | 2473/10000 [00:02<00:07, 952.22it/s]Propagation 0:  26%|██▌       | 2569/10000 [00:02<00:07, 932.08it/s]Propagation 0:  27%|██▋       | 2663/10000 [00:02<00:08, 911.93it/s]Propagation 0:  28%|██▊       | 2766/10000 [00:02<00:07, 945.40it/s]Propagation 0:  29%|██▊       | 2866/10000 [00:02<00:07, 958.74it/s]Propagation 0:  30%|██▉       | 2963/10000 [00:02<00:07, 932.14it/s]Propagation 0:  31%|███       | 3057/10000 [00:03<00:07, 909.10it/s]Propagation 0:  31%|███▏      | 3149/10000 [00:03<00:07, 906.88it/s]Propagation 0:  32%|███▏      | 3240/10000 [00:03<00:07, 903.59it/s]Propagation 0:  33%|███▎      | 3331/10000 [00:03<00:07, 899.10it/s]Propagation 0:  35%|███▍      | 3453/10000 [00:03<00:06, 992.20it/s]Propagation 0:  36%|███▌      | 3553/10000 [00:03<00:06, 982.54it/s]Propagation 0:  37%|███▋      | 3652/10000 [00:03<00:06, 967.93it/s]Propagation 0:  37%|███▋      | 3749/10000 [00:03<00:06, 945.03it/s]Propagation 0:  38%|███▊      | 3844/10000 [00:03<00:06, 924.96it/s]Propagation 0:  39%|███▉      | 3937/10000 [00:03<00:06, 915.27it/s]Propagation 0:  40%|████      | 4029/10000 [00:04<00:06, 909.49it/s]Propagation 0:  41%|████▏     | 4127/10000 [00:04<00:06, 929.39it/s]Propagation 0:  42%|████▏     | 4221/10000 [00:04<00:06, 913.00it/s]Propagation 0:  43%|████▎     | 4313/10000 [00:04<00:06, 898.92it/s]Propagation 0:  44%|████▍     | 4403/10000 [00:04<00:06, 892.73it/s]Propagation 0:  45%|████▍     | 4493/10000 [00:04<00:06, 884.16it/s]Propagation 0:  46%|████▌     | 4582/10000 [00:04<00:06, 875.34it/s]Propagation 0:  47%|████▋     | 4671/10000 [00:04<00:06, 878.70it/s]Propagation 0:  48%|████▊     | 4773/10000 [00:04<00:05, 920.17it/s]Propagation 0:  49%|████▊     | 4866/10000 [00:05<00:05, 919.49it/s]Propagation 0:  50%|████▉     | 4959/10000 [00:05<00:05, 916.59it/s]Propagation 0:  51%|█████     | 5053/10000 [00:05<00:05, 922.45it/s]Propagation 0:  51%|█████▏    | 5146/10000 [00:05<00:05, 919.87it/s]Propagation 0:  52%|█████▏    | 5239/10000 [00:05<00:05, 908.31it/s]Propagation 0:  53%|█████▎    | 5330/10000 [00:05<00:05, 903.77it/s]Propagation 0:  54%|█████▍    | 5425/10000 [00:05<00:04, 915.87it/s]Propagation 0:  55%|█████▌    | 5525/10000 [00:05<00:04, 940.19it/s]Propagation 0:  56%|█████▌    | 5620/10000 [00:05<00:04, 919.21it/s]Propagation 0:  57%|█████▋    | 5713/10000 [00:05<00:04, 902.86it/s]Propagation 0:  58%|█████▊    | 5804/10000 [00:06<00:04, 858.56it/s]Propagation 0:  59%|█████▉    | 5891/10000 [00:06<00:04, 861.59it/s]Propagation 0:  60%|█████▉    | 5997/10000 [00:06<00:04, 916.76it/s]Propagation 0:  61%|██████    | 6090/10000 [00:06<00:04, 900.36it/s]Propagation 0:  62%|██████▏   | 6181/10000 [00:06<00:04, 884.31it/s]Propagation 0:  63%|██████▎   | 6271/10000 [00:06<00:04, 888.29it/s]Propagation 0:  64%|██████▎   | 6366/10000 [00:06<00:04, 905.72it/s]Propagation 0:  65%|██████▍   | 6457/10000 [00:06<00:03, 905.13it/s]Propagation 0:  66%|██████▌   | 6565/10000 [00:06<00:03, 954.78it/s]Propagation 0:  67%|██████▋   | 6661/10000 [00:06<00:03, 935.81it/s]Propagation 0:  68%|██████▊   | 6755/10000 [00:07<00:03, 922.71it/s]Propagation 0:  68%|██████▊   | 6848/10000 [00:07<00:03, 890.78it/s]Propagation 0:  69%|██████▉   | 6946/10000 [00:07<00:03, 915.40it/s]Propagation 0:  70%|███████   | 7038/10000 [00:07<00:03, 914.64it/s]Propagation 0:  71%|███████▏  | 7142/10000 [00:07<00:03, 951.27it/s]Propagation 0:  72%|███████▏  | 7242/10000 [00:07<00:02, 965.19it/s]Propagation 0:  74%|███████▎  | 7355/10000 [00:07<00:02, 1012.42it/s]Propagation 0:  75%|███████▍  | 7457/10000 [00:07<00:02, 1004.90it/s]Propagation 0:  76%|███████▌  | 7558/10000 [00:07<00:02, 978.66it/s] Propagation 0:  77%|███████▋  | 7661/10000 [00:08<00:02, 992.72it/s]Propagation 0:  78%|███████▊  | 7761/10000 [00:08<00:02, 962.68it/s]Propagation 0:  79%|███████▊  | 7858/10000 [00:08<00:02, 948.26it/s]Propagation 0:  80%|███████▉  | 7954/10000 [00:08<00:02, 945.10it/s]Propagation 0:  80%|████████  | 8049/10000 [00:08<00:02, 935.54it/s]Propagation 0:  81%|████████▏ | 8143/10000 [00:08<00:02, 911.03it/s]Propagation 0:  82%|████████▏ | 8235/10000 [00:08<00:01, 886.72it/s]Propagation 0:  84%|████████▎ | 8350/10000 [00:08<00:01, 960.32it/s]Propagation 0:  84%|████████▍ | 8447/10000 [00:08<00:01, 948.86it/s]Propagation 0:  86%|████████▌ | 8559/10000 [00:08<00:01, 996.65it/s]Propagation 0:  87%|████████▋ | 8660/10000 [00:09<00:01, 964.52it/s]Propagation 0:  88%|████████▊ | 8757/10000 [00:09<00:01, 951.91it/s]Propagation 0:  89%|████████▊ | 8863/10000 [00:09<00:01, 981.15it/s]Propagation 0:  90%|████████▉ | 8976/10000 [00:09<00:00, 1024.09it/s]Propagation 0:  91%|█████████ | 9079/10000 [00:09<00:00, 1005.04it/s]Propagation 0:  92%|█████████▏| 9180/10000 [00:09<00:00, 1001.95it/s]Propagation 0:  93%|█████████▎| 9281/10000 [00:09<00:00, 987.79it/s] Propagation 0:  94%|█████████▍| 9380/10000 [00:09<00:00, 985.42it/s]Propagation 0:  95%|█████████▍| 9479/10000 [00:09<00:00, 947.50it/s]Propagation 0:  96%|█████████▌| 9575/10000 [00:10<00:00, 922.69it/s]Propagation 0:  97%|█████████▋| 9676/10000 [00:10<00:00, 946.48it/s]Propagation 0:  98%|█████████▊| 9771/10000 [00:10<00:00, 939.04it/s]Propagation 0:  99%|█████████▊| 9866/10000 [00:10<00:00, 915.50it/s]Propagation 0: 100%|█████████▉| 9958/10000 [00:10<00:00, 899.38it/s]Propagation 0: 100%|██████████| 10000/10000 [00:10<00:00, 952.33it/s]
+/home/tj/WORK/RL_MFPT/2D_langevin_sim/util.py:89: RuntimeWarning: divide by zero encountered in log
+  F = -kT * np.log(peq) #add a small number to avoid log(0))
+propagation number {prop_index} starting
+Try and Optim from state: (9, 11) to state: (8, 8)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2610.26985027376 2684.0755309171045
+random try: 0 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2572.2163716945743 2641.4944073251204
+random try: 100 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2608.9433809225848 2684.767412564712
+random try: 200 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2596.4967183892613 2671.1785859510906
+random try: 300 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2583.5888912800224 2661.824610459083
+random try: 400 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2581.064904535766 2652.87695745311
+random try: 500 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2600.9129668495198 2680.3735578990236
+random try: 600 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2579.687601845352 2651.41282533527
+random try: 700 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2568.8633539222087 2643.9620264505943
+random try: 800 mfpt: 1000000000000.0
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 2613.069972509715 2689.71260804782
+random try: 900 mfpt: 1000000000000.0
+best mfpt: 1000000000000.0
+system bias updated
+Propagation 1:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 1:   1%|          | 110/10000 [00:00<00:09, 1091.21it/s]Propagation 1:   2%|▏         | 226/10000 [00:00<00:08, 1126.24it/s]Propagation 1:   3%|▎         | 339/10000 [00:00<00:08, 1097.88it/s]Propagation 1:   5%|▍         | 458/10000 [00:00<00:08, 1131.29it/s]Propagation 1:   6%|▌         | 572/10000 [00:00<00:08, 1109.15it/s]Propagation 1:   7%|▋         | 705/10000 [00:00<00:07, 1180.37it/s]Propagation 1:   8%|▊         | 824/10000 [00:00<00:08, 1088.49it/s]Propagation 1:   9%|▉         | 935/10000 [00:00<00:08, 1012.31it/s]Propagation 1:  10%|█         | 1038/10000 [00:00<00:08, 1014.23it/s]Propagation 1:  11%|█▏        | 1145/10000 [00:01<00:08, 1029.17it/s]Propagation 1:  12%|█▏        | 1249/10000 [00:01<00:08, 1019.96it/s]Propagation 1:  14%|█▎        | 1352/10000 [00:01<00:08, 1007.73it/s]Propagation 1:  15%|█▍        | 1460/10000 [00:01<00:08, 1028.10it/s]Propagation 1:  16%|█▌        | 1569/10000 [00:01<00:08, 1044.01it/s]Propagation 1:  17%|█▋        | 1680/10000 [00:01<00:07, 1062.30it/s]Propagation 1:  18%|█▊        | 1789/10000 [00:01<00:07, 1068.44it/s]Propagation 1:  19%|█▉        | 1897/10000 [00:01<00:07, 1059.39it/s]Propagation 1:  20%|██        | 2006/10000 [00:01<00:07, 1066.98it/s]Propagation 1:  21%|██        | 2118/10000 [00:01<00:07, 1080.69it/s]Propagation 1:  22%|██▏       | 2227/10000 [00:02<00:07, 1079.52it/s]Propagation 1:  23%|██▎       | 2340/10000 [00:02<00:07, 1091.62it/s]Propagation 1:  24%|██▍       | 2450/10000 [00:02<00:06, 1081.67it/s]Propagation 1:  26%|██▌       | 2559/10000 [00:02<00:06, 1070.04it/s]Propagation 1:  27%|██▋       | 2667/10000 [00:02<00:06, 1049.59it/s]Propagation 1:  28%|██▊       | 2773/10000 [00:02<00:06, 1033.48it/s]Propagation 1:  29%|██▉       | 2881/10000 [00:02<00:06, 1045.17it/s]Propagation 1:  30%|███       | 3003/10000 [00:02<00:06, 1096.20it/s]Propagation 1:  31%|███▏      | 3127/10000 [00:02<00:06, 1137.85it/s]Propagation 1:  33%|███▎      | 3251/10000 [00:03<00:05, 1165.97it/s]Propagation 1:  34%|███▍      | 3380/10000 [00:03<00:05, 1200.01it/s]Propagation 1:  35%|███▌      | 3508/10000 [00:03<00:05, 1220.87it/s]Propagation 1:  36%|███▋      | 3636/10000 [00:03<00:05, 1236.82it/s]Propagation 1:  38%|███▊      | 3760/10000 [00:03<00:05, 1237.42it/s]Propagation 1:  39%|███▉      | 3887/10000 [00:03<00:04, 1246.51it/s]Propagation 1:  40%|████      | 4012/10000 [00:03<00:04, 1244.23it/s]Propagation 1:  41%|████▏     | 4137/10000 [00:03<00:04, 1225.57it/s]Propagation 1:  43%|████▎     | 4263/10000 [00:03<00:04, 1232.72it/s]Propagation 1:  44%|████▍     | 4394/10000 [00:03<00:04, 1254.77it/s]Propagation 1:  45%|████▌     | 4523/10000 [00:04<00:04, 1264.28it/s]Propagation 1:  47%|████▋     | 4661/10000 [00:04<00:04, 1298.11it/s]Propagation 1:  48%|████▊     | 4791/10000 [00:04<00:04, 1293.22it/s]Propagation 1:  49%|████▉     | 4923/10000 [00:04<00:03, 1299.16it/s]Propagation 1:  51%|█████     | 5053/10000 [00:04<00:03, 1292.63it/s]Propagation 1:  52%|█████▏    | 5189/10000 [00:04<00:03, 1312.19it/s]Propagation 1:  53%|█████▎    | 5321/10000 [00:04<00:03, 1279.49it/s]Propagation 1:  55%|█████▍    | 5463/10000 [00:04<00:03, 1320.56it/s]Propagation 1:  56%|█████▌    | 5596/10000 [00:04<00:03, 1273.36it/s]Propagation 1:  57%|█████▋    | 5725/10000 [00:04<00:03, 1276.29it/s]Propagation 1:  59%|█████▊    | 5854/10000 [00:05<00:03, 1278.13it/s]Propagation 1:  60%|█████▉    | 5993/10000 [00:05<00:03, 1307.79it/s]Propagation 1:  61%|██████▏   | 6129/10000 [00:05<00:02, 1320.71it/s]Propagation 1:  63%|██████▎   | 6263/10000 [00:05<00:02, 1325.45it/s]Propagation 1:  64%|██████▍   | 6410/10000 [00:05<00:02, 1366.48it/s]Propagation 1:  65%|██████▌   | 6548/10000 [00:05<00:02, 1366.77it/s]Propagation 1:  67%|██████▋   | 6703/10000 [00:05<00:02, 1420.51it/s]Propagation 1:  69%|██████▊   | 6853/10000 [00:05<00:02, 1444.01it/s]Propagation 1:  70%|███████   | 7003/10000 [00:05<00:02, 1458.66it/s]Propagation 1:  71%|███████▏  | 7149/10000 [00:05<00:01, 1438.14it/s]Propagation 1:  73%|███████▎  | 7293/10000 [00:06<00:01, 1420.93it/s]Propagation 1:  74%|███████▍  | 7440/10000 [00:06<00:01, 1434.01it/s]Propagation 1:  76%|███████▌  | 7603/10000 [00:06<00:01, 1491.91it/s]Propagation 1:  78%|███████▊  | 7753/10000 [00:06<00:01, 1483.81it/s]Propagation 1:  79%|███████▉  | 7902/10000 [00:06<00:01, 1473.41it/s]Propagation 1:  80%|████████  | 8050/10000 [00:06<00:01, 1448.69it/s]Propagation 1:  82%|████████▏ | 8195/10000 [00:06<00:01, 1372.98it/s]Propagation 1:  83%|████████▎ | 8334/10000 [00:06<00:01, 1365.99it/s]Propagation 1:  85%|████████▍ | 8485/10000 [00:06<00:01, 1406.28it/s]Propagation 1:  86%|████████▋ | 8637/10000 [00:06<00:00, 1438.04it/s]Propagation 1:  88%|████████▊ | 8782/10000 [00:07<00:00, 1440.47it/s]Propagation 1:  89%|████████▉ | 8943/10000 [00:07<00:00, 1487.62it/s]Propagation 1:  91%|█████████ | 9093/10000 [00:07<00:00, 1467.07it/s]Propagation 1:  92%|█████████▏| 9246/10000 [00:07<00:00, 1485.33it/s]Propagation 1:  94%|█████████▍| 9407/10000 [00:07<00:00, 1519.92it/s]Propagation 1:  96%|█████████▌| 9560/10000 [00:07<00:00, 1516.05it/s]Propagation 1:  97%|█████████▋| 9712/10000 [00:07<00:00, 1512.71it/s]Propagation 1:  99%|█████████▊| 9864/10000 [00:07<00:00, 1484.10it/s]Propagation 1: 100%|██████████| 10000/10000 [00:07<00:00, 1263.84it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (9, 11) to state: (8, 8)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3978.467866647778 3978.4678666477807
+random try: 0 mfpt: 71600.94362254364
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3982.8626232848574 3982.8626232848596
+random try: 100 mfpt: 18324.114775106445
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3967.885259474264 3967.8852594742657
+random try: 200 mfpt: 64754.114128744935
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3981.63083363562 3981.6308336356215
+random try: 300 mfpt: 44425.32110587562
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3960.30796958518 3960.307969585182
+random try: 400 mfpt: 40292.01261835537
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3904.037505453905 3904.0375054539063
+random try: 500 mfpt: 27245.639220539997
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3858.975676636371 3858.9756766363735
+random try: 600 mfpt: 46418.85257900877
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3869.94939487122 3869.949394871222
+random try: 700 mfpt: 30998.0150178308
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3943.6284230087335 3943.628423008736
+random try: 800 mfpt: 23155.5670932313
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 3886.4180495573705 3886.4180495573733
+random try: 900 mfpt: 30028.417439804834
+best mfpt: 8688.32571400289
+system bias updated
+Propagation 2:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 2:   1%|▏         | 144/10000 [00:00<00:06, 1431.94it/s]Propagation 2:   3%|▎         | 298/10000 [00:00<00:06, 1495.12it/s]Propagation 2:   4%|▍         | 450/10000 [00:00<00:06, 1503.18it/s]Propagation 2:   6%|▌         | 612/10000 [00:00<00:06, 1545.49it/s]Propagation 2:   8%|▊         | 767/10000 [00:00<00:06, 1515.13it/s]Propagation 2:   9%|▉         | 919/10000 [00:00<00:06, 1493.39it/s]Propagation 2:  11%|█         | 1069/10000 [00:00<00:06, 1454.98it/s]Propagation 2:  12%|█▏        | 1215/10000 [00:00<00:06, 1436.59it/s]Propagation 2:  14%|█▎        | 1361/10000 [00:00<00:05, 1443.54it/s]Propagation 2:  15%|█▌        | 1509/10000 [00:01<00:05, 1453.81it/s]Propagation 2:  17%|█▋        | 1669/10000 [00:01<00:05, 1483.72it/s]Propagation 2:  18%|█▊        | 1828/10000 [00:01<00:05, 1514.42it/s]Propagation 2:  20%|█▉        | 1980/10000 [00:01<00:05, 1513.00it/s]Propagation 2:  21%|██▏       | 2132/10000 [00:01<00:05, 1503.59it/s]Propagation 2:  23%|██▎       | 2283/10000 [00:01<00:05, 1493.59it/s]Propagation 2:  24%|██▍       | 2433/10000 [00:01<00:05, 1474.61it/s]Propagation 2:  26%|██▌       | 2583/10000 [00:01<00:05, 1481.15it/s]Propagation 2:  27%|██▋       | 2732/10000 [00:01<00:05, 1431.96it/s]Propagation 2:  29%|██▉       | 2876/10000 [00:01<00:05, 1417.58it/s]Propagation 2:  30%|███       | 3018/10000 [00:02<00:04, 1410.14it/s]Propagation 2:  32%|███▏      | 3160/10000 [00:02<00:04, 1392.57it/s]Propagation 2:  33%|███▎      | 3300/10000 [00:02<00:04, 1372.45it/s]Propagation 2:  34%|███▍      | 3448/10000 [00:02<00:04, 1403.51it/s]Propagation 2:  36%|███▌      | 3589/10000 [00:02<00:04, 1398.09it/s]Propagation 2:  37%|███▋      | 3739/10000 [00:02<00:04, 1426.90it/s]Propagation 2:  39%|███▉      | 3882/10000 [00:02<00:04, 1405.09it/s]Propagation 2:  40%|████      | 4024/10000 [00:02<00:04, 1407.46it/s]Propagation 2:  42%|████▏     | 4170/10000 [00:02<00:04, 1420.52it/s]Propagation 2:  43%|████▎     | 4314/10000 [00:02<00:03, 1422.94it/s]Propagation 2:  45%|████▍     | 4460/10000 [00:03<00:03, 1433.66it/s]Propagation 2:  46%|████▌     | 4604/10000 [00:03<00:03, 1435.21it/s]Propagation 2:  48%|████▊     | 4755/10000 [00:03<00:03, 1456.39it/s]Propagation 2:  49%|████▉     | 4901/10000 [00:03<00:03, 1432.06it/s]Propagation 2:  50%|█████     | 5045/10000 [00:03<00:03, 1420.49it/s]Propagation 2:  52%|█████▏    | 5188/10000 [00:03<00:03, 1384.75it/s]Propagation 2:  53%|█████▎    | 5334/10000 [00:03<00:03, 1405.87it/s]Propagation 2:  55%|█████▍    | 5482/10000 [00:03<00:03, 1426.20it/s]Propagation 2:  56%|█████▋    | 5634/10000 [00:03<00:03, 1451.52it/s]Propagation 2:  58%|█████▊    | 5780/10000 [00:04<00:02, 1410.96it/s]Propagation 2:  59%|█████▉    | 5922/10000 [00:04<00:03, 1345.80it/s]Propagation 2:  61%|██████    | 6058/10000 [00:04<00:02, 1327.89it/s]Propagation 2:  62%|██████▏   | 6196/10000 [00:04<00:02, 1329.59it/s]Propagation 2:  64%|██████▎   | 6357/10000 [00:04<00:02, 1407.87it/s]Propagation 2:  65%|██████▌   | 6516/10000 [00:04<00:02, 1458.44it/s]Propagation 2:  67%|██████▋   | 6664/10000 [00:04<00:02, 1464.19it/s]Propagation 2:  68%|██████▊   | 6812/10000 [00:04<00:02, 1466.09it/s]Propagation 2:  70%|██████▉   | 6959/10000 [00:04<00:02, 1430.36it/s]Propagation 2:  71%|███████   | 7115/10000 [00:04<00:01, 1467.95it/s]Propagation 2:  73%|███████▎  | 7274/10000 [00:05<00:01, 1501.82it/s]Propagation 2:  74%|███████▍  | 7425/10000 [00:05<00:01, 1484.43it/s]Propagation 2:  76%|███████▌  | 7578/10000 [00:05<00:01, 1495.96it/s]Propagation 2:  77%|███████▋  | 7729/10000 [00:05<00:01, 1495.45it/s]Propagation 2:  79%|███████▉  | 7879/10000 [00:05<00:01, 1477.45it/s]Propagation 2:  80%|████████  | 8031/10000 [00:05<00:01, 1487.24it/s]Propagation 2:  82%|████████▏ | 8180/10000 [00:05<00:01, 1482.35it/s]Propagation 2:  83%|████████▎ | 8334/10000 [00:05<00:01, 1498.90it/s]Propagation 2:  85%|████████▍ | 8484/10000 [00:05<00:01, 1481.49it/s]Propagation 2:  86%|████████▋ | 8640/10000 [00:05<00:00, 1503.11it/s]Propagation 2:  88%|████████▊ | 8791/10000 [00:06<00:00, 1480.29it/s]Propagation 2:  89%|████████▉ | 8940/10000 [00:06<00:00, 1433.18it/s]Propagation 2:  91%|█████████ | 9093/10000 [00:06<00:00, 1459.33it/s]Propagation 2:  92%|█████████▏| 9240/10000 [00:06<00:00, 1453.40it/s]Propagation 2:  94%|█████████▍| 9386/10000 [00:06<00:00, 1425.17it/s]Propagation 2:  95%|█████████▌| 9529/10000 [00:06<00:00, 1405.85it/s]Propagation 2:  97%|█████████▋| 9674/10000 [00:06<00:00, 1417.82it/s]Propagation 2:  98%|█████████▊| 9824/10000 [00:06<00:00, 1440.37it/s]Propagation 2: 100%|█████████▉| 9973/10000 [00:06<00:00, 1454.81it/s]Propagation 2: 100%|██████████| 10000/10000 [00:06<00:00, 1446.70it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (8, 9) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6053.913409571091 6053.913409571096
+random try: 0 mfpt: 158366672.9275519
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6535.488299515872 6535.488299515879
+random try: 100 mfpt: 9436720.81959081
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6116.989052759821 6116.9890527598245
+random try: 200 mfpt: 48209905.65933774
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6203.979283656125 6203.97928365613
+random try: 300 mfpt: 49494523.110284805
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6139.566998766326 6139.566998766332
+random try: 400 mfpt: 25783313.06512776
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6160.346344490159 6160.346344490164
+random try: 500 mfpt: 52781108.3003002
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6187.387557989189 6187.387557989196
+random try: 600 mfpt: 41348520.669950455
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6085.004109226215 6085.004109226221
+random try: 700 mfpt: 310889324.87007505
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6212.799026464684 6212.7990264646905
+random try: 800 mfpt: 50463651.97405345
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6262.323258521619 6262.323258521626
+random try: 900 mfpt: 22229205.49230131
+best mfpt: 1015856.5028784246
+system bias updated
+Propagation 3:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 3:   1%|▏         | 137/10000 [00:00<00:07, 1364.57it/s]Propagation 3:   3%|▎         | 285/10000 [00:00<00:06, 1429.28it/s]Propagation 3:   4%|▍         | 428/10000 [00:00<00:06, 1412.64it/s]Propagation 3:   6%|▌         | 573/10000 [00:00<00:06, 1424.26it/s]Propagation 3:   7%|▋         | 728/10000 [00:00<00:06, 1468.18it/s]Propagation 3:   9%|▉         | 885/10000 [00:00<00:06, 1501.42it/s]Propagation 3:  11%|█         | 1051/10000 [00:00<00:05, 1550.73it/s]Propagation 3:  12%|█▏        | 1216/10000 [00:00<00:05, 1579.49it/s]Propagation 3:  14%|█▍        | 1380/10000 [00:00<00:05, 1596.18it/s]Propagation 3:  15%|█▌        | 1540/10000 [00:01<00:05, 1591.98it/s]Propagation 3:  17%|█▋        | 1700/10000 [00:01<00:05, 1567.17it/s]Propagation 3:  19%|█▊        | 1857/10000 [00:01<00:05, 1567.98it/s]Propagation 3:  20%|██        | 2015/10000 [00:01<00:05, 1569.18it/s]Propagation 3:  22%|██▏       | 2172/10000 [00:01<00:05, 1486.03it/s]Propagation 3:  23%|██▎       | 2322/10000 [00:01<00:05, 1465.79it/s]Propagation 3:  25%|██▍       | 2472/10000 [00:01<00:05, 1474.64it/s]Propagation 3:  26%|██▌       | 2620/10000 [00:01<00:05, 1439.66it/s]Propagation 3:  28%|██▊       | 2770/10000 [00:01<00:04, 1456.08it/s]Propagation 3:  29%|██▉       | 2916/10000 [00:01<00:04, 1454.88it/s]Propagation 3:  31%|███       | 3066/10000 [00:02<00:04, 1467.23it/s]Propagation 3:  32%|███▏      | 3213/10000 [00:02<00:04, 1467.85it/s]Propagation 3:  34%|███▎      | 3366/10000 [00:02<00:04, 1484.52it/s]Propagation 3:  35%|███▌      | 3515/10000 [00:02<00:04, 1463.08it/s]Propagation 3:  37%|███▋      | 3665/10000 [00:02<00:04, 1472.16it/s]Propagation 3:  38%|███▊      | 3813/10000 [00:02<00:04, 1455.50it/s]Propagation 3:  40%|███▉      | 3959/10000 [00:02<00:04, 1437.75it/s]Propagation 3:  41%|████      | 4103/10000 [00:02<00:04, 1421.40it/s]Propagation 3:  42%|████▏     | 4246/10000 [00:02<00:04, 1388.11it/s]Propagation 3:  44%|████▍     | 4400/10000 [00:02<00:03, 1430.81it/s]Propagation 3:  46%|████▌     | 4556/10000 [00:03<00:03, 1467.29it/s]Propagation 3:  47%|████▋     | 4703/10000 [00:03<00:03, 1397.43it/s]Propagation 3:  49%|████▊     | 4862/10000 [00:03<00:03, 1450.51it/s]Propagation 3:  50%|█████     | 5019/10000 [00:03<00:03, 1483.41it/s]Propagation 3:  52%|█████▏    | 5174/10000 [00:03<00:03, 1501.41it/s]Propagation 3:  53%|█████▎    | 5327/10000 [00:03<00:03, 1509.56it/s]Propagation 3:  55%|█████▍    | 5479/10000 [00:03<00:03, 1501.40it/s]Propagation 3:  56%|█████▋    | 5630/10000 [00:03<00:02, 1490.27it/s]Propagation 3:  58%|█████▊    | 5780/10000 [00:03<00:02, 1489.07it/s]Propagation 3:  59%|█████▉    | 5930/10000 [00:04<00:02, 1476.33it/s]Propagation 3:  61%|██████    | 6078/10000 [00:04<00:02, 1471.68it/s]Propagation 3:  62%|██████▏   | 6226/10000 [00:04<00:02, 1432.13it/s]Propagation 3:  64%|██████▎   | 6370/10000 [00:04<00:02, 1416.47it/s]Propagation 3:  65%|██████▌   | 6520/10000 [00:04<00:02, 1440.28it/s]Propagation 3:  67%|██████▋   | 6672/10000 [00:04<00:02, 1463.50it/s]Propagation 3:  68%|██████▊   | 6824/10000 [00:04<00:02, 1479.82it/s]Propagation 3:  70%|██████▉   | 6973/10000 [00:04<00:02, 1479.25it/s]Propagation 3:  71%|███████▏  | 7129/10000 [00:04<00:01, 1502.27it/s]Propagation 3:  73%|███████▎  | 7280/10000 [00:04<00:01, 1485.19it/s]Propagation 3:  74%|███████▍  | 7437/10000 [00:05<00:01, 1509.05it/s]Propagation 3:  76%|███████▌  | 7591/10000 [00:05<00:01, 1515.85it/s]Propagation 3:  77%|███████▋  | 7747/10000 [00:05<00:01, 1527.25it/s]Propagation 3:  79%|███████▉  | 7900/10000 [00:05<00:01, 1497.72it/s]Propagation 3:  81%|████████  | 8056/10000 [00:05<00:01, 1514.48it/s]Propagation 3:  82%|████████▏ | 8212/10000 [00:05<00:01, 1527.09it/s]Propagation 3:  84%|████████▎ | 8371/10000 [00:05<00:01, 1543.09it/s]Propagation 3:  85%|████████▌ | 8530/10000 [00:05<00:00, 1556.30it/s]Propagation 3:  87%|████████▋ | 8686/10000 [00:05<00:00, 1541.32it/s]Propagation 3:  88%|████████▊ | 8841/10000 [00:05<00:00, 1531.81it/s]Propagation 3:  90%|█████████ | 9003/10000 [00:06<00:00, 1556.94it/s]Propagation 3:  92%|█████████▏| 9161/10000 [00:06<00:00, 1560.94it/s]Propagation 3:  93%|█████████▎| 9318/10000 [00:06<00:00, 1537.79it/s]Propagation 3:  95%|█████████▍| 9472/10000 [00:06<00:00, 1530.58it/s]Propagation 3:  96%|█████████▋| 9632/10000 [00:06<00:00, 1548.16it/s]Propagation 3:  98%|█████████▊| 9788/10000 [00:06<00:00, 1549.05it/s]Propagation 3:  99%|█████████▉| 9943/10000 [00:06<00:00, 1543.50it/s]Propagation 3: 100%|██████████| 10000/10000 [00:06<00:00, 1494.82it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (7, 11) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5869.199791119087 5869.199791119094
+random try: 0 mfpt: 620924205.5965312
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5775.107779337279 5775.107779337284
+random try: 100 mfpt: 417312645.72355837
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5763.784605943946 5763.784605943952
+random try: 200 mfpt: 398801303.68988824
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6147.568448167541 6147.568448167547
+random try: 300 mfpt: 109941033.56764206
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6138.271666985865 6138.271666985871
+random try: 400 mfpt: 169734497.92062122
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5926.047697072708 5926.047697072713
+random try: 500 mfpt: 233713425.8685817
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6320.934290744251 6320.934290744257
+random try: 600 mfpt: 371925084.31322765
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5977.6328683783595 5977.632868378365
+random try: 700 mfpt: 155764404.80010676
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5796.989799535174 5796.989799535179
+random try: 800 mfpt: 256005577.798533
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 5995.478453697419 5995.478453697426
+random try: 900 mfpt: 468449799.5894586
+best mfpt: 20655526.265703097
+system bias updated
+Propagation 4:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 4:   1%|▏         | 142/10000 [00:00<00:06, 1413.43it/s]Propagation 4:   3%|▎         | 301/10000 [00:00<00:06, 1516.91it/s]Propagation 4:   5%|▍         | 453/10000 [00:00<00:06, 1462.44it/s]Propagation 4:   6%|▌         | 600/10000 [00:00<00:06, 1450.02it/s]Propagation 4:   8%|▊         | 750/10000 [00:00<00:06, 1465.60it/s]Propagation 4:   9%|▉         | 897/10000 [00:00<00:06, 1463.57it/s]Propagation 4:  10%|█         | 1044/10000 [00:00<00:06, 1442.15it/s]Propagation 4:  12%|█▏        | 1198/10000 [00:00<00:05, 1472.19it/s]Propagation 4:  14%|█▎        | 1354/10000 [00:00<00:05, 1498.15it/s]Propagation 4:  15%|█▌        | 1507/10000 [00:01<00:05, 1507.47it/s]Propagation 4:  17%|█▋        | 1666/10000 [00:01<00:05, 1531.44it/s]Propagation 4:  18%|█▊        | 1826/10000 [00:01<00:05, 1550.16it/s]Propagation 4:  20%|█▉        | 1982/10000 [00:01<00:05, 1551.34it/s]Propagation 4:  21%|██▏       | 2138/10000 [00:01<00:05, 1552.88it/s]Propagation 4:  23%|██▎       | 2294/10000 [00:01<00:04, 1554.34it/s]Propagation 4:  24%|██▍       | 2450/10000 [00:01<00:04, 1537.84it/s]Propagation 4:  26%|██▌       | 2604/10000 [00:01<00:04, 1506.74it/s]Propagation 4:  28%|██▊       | 2755/10000 [00:01<00:04, 1478.77it/s]Propagation 4:  29%|██▉       | 2904/10000 [00:01<00:04, 1470.53it/s]Propagation 4:  31%|███       | 3052/10000 [00:02<00:04, 1463.57it/s]Propagation 4:  32%|███▏      | 3208/10000 [00:02<00:04, 1491.60it/s]Propagation 4:  34%|███▎      | 3362/10000 [00:02<00:04, 1503.35it/s]Propagation 4:  35%|███▌      | 3513/10000 [00:02<00:04, 1425.60it/s]Propagation 4:  37%|███▋      | 3676/10000 [00:02<00:04, 1482.40it/s]Propagation 4:  38%|███▊      | 3836/10000 [00:02<00:04, 1513.55it/s]Propagation 4:  40%|███▉      | 3989/10000 [00:02<00:03, 1517.14it/s]Propagation 4:  41%|████▏     | 4142/10000 [00:02<00:03, 1501.04it/s]Propagation 4:  43%|████▎     | 4293/10000 [00:02<00:03, 1498.92it/s]Propagation 4:  44%|████▍     | 4444/10000 [00:02<00:03, 1481.10it/s]Propagation 4:  46%|████▌     | 4599/10000 [00:03<00:03, 1501.09it/s]Propagation 4:  48%|████▊     | 4758/10000 [00:03<00:03, 1526.20it/s]Propagation 4:  49%|████▉     | 4911/10000 [00:03<00:03, 1501.11it/s]Propagation 4:  51%|█████     | 5066/10000 [00:03<00:03, 1514.26it/s]Propagation 4:  52%|█████▏    | 5218/10000 [00:03<00:03, 1472.35it/s]Propagation 4:  54%|█████▎    | 5366/10000 [00:03<00:03, 1459.18it/s]Propagation 4:  55%|█████▌    | 5531/10000 [00:03<00:02, 1513.54it/s]Propagation 4:  57%|█████▋    | 5688/10000 [00:03<00:02, 1529.79it/s]Propagation 4:  58%|█████▊    | 5842/10000 [00:03<00:02, 1525.80it/s]Propagation 4:  60%|█████▉    | 5995/10000 [00:03<00:02, 1515.19it/s]Propagation 4:  62%|██████▏   | 6152/10000 [00:04<00:02, 1530.26it/s]Propagation 4:  63%|██████▎   | 6306/10000 [00:04<00:02, 1531.00it/s]Propagation 4:  65%|██████▍   | 6460/10000 [00:04<00:02, 1528.11it/s]Propagation 4:  66%|██████▌   | 6613/10000 [00:04<00:02, 1517.11it/s]Propagation 4:  68%|██████▊   | 6766/10000 [00:04<00:02, 1519.76it/s]Propagation 4:  69%|██████▉   | 6919/10000 [00:04<00:02, 1475.15it/s]Propagation 4:  71%|███████   | 7071/10000 [00:04<00:01, 1487.31it/s]Propagation 4:  72%|███████▏  | 7225/10000 [00:04<00:01, 1501.23it/s]Propagation 4:  74%|███████▍  | 7376/10000 [00:04<00:01, 1492.89it/s]Propagation 4:  75%|███████▌  | 7526/10000 [00:05<00:01, 1473.55it/s]Propagation 4:  77%|███████▋  | 7675/10000 [00:05<00:01, 1478.28it/s]Propagation 4:  78%|███████▊  | 7830/10000 [00:05<00:01, 1498.60it/s]Propagation 4:  80%|███████▉  | 7980/10000 [00:05<00:01, 1471.87it/s]Propagation 4:  81%|████████▏ | 8129/10000 [00:05<00:01, 1476.58it/s]Propagation 4:  83%|████████▎ | 8285/10000 [00:05<00:01, 1499.54it/s]Propagation 4:  84%|████████▍ | 8441/10000 [00:05<00:01, 1515.30it/s]Propagation 4:  86%|████████▌ | 8599/10000 [00:05<00:00, 1532.42it/s]Propagation 4:  88%|████████▊ | 8753/10000 [00:05<00:00, 1532.25it/s]Propagation 4:  89%|████████▉ | 8910/10000 [00:05<00:00, 1542.36it/s]Propagation 4:  91%|█████████ | 9065/10000 [00:06<00:00, 1536.02it/s]Propagation 4:  92%|█████████▏| 9219/10000 [00:06<00:00, 1495.78it/s]Propagation 4:  94%|█████████▎| 9369/10000 [00:06<00:00, 1443.49it/s]Propagation 4:  95%|█████████▌| 9521/10000 [00:06<00:00, 1463.39it/s]Propagation 4:  97%|█████████▋| 9684/10000 [00:06<00:00, 1510.92it/s]Propagation 4:  98%|█████████▊| 9836/10000 [00:06<00:00, 1509.80it/s]Propagation 4: 100%|█████████▉| 9995/10000 [00:06<00:00, 1530.63it/s]Propagation 4: 100%|██████████| 10000/10000 [00:06<00:00, 1501.44it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (7, 11) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6248.457270771704 6248.457270771712
+random try: 0 mfpt: 1348787230.733857
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6378.776976148946 6378.776976148954
+random try: 100 mfpt: 813141002.4804237
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6554.392012172099 6554.392012172107
+random try: 200 mfpt: 492279830.09016275
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6385.034768810764 6385.034768810772
+random try: 300 mfpt: 887751104.9621519
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6073.025978493299 6073.025978493306
+random try: 400 mfpt: 4973050374.420178
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6236.306236383462 6236.306236383468
+random try: 500 mfpt: 4117610560.610923
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6287.047763306569 6287.0477633065775
+random try: 600 mfpt: 6415432302.364628
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6078.9746241845205 6078.974624184528
+random try: 700 mfpt: 3250515323.8730073
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6515.033961837862 6515.033961837869
+random try: 800 mfpt: 534810521.98012733
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6434.042395289491 6434.042395289496
+random try: 900 mfpt: 1113608725.645761
+best mfpt: 157081801.2342318
+system bias updated
+Propagation 5:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 5:   1%|          | 111/10000 [00:00<00:08, 1103.31it/s]Propagation 5:   2%|▏         | 222/10000 [00:00<00:08, 1098.47it/s]Propagation 5:   3%|▎         | 332/10000 [00:00<00:08, 1091.52it/s]Propagation 5:   4%|▍         | 442/10000 [00:00<00:08, 1082.66it/s]Propagation 5:   6%|▌         | 552/10000 [00:00<00:08, 1087.71it/s]Propagation 5:   7%|▋         | 661/10000 [00:00<00:08, 1087.82it/s]Propagation 5:   8%|▊         | 785/10000 [00:00<00:08, 1136.70it/s]Propagation 5:   9%|▉         | 906/10000 [00:00<00:07, 1158.74it/s]Propagation 5:  10%|█         | 1025/10000 [00:00<00:07, 1167.49it/s]Propagation 5:  11%|█▏        | 1142/10000 [00:01<00:07, 1159.44it/s]Propagation 5:  13%|█▎        | 1258/10000 [00:01<00:07, 1134.82it/s]Propagation 5:  14%|█▍        | 1381/10000 [00:01<00:07, 1163.16it/s]Propagation 5:  15%|█▍        | 1498/10000 [00:01<00:07, 1128.65it/s]Propagation 5:  16%|█▌        | 1612/10000 [00:01<00:07, 1064.72it/s]Propagation 5:  17%|█▋        | 1720/10000 [00:01<00:07, 1064.75it/s]Propagation 5:  18%|█▊        | 1832/10000 [00:01<00:07, 1078.53it/s]Propagation 5:  19%|█▉        | 1941/10000 [00:01<00:07, 1080.60it/s]Propagation 5:  20%|██        | 2050/10000 [00:01<00:07, 1071.81it/s]Propagation 5:  22%|██▏       | 2158/10000 [00:01<00:07, 1067.78it/s]Propagation 5:  23%|██▎       | 2268/10000 [00:02<00:07, 1076.82it/s]Propagation 5:  24%|██▍       | 2376/10000 [00:02<00:07, 1041.70it/s]Propagation 5:  25%|██▍       | 2484/10000 [00:02<00:07, 1051.67it/s]Propagation 5:  26%|██▌       | 2590/10000 [00:02<00:07, 997.34it/s] Propagation 5:  27%|██▋       | 2700/10000 [00:02<00:07, 1025.25it/s]Propagation 5:  28%|██▊       | 2808/10000 [00:02<00:06, 1037.39it/s]Propagation 5:  29%|██▉       | 2921/10000 [00:02<00:06, 1060.99it/s]Propagation 5:  30%|███       | 3028/10000 [00:02<00:06, 1061.21it/s]Propagation 5:  31%|███▏      | 3135/10000 [00:02<00:06, 1046.21it/s]Propagation 5:  32%|███▎      | 3250/10000 [00:02<00:06, 1074.85it/s]Propagation 5:  34%|███▎      | 3358/10000 [00:03<00:06, 1056.88it/s]Propagation 5:  35%|███▍      | 3475/10000 [00:03<00:06, 1086.48it/s]Propagation 5:  36%|███▌      | 3584/10000 [00:03<00:05, 1081.12it/s]Propagation 5:  37%|███▋      | 3693/10000 [00:03<00:05, 1074.89it/s]Propagation 5:  38%|███▊      | 3801/10000 [00:03<00:05, 1071.10it/s]Propagation 5:  39%|███▉      | 3909/10000 [00:03<00:05, 1053.75it/s]Propagation 5:  40%|████      | 4015/10000 [00:03<00:05, 1031.68it/s]Propagation 5:  41%|████      | 4122/10000 [00:03<00:05, 1042.77it/s]Propagation 5:  42%|████▏     | 4229/10000 [00:03<00:05, 1048.40it/s]Propagation 5:  43%|████▎     | 4334/10000 [00:04<00:05, 1024.99it/s]Propagation 5:  44%|████▍     | 4441/10000 [00:04<00:05, 1036.75it/s]Propagation 5:  45%|████▌     | 4545/10000 [00:04<00:05, 1007.88it/s]Propagation 5:  46%|████▋     | 4647/10000 [00:04<00:05, 1005.74it/s]Propagation 5:  48%|████▊     | 4750/10000 [00:04<00:05, 1010.63it/s]Propagation 5:  49%|████▊     | 4852/10000 [00:04<00:05, 1011.94it/s]Propagation 5:  50%|████▉     | 4955/10000 [00:04<00:04, 1016.25it/s]Propagation 5:  51%|█████     | 5063/10000 [00:04<00:04, 1032.61it/s]Propagation 5:  52%|█████▏    | 5167/10000 [00:04<00:04, 1003.18it/s]Propagation 5:  53%|█████▎    | 5271/10000 [00:04<00:04, 1010.45it/s]Propagation 5:  54%|█████▍    | 5376/10000 [00:05<00:04, 1021.08it/s]Propagation 5:  55%|█████▍    | 5482/10000 [00:05<00:04, 1030.80it/s]Propagation 5:  56%|█████▌    | 5597/10000 [00:05<00:04, 1065.49it/s]Propagation 5:  57%|█████▋    | 5704/10000 [00:05<00:04, 1058.96it/s]Propagation 5:  58%|█████▊    | 5811/10000 [00:05<00:03, 1058.80it/s]Propagation 5:  59%|█████▉    | 5917/10000 [00:05<00:03, 1056.83it/s]Propagation 5:  60%|██████    | 6023/10000 [00:05<00:03, 1048.83it/s]Propagation 5:  61%|██████▏   | 6128/10000 [00:05<00:03, 1044.50it/s]Propagation 5:  62%|██████▏   | 6233/10000 [00:05<00:03, 1044.96it/s]Propagation 5:  63%|██████▎   | 6338/10000 [00:05<00:03, 989.27it/s] Propagation 5:  64%|██████▍   | 6446/10000 [00:06<00:03, 1012.29it/s]Propagation 5:  65%|██████▌   | 6548/10000 [00:06<00:03, 998.62it/s] Propagation 5:  66%|██████▋   | 6649/10000 [00:06<00:03, 974.92it/s]Propagation 5:  68%|██████▊   | 6751/10000 [00:06<00:03, 986.18it/s]Propagation 5:  68%|██████▊   | 6850/10000 [00:06<00:03, 986.38it/s]Propagation 5:  69%|██████▉   | 6949/10000 [00:06<00:03, 982.60it/s]Propagation 5:  71%|███████   | 7057/10000 [00:06<00:02, 1010.41it/s]Propagation 5:  72%|███████▏  | 7159/10000 [00:06<00:02, 1004.71it/s]Propagation 5:  73%|███████▎  | 7263/10000 [00:06<00:02, 1011.93it/s]Propagation 5:  74%|███████▎  | 7371/10000 [00:07<00:02, 1030.83it/s]Propagation 5:  75%|███████▍  | 7476/10000 [00:07<00:02, 1034.88it/s]Propagation 5:  76%|███████▌  | 7580/10000 [00:07<00:02, 1015.66it/s]Propagation 5:  77%|███████▋  | 7690/10000 [00:07<00:02, 1037.74it/s]Propagation 5:  78%|███████▊  | 7797/10000 [00:07<00:02, 1046.01it/s]Propagation 5:  79%|███████▉  | 7907/10000 [00:07<00:01, 1059.79it/s]Propagation 5:  80%|████████  | 8014/10000 [00:07<00:01, 1035.70it/s]Propagation 5:  81%|████████  | 8118/10000 [00:07<00:01, 1029.05it/s]Propagation 5:  82%|████████▏ | 8223/10000 [00:07<00:01, 1033.47it/s]Propagation 5:  83%|████████▎ | 8327/10000 [00:07<00:01, 1026.03it/s]Propagation 5:  84%|████████▍ | 8432/10000 [00:08<00:01, 1030.84it/s]Propagation 5:  85%|████████▌ | 8539/10000 [00:08<00:01, 1041.18it/s]Propagation 5:  86%|████████▋ | 8644/10000 [00:08<00:01, 1031.57it/s]Propagation 5:  87%|████████▋ | 8749/10000 [00:08<00:01, 1036.68it/s]Propagation 5:  89%|████████▊ | 8853/10000 [00:08<00:01, 1037.31it/s]Propagation 5:  90%|████████▉ | 8960/10000 [00:08<00:00, 1045.88it/s]Propagation 5:  91%|█████████ | 9065/10000 [00:08<00:00, 1034.25it/s]Propagation 5:  92%|█████████▏| 9169/10000 [00:08<00:00, 1027.38it/s]Propagation 5:  93%|█████████▎| 9274/10000 [00:08<00:00, 1032.16it/s]Propagation 5:  94%|█████████▍| 9378/10000 [00:08<00:00, 1023.48it/s]Propagation 5:  95%|█████████▍| 9481/10000 [00:09<00:00, 1008.26it/s]Propagation 5:  96%|█████████▌| 9584/10000 [00:09<00:00, 1013.74it/s]Propagation 5:  97%|█████████▋| 9689/10000 [00:09<00:00, 1024.06it/s]Propagation 5:  98%|█████████▊| 9792/10000 [00:09<00:00, 986.59it/s] Propagation 5:  99%|█████████▉| 9891/10000 [00:09<00:00, 971.56it/s]Propagation 5: 100%|█████████▉| 9993/10000 [00:09<00:00, 985.51it/s]Propagation 5: 100%|██████████| 10000/10000 [00:09<00:00, 1042.75it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (6, 11) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7102.0845530157185 7102.084553015727
+random try: 0 mfpt: 226696375.0908952
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7336.2006958787815 7336.200695878791
+random try: 100 mfpt: 62894169.921338454
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7127.985841338353 7127.985841338363
+random try: 200 mfpt: 171198170.33259755
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7006.883143452359 7006.883143452365
+random try: 300 mfpt: 266234329.93787515
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7107.850377248044 7107.85037724805
+random try: 400 mfpt: 151160099.09586337
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7173.32194611426 7173.321946114267
+random try: 500 mfpt: 262673348.99277487
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6945.036677312023 6945.03667731203
+random try: 600 mfpt: 518392185.6476637
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7074.084870902363 7074.0848709023685
+random try: 700 mfpt: 448364706.6361696
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7119.859892120455 7119.859892120462
+random try: 800 mfpt: 163522991.28757945
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7151.106750674449 7151.1067506744575
+random try: 900 mfpt: 415193730.6809081
+best mfpt: 12644347.704272717
+system bias updated
+Propagation 6:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 6:   1%|▏         | 125/10000 [00:00<00:08, 1226.81it/s]Propagation 6:   3%|▎         | 274/10000 [00:00<00:07, 1375.82it/s]Propagation 6:   4%|▍         | 418/10000 [00:00<00:06, 1402.66it/s]Propagation 6:   6%|▌         | 584/10000 [00:00<00:06, 1503.58it/s]Propagation 6:   7%|▋         | 737/10000 [00:00<00:06, 1512.62it/s]Propagation 6:   9%|▉         | 901/10000 [00:00<00:05, 1552.95it/s]Propagation 6:  11%|█         | 1057/10000 [00:00<00:05, 1549.19it/s]Propagation 6:  12%|█▏        | 1220/10000 [00:00<00:05, 1572.54it/s]Propagation 6:  14%|█▍        | 1378/10000 [00:00<00:05, 1515.12it/s]Propagation 6:  15%|█▌        | 1535/10000 [00:01<00:05, 1529.07it/s]Propagation 6:  17%|█▋        | 1706/10000 [00:01<00:05, 1582.44it/s]Propagation 6:  19%|█▉        | 1880/10000 [00:01<00:04, 1627.86it/s]Propagation 6:  21%|██        | 2055/10000 [00:01<00:04, 1662.71it/s]Propagation 6:  22%|██▏       | 2222/10000 [00:01<00:04, 1561.03it/s]Propagation 6:  24%|██▍       | 2380/10000 [00:01<00:04, 1542.69it/s]Propagation 6:  25%|██▌       | 2536/10000 [00:01<00:04, 1530.35it/s]Propagation 6:  27%|██▋       | 2690/10000 [00:01<00:04, 1479.76it/s]Propagation 6:  28%|██▊       | 2839/10000 [00:01<00:04, 1452.07it/s]Propagation 6:  30%|██▉       | 2985/10000 [00:01<00:04, 1428.28it/s]Propagation 6:  31%|███▏      | 3129/10000 [00:02<00:04, 1379.39it/s]Propagation 6:  33%|███▎      | 3271/10000 [00:02<00:04, 1388.05it/s]Propagation 6:  34%|███▍      | 3411/10000 [00:02<00:04, 1385.91it/s]Propagation 6:  36%|███▌      | 3563/10000 [00:02<00:04, 1421.89it/s]Propagation 6:  37%|███▋      | 3716/10000 [00:02<00:04, 1451.52it/s]Propagation 6:  39%|███▊      | 3870/10000 [00:02<00:04, 1476.38it/s]Propagation 6:  40%|████      | 4021/10000 [00:02<00:04, 1484.21it/s]Propagation 6:  42%|████▏     | 4170/10000 [00:02<00:03, 1482.33it/s]Propagation 6:  43%|████▎     | 4323/10000 [00:02<00:03, 1495.76it/s]Propagation 6:  45%|████▍     | 4473/10000 [00:03<00:03, 1470.74it/s]Propagation 6:  46%|████▌     | 4621/10000 [00:03<00:03, 1471.60it/s]Propagation 6:  48%|████▊     | 4769/10000 [00:03<00:03, 1438.24it/s]Propagation 6:  49%|████▉     | 4914/10000 [00:03<00:03, 1376.47it/s]Propagation 6:  51%|█████     | 5053/10000 [00:03<00:03, 1371.09it/s]Propagation 6:  52%|█████▏    | 5195/10000 [00:03<00:03, 1383.48it/s]Propagation 6:  54%|█████▎    | 5353/10000 [00:03<00:03, 1440.61it/s]Propagation 6:  55%|█████▍    | 5498/10000 [00:03<00:03, 1412.88it/s]Propagation 6:  56%|█████▋    | 5640/10000 [00:03<00:03, 1411.60it/s]Propagation 6:  58%|█████▊    | 5791/10000 [00:03<00:02, 1439.97it/s]Propagation 6:  59%|█████▉    | 5941/10000 [00:04<00:02, 1454.65it/s]Propagation 6:  61%|██████    | 6087/10000 [00:04<00:02, 1435.78it/s]Propagation 6:  62%|██████▏   | 6233/10000 [00:04<00:02, 1442.35it/s]Propagation 6:  64%|██████▍   | 6378/10000 [00:04<00:02, 1419.78it/s]Propagation 6:  65%|██████▌   | 6521/10000 [00:04<00:02, 1417.78it/s]Propagation 6:  67%|██████▋   | 6663/10000 [00:04<00:02, 1370.28it/s]Propagation 6:  68%|██████▊   | 6801/10000 [00:04<00:02, 1361.06it/s]Propagation 6:  69%|██████▉   | 6944/10000 [00:04<00:02, 1380.62it/s]Propagation 6:  71%|███████   | 7090/10000 [00:04<00:02, 1402.78it/s]Propagation 6:  72%|███████▏  | 7240/10000 [00:04<00:01, 1430.86it/s]Propagation 6:  74%|███████▍  | 7384/10000 [00:05<00:01, 1392.09it/s]Propagation 6:  75%|███████▌  | 7524/10000 [00:05<00:01, 1355.85it/s]Propagation 6:  77%|███████▋  | 7661/10000 [00:05<00:01, 1356.73it/s]Propagation 6:  78%|███████▊  | 7808/10000 [00:05<00:01, 1387.71it/s]Propagation 6:  80%|███████▉  | 7950/10000 [00:05<00:01, 1394.97it/s]Propagation 6:  81%|████████  | 8098/10000 [00:05<00:01, 1416.88it/s]Propagation 6:  82%|████████▏ | 8240/10000 [00:05<00:01, 1401.45it/s]Propagation 6:  84%|████████▍ | 8381/10000 [00:05<00:01, 1361.85it/s]Propagation 6:  85%|████████▌ | 8518/10000 [00:05<00:01, 1302.63it/s]Propagation 6:  87%|████████▋ | 8652/10000 [00:06<00:01, 1313.06it/s]Propagation 6:  88%|████████▊ | 8796/10000 [00:06<00:00, 1348.26it/s]Propagation 6:  89%|████████▉ | 8932/10000 [00:06<00:00, 1341.99it/s]Propagation 6:  91%|█████████ | 9067/10000 [00:06<00:00, 1294.94it/s]Propagation 6:  92%|█████████▏| 9210/10000 [00:06<00:00, 1333.01it/s]Propagation 6:  93%|█████████▎| 9346/10000 [00:06<00:00, 1338.83it/s]Propagation 6:  95%|█████████▍| 9493/10000 [00:06<00:00, 1376.46it/s]Propagation 6:  96%|█████████▋| 9631/10000 [00:06<00:00, 1351.98it/s]Propagation 6:  98%|█████████▊| 9767/10000 [00:06<00:00, 1327.21it/s]Propagation 6:  99%|█████████▉| 9910/10000 [00:06<00:00, 1356.44it/s]Propagation 6: 100%|██████████| 10000/10000 [00:07<00:00, 1426.50it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (7, 12) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7117.333369289404 7117.333369289413
+random try: 0 mfpt: 261261171.67513248
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6991.290600967389 6991.290600967396
+random try: 100 mfpt: 575814554.1645123
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7265.851198981333 7265.85119898134
+random try: 200 mfpt: 524380074.45384157
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7244.737885993762 7244.737885993768
+random try: 300 mfpt: 173055857.38634643
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7306.1066758628685 7306.106675862875
+random try: 400 mfpt: 2090774214.6931155
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7110.760387308162 7110.760387308171
+random try: 500 mfpt: 455826995.66385376
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6893.541496965088 6893.541496965094
+random try: 600 mfpt: 297718171.43324256
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6847.304133491262 6847.3041334912705
+random try: 700 mfpt: 351567507.73528576
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6949.047915543103 6949.04791554311
+random try: 800 mfpt: 473694133.78520656
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6995.155515262733 6995.155515262741
+random try: 900 mfpt: 1518917764.9386504
+best mfpt: 32691129.885401595
+system bias updated
+Propagation 7:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 7:   2%|▏         | 156/10000 [00:00<00:06, 1558.58it/s]Propagation 7:   3%|▎         | 347/10000 [00:00<00:05, 1763.04it/s]Propagation 7:   5%|▌         | 536/10000 [00:00<00:05, 1820.42it/s]Propagation 7:   7%|▋         | 726/10000 [00:00<00:05, 1850.21it/s]Propagation 7:   9%|▉         | 912/10000 [00:00<00:04, 1835.79it/s]Propagation 7:  11%|█         | 1099/10000 [00:00<00:04, 1845.58it/s]Propagation 7:  13%|█▎        | 1286/10000 [00:00<00:04, 1852.02it/s]Propagation 7:  15%|█▍        | 1472/10000 [00:00<00:04, 1833.98it/s]Propagation 7:  17%|█▋        | 1661/10000 [00:00<00:04, 1849.61it/s]Propagation 7:  18%|█▊        | 1847/10000 [00:01<00:04, 1815.92it/s]Propagation 7:  20%|██        | 2029/10000 [00:01<00:04, 1794.99it/s]Propagation 7:  22%|██▏       | 2209/10000 [00:01<00:04, 1786.76it/s]Propagation 7:  24%|██▍       | 2388/10000 [00:01<00:04, 1783.12it/s]Propagation 7:  26%|██▌       | 2567/10000 [00:01<00:04, 1719.78it/s]Propagation 7:  27%|██▋       | 2740/10000 [00:01<00:04, 1697.39it/s]Propagation 7:  29%|██▉       | 2911/10000 [00:01<00:04, 1685.95it/s]Propagation 7:  31%|███       | 3080/10000 [00:01<00:04, 1681.16it/s]Propagation 7:  32%|███▏      | 3249/10000 [00:01<00:04, 1661.87it/s]Propagation 7:  34%|███▍      | 3416/10000 [00:01<00:03, 1650.58it/s]Propagation 7:  36%|███▌      | 3582/10000 [00:02<00:03, 1625.53it/s]Propagation 7:  37%|███▋      | 3745/10000 [00:02<00:03, 1612.96it/s]Propagation 7:  39%|███▉      | 3915/10000 [00:02<00:03, 1636.00it/s]Propagation 7:  41%|████      | 4080/10000 [00:02<00:03, 1638.41it/s]Propagation 7:  43%|████▎     | 4257/10000 [00:02<00:03, 1675.50it/s]Propagation 7:  44%|████▍     | 4425/10000 [00:02<00:03, 1645.41it/s]Propagation 7:  46%|████▌     | 4590/10000 [00:02<00:03, 1632.42it/s]Propagation 7:  48%|████▊     | 4754/10000 [00:02<00:03, 1598.17it/s]Propagation 7:  49%|████▉     | 4914/10000 [00:02<00:03, 1583.85it/s]Propagation 7:  51%|█████     | 5076/10000 [00:02<00:03, 1593.59it/s]Propagation 7:  52%|█████▏    | 5236/10000 [00:03<00:02, 1589.78it/s]Propagation 7:  54%|█████▍    | 5396/10000 [00:03<00:02, 1569.68it/s]Propagation 7:  56%|█████▌    | 5554/10000 [00:03<00:02, 1572.52it/s]Propagation 7:  57%|█████▋    | 5716/10000 [00:03<00:02, 1583.64it/s]Propagation 7:  59%|█████▉    | 5878/10000 [00:03<00:02, 1592.67it/s]Propagation 7:  60%|██████    | 6043/10000 [00:03<00:02, 1607.78it/s]Propagation 7:  62%|██████▏   | 6208/10000 [00:03<00:02, 1619.02it/s]Propagation 7:  64%|██████▎   | 6370/10000 [00:03<00:02, 1598.69it/s]Propagation 7:  65%|██████▌   | 6530/10000 [00:03<00:02, 1536.25it/s]Propagation 7:  67%|██████▋   | 6700/10000 [00:04<00:02, 1581.68it/s]Propagation 7:  69%|██████▊   | 6872/10000 [00:04<00:01, 1620.30it/s]Propagation 7:  70%|███████   | 7044/10000 [00:04<00:01, 1646.86it/s]Propagation 7:  72%|███████▏  | 7210/10000 [00:04<00:01, 1646.54it/s]Propagation 7:  74%|███████▍  | 7378/10000 [00:04<00:01, 1655.68it/s]Propagation 7:  75%|███████▌  | 7544/10000 [00:04<00:01, 1563.20it/s]Propagation 7:  77%|███████▋  | 7702/10000 [00:04<00:01, 1557.88it/s]Propagation 7:  79%|███████▊  | 7860/10000 [00:04<00:01, 1563.96it/s]Propagation 7:  80%|████████  | 8023/10000 [00:04<00:01, 1581.08it/s]Propagation 7:  82%|████████▏ | 8182/10000 [00:04<00:01, 1574.27it/s]Propagation 7:  83%|████████▎ | 8342/10000 [00:05<00:01, 1579.75it/s]Propagation 7:  85%|████████▌ | 8501/10000 [00:05<00:00, 1576.21it/s]Propagation 7:  87%|████████▋ | 8659/10000 [00:05<00:00, 1574.58it/s]Propagation 7:  88%|████████▊ | 8817/10000 [00:05<00:00, 1564.15it/s]Propagation 7:  90%|████████▉ | 8980/10000 [00:05<00:00, 1581.95it/s]Propagation 7:  91%|█████████▏| 9139/10000 [00:05<00:00, 1561.20it/s]Propagation 7:  93%|█████████▎| 9296/10000 [00:05<00:00, 1528.09it/s]Propagation 7:  94%|█████████▍| 9449/10000 [00:05<00:00, 1497.50it/s]Propagation 7:  96%|█████████▌| 9601/10000 [00:05<00:00, 1502.61it/s]Propagation 7:  98%|█████████▊| 9752/10000 [00:05<00:00, 1485.13it/s]Propagation 7:  99%|█████████▉| 9901/10000 [00:06<00:00, 1473.88it/s]Propagation 7: 100%|██████████| 10000/10000 [00:06<00:00, 1629.01it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (7, 12) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6697.041253426514 6697.0412534265215
+random try: 0 mfpt: 1264481662.5362637
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6814.334269458519 6814.334269458527
+random try: 100 mfpt: 2168407609.9096756
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6430.10343987423 6430.103439874237
+random try: 200 mfpt: 1175337254.4454663
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6996.421789195902 6996.421789195911
+random try: 300 mfpt: 861559587.9858294
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6384.178621894083 6384.1786218940915
+random try: 400 mfpt: 866785416.334425
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6416.075522816888 6416.0755228168955
+random try: 500 mfpt: 3566475277.298058
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6446.129814109593 6446.1298141096
+random try: 600 mfpt: 2467856917.4459095
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6856.633820771745 6856.633820771753
+random try: 700 mfpt: 286153041.2424525
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6972.850224872228 6972.850224872236
+random try: 800 mfpt: 694182446.135031
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 6819.8934996792 6819.893499679209
+random try: 900 mfpt: 693202885.7625967
+best mfpt: 88732129.86327693
+system bias updated
+Propagation 8:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 8:   2%|▏         | 153/10000 [00:00<00:06, 1521.75it/s]Propagation 8:   3%|▎         | 326/10000 [00:00<00:05, 1639.39it/s]Propagation 8:   5%|▍         | 497/10000 [00:00<00:05, 1670.01it/s]Propagation 8:   7%|▋         | 665/10000 [00:00<00:05, 1635.45it/s]Propagation 8:   8%|▊         | 829/10000 [00:00<00:05, 1620.87it/s]Propagation 8:  10%|▉         | 992/10000 [00:00<00:05, 1620.91it/s]Propagation 8:  12%|█▏        | 1155/10000 [00:00<00:05, 1617.91it/s]Propagation 8:  13%|█▎        | 1332/10000 [00:00<00:05, 1665.72it/s]Propagation 8:  15%|█▍        | 1499/10000 [00:00<00:05, 1657.46it/s]Propagation 8:  17%|█▋        | 1665/10000 [00:01<00:05, 1595.43it/s]Propagation 8:  18%|█▊        | 1826/10000 [00:01<00:05, 1501.13it/s]Propagation 8:  20%|█▉        | 1993/10000 [00:01<00:05, 1545.79it/s]Propagation 8:  22%|██▏       | 2158/10000 [00:01<00:04, 1573.55it/s]Propagation 8:  23%|██▎       | 2327/10000 [00:01<00:04, 1606.90it/s]Propagation 8:  25%|██▍       | 2496/10000 [00:01<00:04, 1630.16it/s]Propagation 8:  27%|██▋       | 2660/10000 [00:01<00:04, 1591.26it/s]Propagation 8:  28%|██▊       | 2820/10000 [00:01<00:04, 1542.37it/s]Propagation 8:  30%|██▉       | 2975/10000 [00:01<00:04, 1510.56it/s]Propagation 8:  31%|███▏      | 3137/10000 [00:01<00:04, 1522.92it/s]Propagation 8:  33%|███▎      | 3290/10000 [00:02<00:04, 1508.39it/s]Propagation 8:  34%|███▍      | 3442/10000 [00:02<00:04, 1490.14it/s]Propagation 8:  36%|███▌      | 3592/10000 [00:02<00:04, 1481.23it/s]Propagation 8:  37%|███▋      | 3749/10000 [00:02<00:04, 1504.02it/s]Propagation 8:  39%|███▉      | 3904/10000 [00:02<00:04, 1517.08it/s]Propagation 8:  41%|████      | 4068/10000 [00:02<00:03, 1551.54it/s]Propagation 8:  42%|████▏     | 4228/10000 [00:02<00:03, 1564.06it/s]Propagation 8:  44%|████▍     | 4399/10000 [00:02<00:03, 1606.82it/s]Propagation 8:  46%|████▌     | 4575/10000 [00:02<00:03, 1650.14it/s]Propagation 8:  47%|████▋     | 4741/10000 [00:03<00:03, 1630.99it/s]Propagation 8:  49%|████▉     | 4905/10000 [00:03<00:03, 1570.32it/s]Propagation 8:  51%|█████     | 5063/10000 [00:03<00:03, 1497.38it/s]Propagation 8:  52%|█████▏    | 5224/10000 [00:03<00:03, 1527.23it/s]Propagation 8:  54%|█████▍    | 5379/10000 [00:03<00:03, 1531.47it/s]Propagation 8:  55%|█████▌    | 5533/10000 [00:03<00:02, 1531.20it/s]Propagation 8:  57%|█████▋    | 5688/10000 [00:03<00:02, 1535.31it/s]Propagation 8:  58%|█████▊    | 5842/10000 [00:03<00:02, 1516.54it/s]Propagation 8:  60%|██████    | 6006/10000 [00:03<00:02, 1550.36it/s]Propagation 8:  62%|██████▏   | 6166/10000 [00:03<00:02, 1564.45it/s]Propagation 8:  63%|██████▎   | 6323/10000 [00:04<00:02, 1545.96it/s]Propagation 8:  65%|██████▍   | 6490/10000 [00:04<00:02, 1580.33it/s]Propagation 8:  67%|██████▋   | 6652/10000 [00:04<00:02, 1585.82it/s]Propagation 8:  68%|██████▊   | 6817/10000 [00:04<00:01, 1602.63it/s]Propagation 8:  70%|██████▉   | 6985/10000 [00:04<00:01, 1623.89it/s]Propagation 8:  72%|███████▏  | 7152/10000 [00:04<00:01, 1634.87it/s]Propagation 8:  73%|███████▎  | 7316/10000 [00:04<00:01, 1630.58it/s]Propagation 8:  75%|███████▍  | 7480/10000 [00:04<00:01, 1598.69it/s]Propagation 8:  76%|███████▋  | 7641/10000 [00:04<00:01, 1596.96it/s]Propagation 8:  78%|███████▊  | 7801/10000 [00:04<00:01, 1560.59it/s]Propagation 8:  80%|███████▉  | 7958/10000 [00:05<00:01, 1534.43it/s]Propagation 8:  81%|████████  | 8112/10000 [00:05<00:01, 1519.24it/s]Propagation 8:  83%|████████▎ | 8273/10000 [00:05<00:01, 1544.99it/s]Propagation 8:  84%|████████▍ | 8428/10000 [00:05<00:01, 1540.79it/s]Propagation 8:  86%|████████▌ | 8583/10000 [00:05<00:00, 1478.51it/s]Propagation 8:  87%|████████▋ | 8747/10000 [00:05<00:00, 1522.75it/s]Propagation 8:  89%|████████▉ | 8913/10000 [00:05<00:00, 1561.97it/s]Propagation 8:  91%|█████████ | 9070/10000 [00:05<00:00, 1561.72it/s]Propagation 8:  92%|█████████▏| 9229/10000 [00:05<00:00, 1568.80it/s]Propagation 8:  94%|█████████▍| 9389/10000 [00:05<00:00, 1575.80it/s]Propagation 8:  96%|█████████▌| 9552/10000 [00:06<00:00, 1591.54it/s]Propagation 8:  97%|█████████▋| 9712/10000 [00:06<00:00, 1534.29it/s]Propagation 8:  99%|█████████▊| 9866/10000 [00:06<00:00, 1488.87it/s]Propagation 8: 100%|██████████| 10000/10000 [00:06<00:00, 1558.36it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (7, 11) to state: (6, 5)
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8001.164191954285 8001.164191954294
+random try: 0 mfpt: 599366628.0559282
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7948.975845948759 7948.97584594877
+random try: 100 mfpt: 780754580.4978882
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8093.745752849751 8093.745752849759
+random try: 200 mfpt: 521047004.1158875
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8030.771587844901 8030.771587844913
+random try: 300 mfpt: 147013149.6973832
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8027.559538322194 8027.5595383222035
+random try: 400 mfpt: 766453900.1374767
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8078.5354994685 8078.535499468509
+random try: 500 mfpt: 769078024.8560623
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8125.086307357923 8125.086307357932
+random try: 600 mfpt: 257612657.05337083
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 7963.949719452031 7963.949719452039
+random try: 700 mfpt: 538418091.2827817
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8081.039321401599 8081.0393214016085
+random try: 800 mfpt: 436454175.77694297
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 8077.091875429631 8077.09187542964
+random try: 900 mfpt: 554651287.9112256
+best mfpt: 21239543.366287787
+system bias updated
+Propagation 9:   0%|          | 0/10000 [00:00<?, ?it/s]Propagation 9:   1%|▏         | 139/10000 [00:00<00:07, 1384.23it/s]Propagation 9:   3%|▎         | 294/10000 [00:00<00:06, 1479.88it/s]Propagation 9:   5%|▍         | 452/10000 [00:00<00:06, 1525.41it/s]Propagation 9:   6%|▌         | 620/10000 [00:00<00:05, 1582.86it/s]Propagation 9:   8%|▊         | 793/10000 [00:00<00:05, 1633.72it/s]Propagation 9:  10%|▉         | 957/10000 [00:00<00:05, 1627.29it/s]Propagation 9:  11%|█▏        | 1128/10000 [00:00<00:05, 1649.97it/s]Propagation 9:  13%|█▎        | 1293/10000 [00:00<00:05, 1647.76it/s]Propagation 9:  15%|█▍        | 1468/10000 [00:00<00:05, 1679.30it/s]Propagation 9:  16%|█▋        | 1636/10000 [00:01<00:04, 1676.62it/s]Propagation 9:  18%|█▊        | 1810/10000 [00:01<00:04, 1693.12it/s]Propagation 9:  20%|█▉        | 1980/10000 [00:01<00:04, 1680.04it/s]Propagation 9:  22%|██▏       | 2150/10000 [00:01<00:04, 1685.36it/s]Propagation 9:  23%|██▎       | 2322/10000 [00:01<00:04, 1695.45it/s]Propagation 9:  25%|██▌       | 2505/10000 [00:01<00:04, 1735.67it/s]Propagation 9:  27%|██▋       | 2679/10000 [00:01<00:04, 1674.76it/s]Propagation 9:  29%|██▊       | 2852/10000 [00:01<00:04, 1689.09it/s]Propagation 9:  30%|███       | 3022/10000 [00:01<00:04, 1669.51it/s]Propagation 9:  32%|███▏      | 3190/10000 [00:01<00:04, 1671.12it/s]Propagation 9:  34%|███▎      | 3358/10000 [00:02<00:04, 1619.52it/s]Propagation 9:  35%|███▌      | 3521/10000 [00:02<00:04, 1578.48it/s]Propagation 9:  37%|███▋      | 3686/10000 [00:02<00:03, 1598.16it/s]Propagation 9:  38%|███▊      | 3847/10000 [00:02<00:04, 1527.43it/s]Propagation 9:  40%|████      | 4001/10000 [00:02<00:03, 1521.46it/s]Propagation 9:  42%|████▏     | 4163/10000 [00:02<00:03, 1548.22it/s]Propagation 9:  43%|████▎     | 4326/10000 [00:02<00:03, 1571.68it/s]Propagation 9:  45%|████▍     | 4489/10000 [00:02<00:03, 1588.07it/s]Propagation 9:  46%|████▋     | 4650/10000 [00:02<00:03, 1592.36it/s]Propagation 9:  48%|████▊     | 4814/10000 [00:02<00:03, 1606.17it/s]Propagation 9:  50%|████▉     | 4975/10000 [00:03<00:03, 1564.46it/s]Propagation 9:  51%|█████▏    | 5134/10000 [00:03<00:03, 1570.68it/s]Propagation 9:  53%|█████▎    | 5302/10000 [00:03<00:02, 1599.93it/s]Propagation 9:  55%|█████▍    | 5463/10000 [00:03<00:02, 1598.20it/s]Propagation 9:  56%|█████▌    | 5623/10000 [00:03<00:02, 1576.48it/s]Propagation 9:  58%|█████▊    | 5781/10000 [00:03<00:02, 1537.61it/s]Propagation 9:  59%|█████▉    | 5936/10000 [00:03<00:02, 1506.34it/s]Propagation 9:  61%|██████    | 6094/10000 [00:03<00:02, 1524.57it/s]Propagation 9:  62%|██████▏   | 6247/10000 [00:03<00:02, 1501.23it/s]Propagation 9:  64%|██████▍   | 6413/10000 [00:04<00:02, 1546.60it/s]Propagation 9:  66%|██████▌   | 6568/10000 [00:04<00:02, 1522.59it/s]Propagation 9:  67%|██████▋   | 6721/10000 [00:04<00:02, 1491.04it/s]Propagation 9:  69%|██████▊   | 6871/10000 [00:04<00:02, 1464.22it/s]Propagation 9:  70%|███████   | 7018/10000 [00:04<00:02, 1439.87it/s]Propagation 9:  72%|███████▏  | 7165/10000 [00:04<00:01, 1448.29it/s]Propagation 9:  73%|███████▎  | 7324/10000 [00:04<00:01, 1487.72it/s]Propagation 9:  75%|███████▍  | 7473/10000 [00:04<00:01, 1476.59it/s]Propagation 9:  76%|███████▌  | 7621/10000 [00:04<00:01, 1459.62it/s]Propagation 9:  78%|███████▊  | 7772/10000 [00:04<00:01, 1473.85it/s]Propagation 9:  79%|███████▉  | 7923/10000 [00:05<00:01, 1484.23it/s]Propagation 9:  81%|████████  | 8072/10000 [00:05<00:01, 1471.36it/s]Propagation 9:  82%|████████▏ | 8232/10000 [00:05<00:01, 1508.59it/s]Propagation 9:  84%|████████▍ | 8391/10000 [00:05<00:01, 1530.62it/s]Propagation 9:  85%|████████▌ | 8545/10000 [00:05<00:00, 1466.32it/s]Propagation 9:  87%|████████▋ | 8702/10000 [00:05<00:00, 1493.19it/s]Propagation 9:  89%|████████▊ | 8852/10000 [00:05<00:00, 1475.02it/s]Propagation 9:  90%|█████████ | 9012/10000 [00:05<00:00, 1511.12it/s]Propagation 9:  92%|█████████▏| 9171/10000 [00:05<00:00, 1533.70it/s]Propagation 9:  93%|█████████▎| 9331/10000 [00:05<00:00, 1546.06it/s]Propagation 9:  95%|█████████▍| 9488/10000 [00:06<00:00, 1550.47it/s]Propagation 9:  96%|█████████▋| 9647/10000 [00:06<00:00, 1560.12it/s]Propagation 9:  98%|█████████▊| 9804/10000 [00:06<00:00, 1527.94it/s]Propagation 9: 100%|█████████▉| 9966/10000 [00:06<00:00, 1553.56it/s]Propagation 9: 100%|██████████| 10000/10000 [00:06<00:00, 1563.19it/s]
+propagation number exceeds num_propagation, break
+Traceback (most recent call last):
+  File "/home/tj/WORK/RL_MFPT/2D_langevin_sim/langevin_sim_mfpt_opt.py", line 333, in <module>
+    total_steps = i_prop * config.propagation_step + reach * config.dcdfreq
+                                                     ~~~~~~^~~~~~~~~~~~~~~~
+TypeError: unsupported operand type(s) for *: 'NoneType' and 'int'
