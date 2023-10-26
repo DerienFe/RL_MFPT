@@ -51,7 +51,7 @@ system, fes = apply_fes(system = system,
                    amp=config.amp, 
                    mode = config.fes_mode,
                    plot = True)
-z_pot = openmm.CustomExternalForce("100000 * z^2") # very large force constant in z
+z_pot = openmm.CustomExternalForce("1e10 * z^2") # very large force constant in z
 z_pot.addParticle(0)
 system.addForce(z_pot) #on z, large barrier
 
@@ -93,14 +93,14 @@ for i in tqdm(range(config.sim_steps)):
 x,y = np.meshgrid(np.linspace(0, 2*np.pi, 100), np.linspace(0, 2*np.pi, 100)) #fes in shape [100,100]
 
 plt.figure()
-plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7, origin = "lower")
+plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7 * 4.184, origin = "lower")
+plt.colorbar()
 plt.scatter(pos_traj[::3,0], pos_traj[::3,1], s=0.5, alpha=0.5, c='yellow')
 plt.xlabel("x")
 plt.xlim([-1, 2*np.pi+1])
 plt.ylim([-1, 2*np.pi+1])
 plt.ylabel("y")
 plt.title(f"Unbiased Trajectory, pbc={config.pbc}")
-plt.colorbar()
 #plt.show()
 plt.savefig(f"./figs/unbias_traj_{config.time_tag}.png")
 plt.close()

@@ -116,7 +116,7 @@ def compute_free_energy_power_method(K, kT=0.5981):
     this use the power method to calculate the equilibrium distribution.
     num_iter is the number of iterations.
     """
-    num_iter = 10000
+    num_iter = 1000
     N = K.shape[0]
     peq = np.ones(N) / N #initialise the peq
     for i in range(num_iter):
@@ -268,13 +268,13 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
     
     #now our M/working_indices could be incontinues. #N = M.shape[0]
     qspace = np.linspace(2.0, 9, 150+1) #hard coded for now.
-    best_mfpt = 1e12 #initialise the best mfpt np.inf
+    best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     for i in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) * 1.5
-        b = rng.uniform(0, 7, num_gaussian) #fix this so it place gaussian at the working indices. it has to be in angstrom. because we need return these.
+        a = np.ones(num_gaussian) #* 1.5
+        b = rng.uniform(0, 10, num_gaussian) #fix this so it place gaussian at the working indices. it has to be in angstrom. because we need return these.
         #b = rng.uniform(b_min, b_max, num_gaussian)
         c = rng.uniform(0.3, 0.7, num_gaussian) 
         
@@ -288,7 +288,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         total_bias = total_bias[working_indices]
         
         M_biased = bias_M_1D(M, total_bias, kT=0.5981)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        #[peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -337,7 +338,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         total_bias = total_bias[working_indices]
 
         M_biased = bias_M_1D(M, total_bias, kT=0.5981)
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        #[peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
 
@@ -350,7 +352,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.3, 4.5)]*10 + [(0,7)]*10 + [(0.3, 1.5)]*10, #add bounds to the parameters
+                   bounds= [(0.1, 2)]*10 + [(0,10)]*10 + [(0.3, 1.5)]*10, #add bounds to the parameters
                    tol=1e-3)
 
     if plot:
