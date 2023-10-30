@@ -90,6 +90,20 @@ def compute_free_energy(K, kT):
     #F = F.reshape(N, N)
     return [peq, F, evectors, evalues, evalues_sorted, index]
 
+def compute_free_energy_power_method(K, kT=0.5981):
+    """
+    this use the power method to calculate the equilibrium distribution.
+    num_iter is the number of iterations.
+    """
+    num_iter = 1000
+    N = K.shape[0]
+    peq = np.ones(N) / N #initialise the peq
+    for i in range(num_iter):
+        peq = np.dot(peq, K)
+        peq = peq / np.sum(peq)
+    F = -kT * np.log(peq)
+    return [peq, F]
+
 def kemeny_constant_check(mfpt, peq):
     N2 = mfpt.shape[0]
     kemeny = np.zeros((N2, 1))
@@ -180,7 +194,7 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
 
     for try_num in range(1000):
         rng = np.random.default_rng()
-        a = np.ones(num_gaussian)
+        a = np.ones(num_gaussian) * 2
         bx = rng.uniform(0, 2*np.pi, num_gaussian)
         by = rng.uniform(0, 2*np.pi, num_gaussian)
         cx = rng.uniform(0.3, 1.5, num_gaussian)
@@ -263,7 +277,7 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 4)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   bounds= [(0.1, 6)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
                    tol=1e1)
     
     #print("local optimisation result:", res.x)
