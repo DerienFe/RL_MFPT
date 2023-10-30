@@ -151,8 +151,8 @@ class DHAM:
        # peq,mU2 = compute_free_energy_power_method(MM.T.astype(np.float64), self.KbT)
         mfpts = Markov_mfpt_calc(peq, MM)
         kemeny_constant_check(mfpts, peq)
-        print("peq", peq)
-        print(sum(peq))
+        #print("peq", peq)
+        #print(sum(peq))
 
         if False:
             plt.figure()

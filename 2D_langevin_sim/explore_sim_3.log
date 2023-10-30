@@ -1,243 +1,0 @@
--A0*exp(-(x-x00)^2/(2*sigma_x0^2) - (y-y00)^2/(2*sigma_y0^2))
--A1*exp(-(x-x01)^2/(2*sigma_x1^2) - (y-y01)^2/(2*sigma_y1^2))
--A2*exp(-(x-x02)^2/(2*sigma_x2^2) - (y-y02)^2/(2*sigma_y2^2))
--A3*exp(-(x-x03)^2/(2*sigma_x3^2) - (y-y03)^2/(2*sigma_y3^2))
--A4*exp(-(x-x04)^2/(2*sigma_x4^2) - (y-y04)^2/(2*sigma_y4^2))
--A5*exp(-(x-x05)^2/(2*sigma_x5^2) - (y-y05)^2/(2*sigma_y5^2))
--A6*exp(-(x-x06)^2/(2*sigma_x6^2) - (y-y06)^2/(2*sigma_y6^2))
--A7*exp(-(x-x07)^2/(2*sigma_x7^2) - (y-y07)^2/(2*sigma_y7^2))
--A8*exp(-(x-x08)^2/(2*sigma_x8^2) - (y-y08)^2/(2*sigma_y8^2))
-A9*exp(-(x-x09)^2/(2*sigma_x9^2) - (y-y09)^2/(2*sigma_y9^2))
-propagation 0 starting
-Ag0*exp(-(x-x0g0)^2/(2*sigma_xg0^2) - (y-y0g0)^2/(2*sigma_yg0^2))
-Ag1*exp(-(x-x0g1)^2/(2*sigma_xg1^2) - (y-y0g1)^2/(2*sigma_yg1^2))
-Ag2*exp(-(x-x0g2)^2/(2*sigma_xg2^2) - (y-y0g2)^2/(2*sigma_yg2^2))
-Ag3*exp(-(x-x0g3)^2/(2*sigma_xg3^2) - (y-y0g3)^2/(2*sigma_yg3^2))
-Ag4*exp(-(x-x0g4)^2/(2*sigma_xg4^2) - (y-y0g4)^2/(2*sigma_yg4^2))
-Ag5*exp(-(x-x0g5)^2/(2*sigma_xg5^2) - (y-y0g5)^2/(2*sigma_yg5^2))
-Ag6*exp(-(x-x0g6)^2/(2*sigma_xg6^2) - (y-y0g6)^2/(2*sigma_yg6^2))
-Ag7*exp(-(x-x0g7)^2/(2*sigma_xg7^2) - (y-y0g7)^2/(2*sigma_yg7^2))
-Ag8*exp(-(x-x0g8)^2/(2*sigma_xg8^2) - (y-y0g8)^2/(2*sigma_yg8^2))
-Ag9*exp(-(x-x0g9)^2/(2*sigma_xg9^2) - (y-y0g9)^2/(2*sigma_yg9^2))
-Ag10*exp(-(x-x0g10)^2/(2*sigma_xg10^2) - (y-y0g10)^2/(2*sigma_yg10^2))
-Ag11*exp(-(x-x0g11)^2/(2*sigma_xg11^2) - (y-y0g11)^2/(2*sigma_yg11^2))
-Ag12*exp(-(x-x0g12)^2/(2*sigma_xg12^2) - (y-y0g12)^2/(2*sigma_yg12^2))
-Ag13*exp(-(x-x0g13)^2/(2*sigma_xg13^2) - (y-y0g13)^2/(2*sigma_yg13^2))
-Ag14*exp(-(x-x0g14)^2/(2*sigma_xg14^2) - (y-y0g14)^2/(2*sigma_yg14^2))
-Ag15*exp(-(x-x0g15)^2/(2*sigma_xg15^2) - (y-y0g15)^2/(2*sigma_yg15^2))
-Ag16*exp(-(x-x0g16)^2/(2*sigma_xg16^2) - (y-y0g16)^2/(2*sigma_yg16^2))
-Ag17*exp(-(x-x0g17)^2/(2*sigma_xg17^2) - (y-y0g17)^2/(2*sigma_yg17^2))
-Ag18*exp(-(x-x0g18)^2/(2*sigma_xg18^2) - (y-y0g18)^2/(2*sigma_yg18^2))
-Ag19*exp(-(x-x0g19)^2/(2*sigma_xg19^2) - (y-y0g19)^2/(2*sigma_yg19^2))
-system added with bias.
-Propagation 0:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 0:  14%|█▍        | 140/1000 [00:00<00:00, 1399.03it/s]Propagation 0:  28%|██▊       | 283/1000 [00:00<00:00, 1413.84it/s]Propagation 0:  43%|████▎     | 431/1000 [00:00<00:00, 1442.31it/s]Propagation 0:  59%|█████▊    | 587/1000 [00:00<00:00, 1486.73it/s]Propagation 0:  74%|███████▎  | 736/1000 [00:00<00:00, 1483.51it/s]Propagation 0:  89%|████████▊ | 886/1000 [00:00<00:00, 1486.78it/s]Propagation 0: 100%|██████████| 1000/1000 [00:00<00:00, 1470.31it/s]
-/home/tj/WORK/RL_MFPT/2D_langevin_sim/util.py:89: RuntimeWarning: divide by zero encountered in log
-  F = -kT * np.log(peq) #add a small number to avoid log(0))
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 6211.93224683539 6212.932246835393
-peq [0. 0. 0. ... 0. 0. 0.]
-1.0
-propagation number {prop_index} starting
-Try and Optim from state: (26, 34) to state: (25, 25)
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 116257.90756181798 116257.90756181804
-random try: 0 mfpt: 2516526.7632088005
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 3584.3691583665395 3584.3691583665427
-random try: 100 mfpt: 3321.581558045732
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 29618.425355555617 29618.425355555635
-random try: 200 mfpt: 30336.08107965528
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1330.1741201244072 1330.174120124408
-random try: 300 mfpt: 856078.288258225
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1665.698267933972 1665.698267933973
-random try: 400 mfpt: 119620.72290964072
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 4575.348748168977 4575.34874816898
-random try: 500 mfpt: 108481.86185560183
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1868.8464363533872 1868.8464363533883
-random try: 600 mfpt: 144478733.25249788
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 34149.50351133877 34149.50351133879
-random try: 700 mfpt: 149987.8964560935
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 3872.7566899384574 3872.7566899384606
-random try: 800 mfpt: 31322.197709761145
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 2804.2920386639807 2804.2920386639826
-random try: 900 mfpt: 30101.7169378674
-best mfpt: 2166.017597911695
-system bias updated
-Propagation 1:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 1:  13%|█▎        | 132/1000 [00:00<00:00, 1318.89it/s]Propagation 1:  26%|██▋       | 264/1000 [00:00<00:00, 1313.66it/s]Propagation 1:  42%|████▏     | 416/1000 [00:00<00:00, 1404.47it/s]Propagation 1:  57%|█████▋    | 567/1000 [00:00<00:00, 1442.94it/s]Propagation 1:  71%|███████   | 712/1000 [00:00<00:00, 1388.09it/s]Propagation 1:  86%|████████▌ | 856/1000 [00:00<00:00, 1405.01it/s]Propagation 1: 100%|██████████| 1000/1000 [00:00<00:00, 1409.53it/s]
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 3184.2315512951186 3185.231551295121
-peq [-0. -0. -0. ... -0. -0. -0.]
-0.9999999999999998
-propagation number {prop_index} starting
-Try and Optim from state: (21, 20) to state: (20, 18)
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 4740.9986971970775 4740.998697197083
-random try: 0 mfpt: 3070.9344248822067
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 2816.9739043830227 2816.973904383026
-random try: 100 mfpt: 209508.8070680149
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 5829.162477225861 5829.162477225868
-random try: 200 mfpt: 96517.39768593447
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 52511.287514410345 52511.28751441041
-random try: 300 mfpt: 35585.259207823336
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 4185.234746882573 4185.234746882577
-random try: 400 mfpt: 3852.55022806329
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 3596.5363600036203 3596.5363600036244
-random try: 500 mfpt: 7791.300930948821
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 48506.01980733823 48506.0198073383
-random try: 600 mfpt: 209921.71286978057
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 4096.057900774314 4096.057900774318
-random try: 700 mfpt: 1013.5517069864542
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 13484.242255873522 13484.24225587354
-random try: 800 mfpt: 7780.1326185899425
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 14407.039358518308 14407.039358518328
-random try: 900 mfpt: 7715.3987690012655
-best mfpt: 203.17400066470606
-system bias updated
-Propagation 2:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 2:  14%|█▎        | 136/1000 [00:00<00:00, 1356.03it/s]Propagation 2:  28%|██▊       | 285/1000 [00:00<00:00, 1433.87it/s]Propagation 2:  43%|████▎     | 429/1000 [00:00<00:00, 1424.81it/s]Propagation 2:  58%|█████▊    | 579/1000 [00:00<00:00, 1452.16it/s]Propagation 2:  73%|███████▎  | 731/1000 [00:00<00:00, 1475.74it/s]Propagation 2:  88%|████████▊ | 884/1000 [00:00<00:00, 1491.70it/s]Propagation 2: 100%|██████████| 1000/1000 [00:00<00:00, 1457.50it/s]
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 293413.7084724193 293414.7084724196
-peq [0. 0. 0. ... 0. 0. 0.]
-0.9999999999999997
-propagation number {prop_index} starting
-Try and Optim from state: (16, 19) to state: (12, 17)
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 458720.0375336832 458720.03753368376
-random try: 0 mfpt: 330522.71833753807
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1456429.026739035 1456429.0267390383
-random try: 100 mfpt: 3344.311244453834
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1650304.4762331676 1650304.4762331708
-random try: 200 mfpt: 3045.337598213135
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 662357.3687676686 662357.36876767
-random try: 300 mfpt: 1506.2274705422715
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 87333.44264111471 87333.4426411149
-random try: 400 mfpt: 1070.9889016494024
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1111469982.8285217 1111469982.8285255
-random try: 500 mfpt: 1543.5370827768895
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 247416.6930179575 247416.69301795782
-random try: 600 mfpt: 3886.638207835877
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 13044.838881529342 13044.83888152937
-random try: 700 mfpt: 5227.209186125063
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 302213.66646075185 302213.6664607525
-random try: 800 mfpt: 1881.1030650592725
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 295790.46510905353 295790.4651090542
-random try: 900 mfpt: 2268.014275368849
-best mfpt: 181.72887096506244
-system bias updated
-Propagation 3:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 3:  14%|█▍        | 140/1000 [00:00<00:00, 1396.52it/s]Propagation 3:  29%|██▉       | 291/1000 [00:00<00:00, 1458.27it/s]Propagation 3:  44%|████▎     | 437/1000 [00:00<00:00, 1360.25it/s]Propagation 3:  59%|█████▊    | 587/1000 [00:00<00:00, 1409.26it/s]Propagation 3:  74%|███████▎  | 736/1000 [00:00<00:00, 1435.84it/s]Propagation 3:  88%|████████▊ | 881/1000 [00:00<00:00, 1404.80it/s]Propagation 3: 100%|██████████| 1000/1000 [00:00<00:00, 1403.92it/s]
-/home/tj/WORK/RL_MFPT/2D_langevin_sim/util.py:89: RuntimeWarning: invalid value encountered in log
-  F = -kT * np.log(peq) #add a small number to avoid log(0))
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 858172.6820963017 858173.6820963026
-peq [0. 0. 0. ... 0. 0. 0.]
-1.0000000000000002
-propagation number {prop_index} starting
-Try and Optim from state: (6, 18) to state: (6, 14)
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 3411046.45071455 3411046.4507145574
-random try: 0 mfpt: 4745.904589202639
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 208724.08983205594 208724.0898320562
-random try: 100 mfpt: 10043.135955912154
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 175209.79283554104 175209.7928355416
-random try: 200 mfpt: 4144.242733318798
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 34771724.86004565 34771724.860045746
-random try: 300 mfpt: 11242.29180411944
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 24200533.265284956 24200533.265285008
-random try: 400 mfpt: 19668.744560066723
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 138411099.16308466 138411099.1630851
-random try: 500 mfpt: 5551.349226764936
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1916167802.1181169 1916167802.1181207
-random try: 600 mfpt: 5240.143466146549
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 4824099.602649786 4824099.6026498005
-random try: 700 mfpt: 2103.752316565637
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 363049.24392842606 363049.243928427
-random try: 800 mfpt: 23211.438757152155
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 76228742.80016185 76228742.80016212
-random try: 900 mfpt: 18683.773070241128
-best mfpt: 663.7275819520131
-system bias updated
-Propagation 4:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 4:  14%|█▍        | 145/1000 [00:00<00:00, 1446.47it/s]Propagation 4:  29%|██▉       | 293/1000 [00:00<00:00, 1464.10it/s]Propagation 4:  44%|████▍     | 440/1000 [00:00<00:00, 1404.20it/s]Propagation 4:  58%|█████▊    | 583/1000 [00:00<00:00, 1412.11it/s]Propagation 4:  73%|███████▎  | 733/1000 [00:00<00:00, 1440.99it/s]Propagation 4:  88%|████████▊ | 880/1000 [00:00<00:00, 1449.98it/s]Propagation 4: 100%|██████████| 1000/1000 [00:00<00:00, 1437.67it/s]
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 209239.34410176537 209240.34410176554
-peq [0. 0. 0. ... 0. 0. 0.]
-1.0000000000000004
-propagation number {prop_index} starting
-Try and Optim from state: (8, 7) to state: (7, 7)
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 1182324960.3002892 1182324960.3002927
-random try: 0 mfpt: 346.57826660582543
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 735393.5584749229 735393.5584749241
-random try: 100 mfpt: 1235.985494121962
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 5358307.2628636435 5358307.262863658
-random try: 200 mfpt: 3126.6988472094254
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 11475063.126939261 11475063.12693929
-random try: 300 mfpt: 469.58651122795504
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 2044862.805995541 2044862.8059955454
-random try: 400 mfpt: 2478.120195387781
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 400199.85325162223 400199.853251623
-random try: 500 mfpt: 373.2536680928497
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 2926539.4796107537 2926539.4796107607
-random try: 600 mfpt: 236.0479519305921
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 12930609.133378074 12930609.133378107
-random try: 700 mfpt: 10914.073839481456
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 963452668.9071469 963452668.9071492
-random try: 800 mfpt: 5996.65213799001
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 262589.43983297213 262589.43983297254
-random try: 900 mfpt: 5332.790892905874
-best mfpt: 148.36395752771455
-system bias updated
-Propagation 5:   0%|          | 0/1000 [00:00<?, ?it/s]Propagation 5:  14%|█▍        | 141/1000 [00:00<00:00, 1409.73it/s]Propagation 5:  30%|██▉       | 297/1000 [00:00<00:00, 1495.98it/s]Propagation 5:  45%|████▍     | 447/1000 [00:00<00:00, 1497.02it/s]Propagation 5:  60%|█████▉    | 597/1000 [00:00<00:00, 1453.00it/s]Propagation 5:  75%|███████▌  | 752/1000 [00:00<00:00, 1483.99it/s]Propagation 5:  90%|█████████ | 901/1000 [00:00<00:00, 1420.11it/s]Propagation 5: 100%|██████████| 1000/1000 [00:00<00:00, 1456.63it/s]
-Performing Kemeny constant check...
-the min/max of the Kemeny constant is: 256001.02166703838 256002.02166703867
-peq [-0. -0. -0. ... -0. -0. -0.]
-1.0
-total steps used:  159800
-Traceback (most recent call last):
-  File "/home/tj/WORK/RL_MFPT/2D_langevin_sim/langevin_sim_mfpt_opt.py", line 164, in <module>
-    elem = Element(0, "X", "X", 1.0)
-  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.9/site-packages/openmm/app/element.py", line 86, in __init__
-    raise ValueError('Duplicate element symbol %s' % s)
-ValueError: Duplicate element symbol X
