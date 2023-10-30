@@ -15,7 +15,7 @@ amp = 10 #for amp applied on fes. note the gaussian parameters for fes is normal
 
 propagation_step = 10000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds
-num_bins = 50 #used to discretize the traj, and used in the DHAM.
+num_bins = 40 #used to discretize the traj, and used in the DHAM.
 dcdfreq = 10
 
 platform = openmm.Platform.getPlatformByName('CUDA')
@@ -24,8 +24,8 @@ platform = openmm.Platform.getPlatformByName('CUDA')
 num_gaussian = 20 #number of gaussians used to placing the bias.
 
 #starting state (as in coordinate space, from 0 to 2pi.)
-start_state = Quantity(value = [Vec3(1,1,0.0)], unit = unit.nanometers)
-end_state = Quantity(value = [Vec3(5,4,0.0)], unit = unit.nanometers) #need to change.
+start_state = Quantity(value = [Vec3(5.0,4.0,0.0)], unit = unit.nanometers)
+end_state = Quantity(value = [Vec3(1.0,1.0,0.0)], unit = unit.nanometers) #need to change.
 
 
 #here we have 3 pre-defined 2D fes, stored as different functions.

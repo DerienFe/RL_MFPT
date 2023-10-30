@@ -57,8 +57,7 @@ def propagate(simulation,
     #use mdtraj to get the coordinate of the particle.
     traj = mdtraj.load_dcd(f"./trajectory/explore/langevin_sim_explore_{prop_index}.dcd", top = mdtraj_top)#top = mdtraj.Topology.from_openmm(top)) #this will yield error because we using imaginary element X.
     coor = traj.xyz[:,0,:] #[all_frames,particle_index,xyz] # we grep the particle 0.
-    #convert into A.
-    coor = coor
+
     #we digitize the x, y coordinate into meshgrid (0, 2pi, num_bins)
     x = np.linspace(0, 2*np.pi, num_bins) #hardcoded.
     y = np.linspace(0, 2*np.pi, num_bins)
@@ -68,19 +67,19 @@ def propagate(simulation,
     coor_y_digitized = np.digitize(coor_xy[:,1], y)
     coor_xy_digitized = np.stack([coor_x_digitized, coor_y_digitized], axis=1) #shape: [all_frames, 2]
 
-    coor_xy_digitized_ravel = np.array([np.ravel_multi_index(x, (num_bins, num_bins), order='C') for x in coor_xy_digitized]) #shape: [all_frames,]
+    #changed order = F, temporary fix for the DHAM?
+    coor_xy_digitized_ravel = np.array([np.ravel_multi_index(x, (num_bins, num_bins), order='F') for x in coor_xy_digitized]) #shape: [all_frames,]
 
     #we test.
     if False:
         coor_xy_digitized_ravel_unravel = np.array([np.unravel_index(x, (num_bins, num_bins), order='C') for x in coor_xy_digitized_ravel]) #shape: [all_frames, 2]
 
-
         x,y = np.meshgrid(np.linspace(0, 2*np.pi, num_bins), np.linspace(0, 2*np.pi, num_bins))
 
         plt.figure()
-        plt.scatter(x[coor_xy_digitized_ravel_unravel[:, 0], coor_xy_digitized_ravel_unravel[:, 1]], y[coor_xy_digitized_ravel_unravel[:, 0], coor_xy_digitized_ravel_unravel[:, 1]], s=5, alpha=0.5, c='red')
-        plt.xlim([-1, 2*np.pi+1])
-        plt.ylim([-1, 2*np.pi+1])
+        #
+        plt.xlim([0, 2*np.pi])
+        plt.ylim([0, 2*np.pi])
         plt.savefig("./test.png")
         plt.close()
     #we append the coor_xy_digitized into the pos_traj.
@@ -170,8 +169,8 @@ if __name__ == "__main__":
         mass = 12.0 * unit.amu
         system = openmm.System()
         system.addParticle(mass)
-        gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
-        system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = gaussian_param, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
+        #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
+        system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = None, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
         z_pot = openmm.CustomExternalForce("100000 * z^2") # very large force constant in z
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier
@@ -286,7 +285,7 @@ if __name__ == "__main__":
                     most_visited_state_unravelled = np.unravel_index(most_visited_state, (config.num_bins, config.num_bins), order='C')
                     closest_index_unravelled = np.unravel_index(closest_index, (config.num_bins, config.num_bins), order='C')
                     plt.figure()
-                    plt.imshow(F_M.reshape(config.num_bins, config.num_bins)*4.184, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp *12/7 * 4.184, origin="lower")
+                    plt.imshow(np.reshape(F_M,(config.num_bins, config.num_bins), order = "C")*4.184, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp *12/7 * 4.184, origin="lower")
                     plt.plot(x[most_visited_state_unravelled[0], most_visited_state_unravelled[1]], y[most_visited_state_unravelled[0], most_visited_state_unravelled[1]], marker='o', markersize=3, color="blue", label = "most visited state (local start)")
                     plt.plot(x[closest_index_unravelled[0], closest_index_unravelled[1]], y[closest_index_unravelled[0], closest_index_unravelled[1]], marker='o', markersize=3, color="red", label = "closest state (local target)")
                     plt.legend()
@@ -312,11 +311,16 @@ if __name__ == "__main__":
                     # we plot all, but highlight the last prop_step points with higher alpha.
 
                     pos_traj_flat = pos_traj[:i_prop, :].astype(np.int64).squeeze() #note this is digitized and ravelled.
-                    pos_traj_unravel = np.array([np.unravel_index(x, (config.num_bins, config.num_bins), order='C') for x in pos_traj_flat]) #shape: [all_frames, 2]
+                    x_unravel, y_unravel = np.unravel_index(pos_traj_flat, (config.num_bins, config.num_bins), order='F') #note the traj is temporary ravelled in F order to adapt the DHAM. #shape: [all_frames, 2]
                     #note here we need cast it to num_bin discrete values.
-                    X_small, Y_small = np.meshgrid(np.linspace(0, 2*np.pi, config.num_bins), np.linspace(0, 2*np.pi, config.num_bins))
-                    plt.plot(X_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], Y_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], alpha=0.3)
-                    plt.scatter(X_small[pos_traj_unravel[-frame_per_propagation:,0], pos_traj_unravel[-frame_per_propagation:,1]], Y_small[pos_traj_unravel[-frame_per_propagation:,0], pos_traj_unravel[-frame_per_propagation:,1]], s=3.5, alpha=0.5, c='red')
+                    
+                    #X_small, Y_small = np.meshgrid(np.linspace(0, 2*np.pi, config.num_bins), np.linspace(0, 2*np.pi, config.num_bins))
+                    #plt.plot(X_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], Y_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], alpha=0.3)
+                    #plt.plot(X_small[0][pos_traj_unravel[:,0]], Y_small[pos_traj_unravel[:,1]][0], alpha=0.3)
+                    #plt.scatter(X_small[0][pos_traj_unravel[-frame_per_propagation:,0]], Y_small[pos_traj_unravel[-frame_per_propagation:,1]][0], s=3.5, alpha=0.5, c='red')
+                    grid = np.linspace(0, 2*np.pi, config.num_bins)
+                    plt.scatter(grid[x_unravel], grid[y_unravel], s=3.5, alpha=0.3, c='black')                                     
+                    
                     plt.savefig(f"./figs/explore/{time_tag}_fes_traj_{i_prop}.png")
                     plt.close()
 
