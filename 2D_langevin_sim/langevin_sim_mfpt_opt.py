@@ -165,13 +165,21 @@ if __name__ == "__main__":
     top.addAtom("X", elem, top._chains[0]._residues[0])
     mass = 12.0 * unit.amu
     for i_sim in range(config.num_sim):
+    #def simulate_once():
+        print("system initializing")
+        #print out all the config.
+        print("config: ", config.__dict__)
+        
         time_tag = time.strftime("%Y%m%d-%H%M%S")
- 
-        system = openmm.System() #we initialize the system every loop.
+
+        #print current time tag.
+        print("time_tag: ", time_tag)
+
+        system = openmm.System() #we initialize the system every
         system.addParticle(mass)
         #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
         system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = None, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
-        z_pot = openmm.CustomExternalForce("100000 * z^2") # very large force constant in z
+        z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier
 
@@ -216,6 +224,8 @@ if __name__ == "__main__":
                 simulation = openmm.app.Simulation(top, system, integrator, config.platform)
                 simulation.context.setPositions(config.start_state)
                 simulation.context.setVelocitiesToTemperature(300*unit.kelvin)
+
+                simulation.minimizeEnergy()
                 if config.pbc:
                     simulation.context.setPeriodicBoxVectors(a,b,c)
 
@@ -267,8 +277,20 @@ if __name__ == "__main__":
                                         num_gaussians=config.num_gaussian,
                                         )
                 
-
-
+                #we propagate system again
+                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
+                                                                    gaussian_params = gaussian_params,
+                                                                    prop_index = i_prop,
+                                                                    pos_traj = pos_traj,
+                                                                    steps=config.propagation_step,
+                                                                    dcdfreq=config.dcdfreq,
+                                                                    stepsize=config.stepsize,
+                                                                    num_bins=config.num_bins,
+                                                                    pbc=config.pbc,
+                                                                    top=top,
+                                                                    reach=reach
+                                                                    )
+                
                 if True:
                     #here we calculate the total bias given the optimized gaussian_params
                     x_total_bias, y_total_bias = np.meshgrid(np.linspace(0, 2*np.pi, config.num_bins), np.linspace(0, 2*np.pi, config.num_bins)) # shape: [num_bins, num_bins]
@@ -312,32 +334,17 @@ if __name__ == "__main__":
 
                     pos_traj_flat = pos_traj[:i_prop, :].astype(np.int64).squeeze() #note this is digitized and ravelled.
                     x_unravel, y_unravel = np.unravel_index(pos_traj_flat, (config.num_bins, config.num_bins), order='F') #note the traj is temporary ravelled in F order to adapt the DHAM. #shape: [all_frames, 2]
-                    #note here we need cast it to num_bin discrete values.
                     
-                    #X_small, Y_small = np.meshgrid(np.linspace(0, 2*np.pi, config.num_bins), np.linspace(0, 2*np.pi, config.num_bins))
-                    #plt.plot(X_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], Y_small[pos_traj_unravel[:,0], pos_traj_unravel[:,1]], alpha=0.3)
-                    #plt.plot(X_small[0][pos_traj_unravel[:,0]], Y_small[pos_traj_unravel[:,1]][0], alpha=0.3)
-                    #plt.scatter(X_small[0][pos_traj_unravel[-frame_per_propagation:,0]], Y_small[pos_traj_unravel[-frame_per_propagation:,1]][0], s=3.5, alpha=0.5, c='red')
+                    pos_traj_flat_last = pos_traj[i_prop:, :].astype(np.int64).squeeze()
+                    x_unravel_last, y_unravel_last = np.unravel_index(pos_traj_flat_last, (config.num_bins, config.num_bins), order='F')
+                    
                     grid = np.linspace(0, 2*np.pi, config.num_bins)
-                    plt.scatter(grid[x_unravel], grid[y_unravel], s=3.5, alpha=0.3, c='black')                                     
-                    
+                    plt.scatter(grid[x_unravel], grid[y_unravel], s=3.5, alpha=0.3, c='black')
+                    plt.scatter(grid[x_unravel_last], grid[y_unravel_last], s=3.5, alpha=0.8, c='yellow')                                     
                     plt.savefig(f"./figs/explore/{time_tag}_fes_traj_{i_prop}.png")
                     plt.close()
 
-                #we propagate system again
-                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                    gaussian_params = gaussian_params,
-                                                                    prop_index = i_prop,
-                                                                    pos_traj = pos_traj,
-                                                                    steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
-                                                                    stepsize=config.stepsize,
-                                                                    num_bins=config.num_bins,
-                                                                    pbc=config.pbc,
-                                                                    top=top,
-                                                                    reach=reach
-                                                                    )
-                
+
                 #update working_MM and working_indices
                 working_MM, working_indices = get_working_MM(MM)
                 #update closest_index
@@ -348,11 +355,18 @@ if __name__ == "__main__":
         total_steps = i_prop * config.propagation_step + reach * config.dcdfreq
         print("total steps used: ", total_steps)
 
-        with open("total_steps_mfpt.csv", "a") as f:
+        with open("./total_steps_mfpt.csv", "a") as f:
             writer = csv.writer(f)
             writer.writerow([total_steps])
 
         #save the pos_traj
         np.savetxt(f"./visited_states/{time_tag}_pos_traj.txt", pos_traj)
 
+    """from multiprocessing import Pool
+    
+    multi_process_result = []
+    for _ in range(config.num_sim//config.NUMBER_OF_PROCESSES):
+        with Pool(config.NUMBER_OF_PROCESSES) as p:
+            multi_process_result.extend(p.map(simulate_once, range(config.NUMBER_OF_PROCESSES)))
+"""
 print("all done")

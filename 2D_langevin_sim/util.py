@@ -110,8 +110,8 @@ def kemeny_constant_check(mfpt, peq):
     for i in range(N2):
         for j in range(N2):
             kemeny[i] = kemeny[i] + mfpt[i, j] * peq[j]
-    print("Performing Kemeny constant check...")
-    print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
+    #print("Performing Kemeny constant check...")
+    #print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
     """
     if np.max(kemeny) - np.min(kemeny) > 1e-6:
         print("Kemeny constant check failed!")
@@ -277,8 +277,8 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 6)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e1)
+                   bounds= [(0.1, 4)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   tol=1e-1)
     
     #print("local optimisation result:", res.x)
     return res.x
