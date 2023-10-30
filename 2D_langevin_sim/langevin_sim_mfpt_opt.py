@@ -158,16 +158,16 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, numbins=150, prop_index=0, ti
     return results
 
 if __name__ == "__main__":
+    elem = Element(0, "X", "X", 1.0)
+    top = Topology()
+    top.addChain()
+    top.addResidue("xxx", top._chains[0])
+    top.addAtom("X", elem, top._chains[0]._residues[0])
+    mass = 12.0 * unit.amu
     for i_sim in range(config.num_sim):
         time_tag = time.strftime("%Y%m%d-%H%M%S")
-
-        elem = Element(0, "X", "X", 1.0)
-        top = Topology()
-        top.addChain()
-        top.addResidue("xxx", top._chains[0])
-        top.addAtom("X", elem, top._chains[0]._residues[0])
-        mass = 12.0 * unit.amu
-        system = openmm.System()
+ 
+        system = openmm.System() #we initialize the system every loop.
         system.addParticle(mass)
         #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
         system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = None, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
