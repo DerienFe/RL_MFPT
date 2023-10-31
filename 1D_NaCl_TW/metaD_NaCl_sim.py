@@ -15,6 +15,8 @@ import time
 import os
 from tqdm import tqdm
 
+import config
+
 def minimize(context):
     st = time.time()
     s = time.time()
@@ -60,7 +62,7 @@ if __name__ == "__main__":
         #metaD
         bias_bond = omm.CustomBondForce("r")
         bias_bond.addBond(0, 1)
-        dist_cv = BiasVariable(bias_bond, 2.0, 10, 0.2, True)
+        dist_cv = BiasVariable(bias_bond, 2.0, 10, 0.2, config.pbc)
         
         aux_file_path = os.path.join("./MetaD_auxfiles/" + time_tag)
         if not os.path.exists(aux_file_path):

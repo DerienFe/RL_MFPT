@@ -91,6 +91,8 @@ if __name__ == "__main__":
         reach = None
         i=0
         
+        file_handle = open(f'trajectories/unbias/{time_tag}_unbias_traj.dcd', 'wb')
+        dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize_unbias)
         #for i in tqdm(range(config.sim_steps)):
         while reach is None:
             simulation.step(config.dcdfreq)
@@ -124,6 +126,9 @@ if __name__ == "__main__":
                 #plt.show()
                 plt.savefig(f"./figs/unbias/unbias_traj_{time_tag}_simstep_{i*config.dcdfreq}.png")
                 plt.close()
+            
+            #write dcd
+            dcd_file.writeModel(state.getPositions(asNumpy=True))
 
     
         #we record the steps used to reach end state.
