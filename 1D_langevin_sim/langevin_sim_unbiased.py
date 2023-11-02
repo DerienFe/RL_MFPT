@@ -82,7 +82,7 @@ if __name__ == "__main__":
         simulation.context.setPositions(config.start_state)
         simulation.context.setVelocitiesToTemperature(300*unit.kelvin)
 
-        #simulation.minimizeEnergy() #disabled for testing energy barrier.
+        simulation.minimizeEnergy()
         if config.pbc:
             simulation.context.setPeriodicBoxVectors(a,b,c)
 
@@ -91,7 +91,7 @@ if __name__ == "__main__":
         reach = None
         i=0
         
-        file_handle = open(f'trajectory/unbias/{time_tag}_unbias_traj.dcd', 'wb')
+        file_handle = open(f'trajectories/unbias/{time_tag}_unbias_traj.dcd', 'wb')
         dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize_unbias)
         #for i in tqdm(range(config.sim_steps)):
         while reach is None:
@@ -107,7 +107,7 @@ if __name__ == "__main__":
                 print("reached end state")
                 reach = True
             
-            if i % 1000 == 0: 
+            if i % 10000 == 0: 
                 print("simulation step: ", i * config.dcdfreq)
                 ### VISUALIZATION ###
                 x,y = np.meshgrid(np.linspace(0, 2*np.pi, 100), np.linspace(0, 2*np.pi, 100)) #fes in shape [100,100]
@@ -117,10 +117,10 @@ if __name__ == "__main__":
                 plt.colorbar()
                 #we only take the most recent i*2000 steps.
                 #plt.scatter(np.array(pos_traj)[::3,0], np.array(pos_traj)[::3,1], s=0.5, alpha=0.5, c='yellow')
-                plt.scatter(np.array(pos_traj)[::5,0], np.array(pos_traj)[::5,1], s=3.5, alpha=0.5, c='black')
+                plt.scatter(np.array(pos_traj)[-2000::5,0], np.array(pos_traj)[-2000::5,1], s=0.5, alpha=0.5, c='yellow')
                 plt.xlabel("x")
-                plt.xlim([-1, 2*np.pi+1])
-                plt.ylim([-1, 2*np.pi+1])
+                plt.xlim([0, 2*np.pi])
+                plt.ylim([0, 2*np.pi])
                 plt.ylabel("y")
                 plt.title(f"Unbiased Trajectory, pbc={config.pbc}")
                 #plt.show()

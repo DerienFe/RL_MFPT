@@ -20,6 +20,11 @@ RL_CLEANRL/cleanrl
 /1D_NaCl_TW/distance/*
 /1D_NaCl_TW/__pycache__/*
 
+/1D_langevin_sim/figs/*
+/1D_langevin_sim/trajectory/*
+/1D_langevin_sim/params/*
+
+
 /2D_langevin_sim/MetaD_auxfiles/*
 /2D_langevin_sim/trajectory/*
 /2D_langevin_sim/figs/*
@@ -27,3 +32,4 @@ RL_CLEANRL/cleanrl
 /2D_langevin_sim/params/*
 /2D_langevin_sim/__pycache__/*
 /2D_langevin_sim/visited_states/*
+/2D_langevin_sim/langevin_approach/*

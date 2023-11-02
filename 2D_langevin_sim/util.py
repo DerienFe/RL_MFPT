@@ -277,8 +277,8 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 4)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e-1)
+                   bounds= [(0.1, 3)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   tol=1e-2)
     
     #print("local optimisation result:", res.x)
     return res.x
@@ -296,6 +296,31 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     this function apply the bias given by the gaussian_param to the system.
     """
     pi = np.pi #we need convert this into nm.
+        #at last we add huge barrier at the edge of the box. since we are not using pbc.
+    #this is to prevent the particle from escaping the box.
+    # if x<0, push the atom back to x=0
+
+
+    k = 10  # Steepness of the sigmoid curve
+    max_barrier = "1e3"  # Scaling factor for the potential maximum
+
+    # Defining the potentials using a sigmoid function
+    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x)))")
+    right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - 2 * {pi}))))")
+    bottom_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * y)))")
+    top_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (y - 2 * {pi}))))")
+
+    left_pot.addParticle(particle_idx)
+    right_pot.addParticle(particle_idx)
+    bottom_pot.addParticle(particle_idx)
+    top_pot.addParticle(particle_idx)
+
+    system.addForce(left_pot)
+    system.addForce(right_pot)
+    system.addForce(bottom_pot)
+    system.addForce(top_pot)
+
+    
     #unpack gaussian parameters
     if mode == "gaussian":
         num_gaussians = int(len(gaussian_param)/5)
@@ -432,11 +457,20 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                     Z -= A_i[i] * np.exp(-(X-x0_i[i])**2/(2*sigma_x_i[i]**2) - (Y-y0_i[i])**2/(2*sigma_y_i[i]**2))
                 for i in range(num_barrier):
                     Z += A_j[i] * np.exp(-(X-x0_j[i])**2/(2*sigma_x_j[i]**2) - (Y-y0_j[i])**2/(2*sigma_y_j[i]**2))
+                
+                #add the x,y boundary energy barrier.
+                total_energy_barrier = np.zeros_like(X)
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (X - 0)))) #left
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (X - 2 * pi)))) #right
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - 0))))
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - 2 * pi))))
+                Z += total_energy_barrier
+
                 plt.figure()
                 plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp* 12/7 * 4.184, origin="lower")
                 plt.xlabel("x")
-                plt.xlim([0, 2*np.pi])
-                plt.ylim([0, 2*np.pi])
+                plt.xlim([-1, 1+2*np.pi])
+                plt.ylim([-1, 1+2*np.pi])
                 plt.ylabel("y")
                 plt.title("FES mode = multiwell, pbc=False")
                 plt.colorbar()
@@ -476,6 +510,14 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                     Z -= 0.6* amp * np.exp(-((X-np.pi)**2/0.5+(Y-np.pi)**2)/0.5)
                     Z += 0.4*amp*(((X-np.pi)/8)**2 + ((Y-np.pi)/8)**2)
 
+                    #add the x,y boundary energy barrier.
+                    total_energy_barrier = np.zeros_like(X)
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (X - 0)))) #left
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (X - 2 * pi)))) #right
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - 0))))
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - 2 * pi))))
+                    Z += total_energy_barrier
+
                     # Create the 3D contour plot
                     fig = go.Figure(data=[go.Surface(z=Z, x=X, y=Y, cmin = 0, cmax = amp *12/7)])
                     fig.update_traces(contours_z=dict(show=True, usecolormap=True,
@@ -505,6 +547,14 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                     Z += 0.7* amp * np.exp(-((X-np.pi)**2/0.5+(Y-np.pi)**2/0.5))
                     Z += 0.2*amp*(((X-np.pi)/8)**2 + ((Y-np.pi)/8)**2)
 
+                    #add the x,y boundary energy barrier.
+                    total_energy_barrier = np.zeros_like(X)
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (X - 0)))) #left
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (X - 2 * pi)))) #right
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - 0))))
+                    total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - 2 * pi))))
+                    Z += total_energy_barrier
+
                     plt.figure()
                     plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp *12/7, origin="lower")
                     plt.xlabel("x")
@@ -516,24 +566,6 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                     plt.savefig(plot_path)
                     plt.close()
                     fes = Z
-
-    #at last we add huge barrier at the edge of the box. since we are not using pbc.
-    #this is to prevent the particle from escaping the box.
-    # if x<0, push the atom back to x=0
-    left_pot = openmm.CustomExternalForce("1e10 * step(-x)")
-    right_pot = openmm.CustomExternalForce(f"1e10 * step(-(x - 2*{pi}))")
-    bottom_pot = openmm.CustomExternalForce("1e10 * step(-y)")
-    top_pot = openmm.CustomExternalForce(f"1e10 * step(-(y - 2*{pi}))")
-
-    left_pot.addParticle(particle_idx)
-    right_pot.addParticle(particle_idx)
-    bottom_pot.addParticle(particle_idx)
-    top_pot.addParticle(particle_idx)
-
-    system.addForce(left_pot)
-    system.addForce(right_pot)
-    system.addForce(bottom_pot)
-    system.addForce(top_pot)
 
     return system, fes #return the system and the fes (2D array for plotting.)
 
