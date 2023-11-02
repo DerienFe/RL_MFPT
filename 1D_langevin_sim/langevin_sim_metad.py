@@ -232,7 +232,7 @@ if __name__ == "__main__":
 
         #plot the trajectory
         plot_inteval = len(pos_traj)//1000
-        plt.scatter(pos_traj[::plot_inteval,0], pos_traj[::plot_inteval,1], s=1.5, alpha = 0.3, c="black")
+        plt.scatter(pos_traj[:,0:plot_inteval], pos_traj[:,1:plot_inteval], s=1.5, alpha = 0.3, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
 

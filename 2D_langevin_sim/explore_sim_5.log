@@ -1,0 +1,111 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7fcb84c75450>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7fcb84c75450>, origin='/home/tj/WORK/RL_MFPT/2D_langevin_sim/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/2D_langevin_sim/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/2D_langevin_sim/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7fcb8375b210>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'NUMBER_OF_PROCESSES': 4, 'num_sim': 8, 'sim_steps': 5000000, 'pbc': False, 'time_tag': '20231101-133419', 'amp': 6, 'propagation_step': 10000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.2, unit=picosecond), 'num_bins': 30, 'dcdfreq': 100, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7fcb82e43540> >, 'num_gaussian': 20, 'start_state': Quantity(value=[Vec3(x=5.0, y=4.0, z=0.0)], unit=nanometer), 'end_state': Quantity(value=[Vec3(x=1.0, y=1.0, z=0.0)], unit=nanometer), 'fes_mode': 'multiwell'}
+time_tag:  20231101-133419
+-A0*exp(-(x-x00)^2/(2*sigma_x0^2) - (y-y00)^2/(2*sigma_y0^2))
+-A1*exp(-(x-x01)^2/(2*sigma_x1^2) - (y-y01)^2/(2*sigma_y1^2))
+-A2*exp(-(x-x02)^2/(2*sigma_x2^2) - (y-y02)^2/(2*sigma_y2^2))
+-A3*exp(-(x-x03)^2/(2*sigma_x3^2) - (y-y03)^2/(2*sigma_y3^2))
+-A4*exp(-(x-x04)^2/(2*sigma_x4^2) - (y-y04)^2/(2*sigma_y4^2))
+-A5*exp(-(x-x05)^2/(2*sigma_x5^2) - (y-y05)^2/(2*sigma_y5^2))
+-A6*exp(-(x-x06)^2/(2*sigma_x6^2) - (y-y06)^2/(2*sigma_y6^2))
+-A7*exp(-(x-x07)^2/(2*sigma_x7^2) - (y-y07)^2/(2*sigma_y7^2))
+-A8*exp(-(x-x08)^2/(2*sigma_x8^2) - (y-y08)^2/(2*sigma_y8^2))
+A9*exp(-(x-x09)^2/(2*sigma_x9^2) - (y-y09)^2/(2*sigma_y9^2))
+propagation 0 starting
+Ag0*exp(-(x-x0g0)^2/(2*sigma_xg0^2) - (y-y0g0)^2/(2*sigma_yg0^2))
+Ag1*exp(-(x-x0g1)^2/(2*sigma_xg1^2) - (y-y0g1)^2/(2*sigma_yg1^2))
+Ag2*exp(-(x-x0g2)^2/(2*sigma_xg2^2) - (y-y0g2)^2/(2*sigma_yg2^2))
+Ag3*exp(-(x-x0g3)^2/(2*sigma_xg3^2) - (y-y0g3)^2/(2*sigma_yg3^2))
+Ag4*exp(-(x-x0g4)^2/(2*sigma_xg4^2) - (y-y0g4)^2/(2*sigma_yg4^2))
+Ag5*exp(-(x-x0g5)^2/(2*sigma_xg5^2) - (y-y0g5)^2/(2*sigma_yg5^2))
+Ag6*exp(-(x-x0g6)^2/(2*sigma_xg6^2) - (y-y0g6)^2/(2*sigma_yg6^2))
+Ag7*exp(-(x-x0g7)^2/(2*sigma_xg7^2) - (y-y0g7)^2/(2*sigma_yg7^2))
+Ag8*exp(-(x-x0g8)^2/(2*sigma_xg8^2) - (y-y0g8)^2/(2*sigma_yg8^2))
+Ag9*exp(-(x-x0g9)^2/(2*sigma_xg9^2) - (y-y0g9)^2/(2*sigma_yg9^2))
+Ag10*exp(-(x-x0g10)^2/(2*sigma_xg10^2) - (y-y0g10)^2/(2*sigma_yg10^2))
+Ag11*exp(-(x-x0g11)^2/(2*sigma_xg11^2) - (y-y0g11)^2/(2*sigma_yg11^2))
+Ag12*exp(-(x-x0g12)^2/(2*sigma_xg12^2) - (y-y0g12)^2/(2*sigma_yg12^2))
+Ag13*exp(-(x-x0g13)^2/(2*sigma_xg13^2) - (y-y0g13)^2/(2*sigma_yg13^2))
+Ag14*exp(-(x-x0g14)^2/(2*sigma_xg14^2) - (y-y0g14)^2/(2*sigma_yg14^2))
+Ag15*exp(-(x-x0g15)^2/(2*sigma_xg15^2) - (y-y0g15)^2/(2*sigma_yg15^2))
+Ag16*exp(-(x-x0g16)^2/(2*sigma_xg16^2) - (y-y0g16)^2/(2*sigma_yg16^2))
+Ag17*exp(-(x-x0g17)^2/(2*sigma_xg17^2) - (y-y0g17)^2/(2*sigma_yg17^2))
+Ag18*exp(-(x-x0g18)^2/(2*sigma_xg18^2) - (y-y0g18)^2/(2*sigma_yg18^2))
+Ag19*exp(-(x-x0g19)^2/(2*sigma_xg19^2) - (y-y0g19)^2/(2*sigma_yg19^2))
+system added with bias.
+Propagation 0:   0%|          | 0/100 [00:00<?, ?it/s]Propagation 0:   8%|▊         | 8/100 [00:00<00:01, 75.47it/s]Propagation 0:  16%|█▌        | 16/100 [00:00<00:01, 74.45it/s]Propagation 0:  25%|██▌       | 25/100 [00:00<00:00, 81.11it/s]Propagation 0:  34%|███▍      | 34/100 [00:00<00:00, 84.26it/s]Propagation 0:  43%|████▎     | 43/100 [00:00<00:00, 81.05it/s]Propagation 0:  52%|█████▏    | 52/100 [00:00<00:00, 77.40it/s]Propagation 0:  60%|██████    | 60/100 [00:00<00:00, 76.03it/s]Propagation 0:  68%|██████▊   | 68/100 [00:00<00:00, 75.98it/s]Propagation 0:  76%|███████▌  | 76/100 [00:00<00:00, 75.10it/s]Propagation 0:  86%|████████▌ | 86/100 [00:01<00:00, 81.17it/s]Propagation 0:  95%|█████████▌| 95/100 [00:01<00:00, 78.27it/s]Propagation 0: 100%|██████████| 100/100 [00:01<00:00, 77.77it/s]
+/home/tj/WORK/RL_MFPT/2D_langevin_sim/util.py:89: RuntimeWarning: divide by zero encountered in log
+  F = -kT * np.log(peq) #add a small number to avoid log(0))
+propagation number {prop_index} starting
+Try and Optim from state: (20, 27) to state: (18, 26)
+random try: 0 mfpt: 84.82471991590938
+random try: 100 mfpt: 133.6054804715646
+random try: 200 mfpt: 760.4836943966471
+random try: 300 mfpt: 330.96846651703487
+random try: 400 mfpt: 115.09972582902509
+random try: 500 mfpt: 175.67025101287658
+random try: 600 mfpt: 74.53476439652049
+random try: 700 mfpt: 102.97487638039227
+random try: 800 mfpt: 291.2675335838179
+random try: 900 mfpt: 3122.748196140531
+best mfpt: 18.56171484453926
+system bias updated
+Propagation 1:   0%|          | 0/100 [00:00<?, ?it/s]Propagation 1:   8%|▊         | 8/100 [00:00<00:01, 77.80it/s]Propagation 1:  16%|█▌        | 16/100 [00:00<00:01, 75.25it/s]Propagation 1:  26%|██▌       | 26/100 [00:00<00:00, 82.92it/s]Propagation 1:  35%|███▌      | 35/100 [00:00<00:00, 83.84it/s]Propagation 1:  44%|████▍     | 44/100 [00:00<00:00, 84.93it/s]Propagation 1:  54%|█████▍    | 54/100 [00:00<00:00, 89.35it/s]Propagation 1:  64%|██████▍   | 64/100 [00:00<00:00, 90.58it/s]Propagation 1:  74%|███████▍  | 74/100 [00:00<00:00, 91.05it/s]Propagation 1:  85%|████████▌ | 85/100 [00:00<00:00, 96.02it/s]Propagation 1:  95%|█████████▌| 95/100 [00:01<00:00, 91.97it/s]Propagation 1: 100%|██████████| 100/100 [00:01<00:00, 89.04it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (18, 26) to state: (18, 20)
+random try: 0 mfpt: 3364.849177188723
+random try: 100 mfpt: 69.56703320882339
+random try: 200 mfpt: 2197.3600475573694
+random try: 300 mfpt: 91.10836721594842
+random try: 400 mfpt: 1993.350216165595
+random try: 500 mfpt: 273.4816824283836
+random try: 600 mfpt: 244.92146230443626
+random try: 700 mfpt: 219.95176128946463
+random try: 800 mfpt: 3604.869619401961
+random try: 900 mfpt: 779.5494162254951
+best mfpt: 50.7708321636515
+system bias updated
+Propagation 2:   0%|          | 0/100 [00:00<?, ?it/s]Propagation 2:   7%|▋         | 7/100 [00:00<00:01, 57.83it/s]Propagation 2:  18%|█▊        | 18/100 [00:00<00:01, 81.77it/s]Propagation 2:  27%|██▋       | 27/100 [00:00<00:01, 72.48it/s]Propagation 2:  35%|███▌      | 35/100 [00:00<00:01, 64.63it/s]Propagation 2:  42%|████▏     | 42/100 [00:00<00:01, 57.23it/s]Propagation 2:  50%|█████     | 50/100 [00:00<00:00, 62.16it/s]Propagation 2:  57%|█████▋    | 57/100 [00:00<00:00, 58.57it/s]Propagation 2:  64%|██████▍   | 64/100 [00:01<00:00, 58.68it/s]Propagation 2:  70%|███████   | 70/100 [00:01<00:00, 51.02it/s]Propagation 2:  79%|███████▉  | 79/100 [00:01<00:00, 60.26it/s]Propagation 2:  89%|████████▉ | 89/100 [00:01<00:00, 70.21it/s]Propagation 2:  99%|█████████▉| 99/100 [00:01<00:00, 77.92it/s]Propagation 2: 100%|██████████| 100/100 [00:01<00:00, 66.22it/s]
+propagation number {prop_index} starting
+Try and Optim from state: (16, 16) to state: (16, 14)
+random try: 0 mfpt: 98.91012318967088
+random try: 100 mfpt: 1066.319323124819
+random try: 200 mfpt: 1809.9740009405266
+random try: 300 mfpt: 145.44794196684182
+random try: 400 mfpt: 224.71646872754084
+random try: 500 mfpt: 265.2166067134791
+random try: 600 mfpt: 29.74541438913521
+random try: 700 mfpt: 87.95194358883428
+random try: 800 mfpt: 179.95888371250652
+random try: 900 mfpt: 8668.204829275968
+best mfpt: 16.177491536279735
+system bias updated
+Propagation 3:   0%|          | 0/100 [00:00<?, ?it/s]Propagation 3:   5%|▌         | 5/100 [00:00<00:02, 44.80it/s]Propagation 3:  10%|█         | 10/100 [00:00<00:01, 47.42it/s]Propagation 3:  16%|█▌        | 16/100 [00:00<00:01, 51.41it/s]Propagation 3:  23%|██▎       | 23/100 [00:00<00:01, 58.06it/s]Propagation 3:  30%|███       | 30/100 [00:00<00:01, 60.97it/s]Propagation 3:  37%|███▋      | 37/100 [00:00<00:01, 61.97it/s]Propagation 3:  45%|████▌     | 45/100 [00:00<00:00, 65.13it/s]Propagation 3:  52%|█████▏    | 52/100 [00:00<00:00, 59.61it/s]Propagation 3:  59%|█████▉    | 59/100 [00:01<00:00, 57.28it/s]Propagation 3:  65%|██████▌   | 65/100 [00:01<00:00, 56.92it/s]Propagation 3:  74%|███████▍  | 74/100 [00:01<00:00, 65.52it/s]Propagation 3:  83%|████████▎ | 83/100 [00:01<00:00, 71.67it/s]Propagation 3:  92%|█████████▏| 92/100 [00:01<00:00, 75.08it/s]Propagation 3: 100%|██████████| 100/100 [00:01<00:00, 65.20it/s]
+/home/tj/WORK/RL_MFPT/2D_langevin_sim/util.py:89: RuntimeWarning: invalid value encountered in log
+  F = -kT * np.log(peq) #add a small number to avoid log(0))
+propagation number {prop_index} starting
+Try and Optim from state: (15, 13) to state: (10, 14)
+random try: 0 mfpt: 384.7632660554387
+random try: 100 mfpt: 197.4000329326504
+random try: 200 mfpt: 256.68998146833144
+random try: 300 mfpt: 199.06480833165188
+random try: 400 mfpt: 1707.1415216113767
+random try: 500 mfpt: 782.445535628682
+random try: 600 mfpt: 1211.9847384426298
+random try: 700 mfpt: 336.888259709914
+random try: 800 mfpt: 966.6918228478878
+random try: 900 mfpt: 3787.960513224728
+best mfpt: 28.762037756014657
+system bias updated
+Propagation 4:   0%|          | 0/100 [00:00<?, ?it/s]Propagation 4:   4%|▍         | 4/100 [00:00<00:02, 34.21it/s]Propagation 4:  11%|█         | 11/100 [00:00<00:01, 51.37it/s]Propagation 4:  17%|█▋        | 17/100 [00:00<00:01, 53.10it/s]Propagation 4:  28%|██▊       | 28/100 [00:00<00:00, 73.16it/s]Propagation 4:  36%|███▌      | 36/100 [00:00<00:00, 69.29it/s]Propagation 4:  44%|████▍     | 44/100 [00:00<00:00, 56.97it/s]Propagation 4:  51%|█████     | 51/100 [00:00<00:00, 55.59it/s]Propagation 4:  60%|██████    | 60/100 [00:00<00:00, 63.91it/s]Propagation 4:  69%|██████▉   | 69/100 [00:01<00:00, 68.92it/s]Propagation 4:  77%|███████▋  | 77/100 [00:01<00:00, 58.85it/s]Propagation 4:  84%|████████▍ | 84/100 [00:01<00:00, 61.42it/s]Propagation 4:  91%|█████████ | 91/100 [00:01<00:00, 52.78it/s]Propagation 4:  98%|█████████▊| 98/100 [00:01<00:00, 55.78it/s]Propagation 4: 100%|██████████| 100/100 [00:01<00:00, 58.74it/s]
