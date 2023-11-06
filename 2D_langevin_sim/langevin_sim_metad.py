@@ -32,7 +32,7 @@ if __name__ == "__main__":
 
     #metaD parameters
     npoints = 101
-    meta_freq = 1000
+    meta_freq = 5000
     meta_height = 1
 
     #
@@ -231,8 +231,8 @@ if __name__ == "__main__":
         plt.title("FES mode = multiwell, pbc=False")
 
         #plot the trajectory
-        plot_inteval = len(pos_traj)//1000
-        plt.scatter(pos_traj[::plot_inteval,0], pos_traj[::plot_inteval,1], s=1.5, alpha = 0.3, c="black")
+        plot_inteval = len(pos_traj)//10000 #plot 10000 points
+        plt.scatter(pos_traj[::plot_inteval,0], pos_traj[::plot_inteval,1], s=3.5, alpha = 0.5, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
 

@@ -277,8 +277,8 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 3)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e-2)
+                   bounds= [(0.1, 2)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
+                   tol=1e0)
     
     #print("local optimisation result:", res.x)
     return res.x
@@ -301,14 +301,14 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     # if x<0, push the atom back to x=0
 
 
-    k = 10  # Steepness of the sigmoid curve
-    max_barrier = "1e3"  # Scaling factor for the potential maximum
-
+    k = 5  # Steepness of the sigmoid curve
+    max_barrier = "1e2"  # Scaling factor for the potential maximum
+    offset = 0.5 #the offset of the boundary energy barrier.
     # Defining the potentials using a sigmoid function
-    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x)))")
-    right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - 2 * {pi}))))")
-    bottom_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * y)))")
-    top_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (y - 2 * {pi}))))")
+    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
+    right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
+    bottom_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * y - (-{offset}))))")
+    top_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (y - (2 * {pi} + {offset})))))")
 
     left_pot.addParticle(particle_idx)
     right_pot.addParticle(particle_idx)
@@ -460,10 +460,10 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 
                 #add the x,y boundary energy barrier.
                 total_energy_barrier = np.zeros_like(X)
-                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (X - 0)))) #left
-                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (X - 2 * pi)))) #right
-                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - 0))))
-                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - 2 * pi))))
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (X - (-offset))))) #left
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (X - (2 * pi + offset))))) #right
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - (-offset)))))
+                total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - (2 * pi + offset)))))
                 Z += total_energy_barrier
 
                 plt.figure()
