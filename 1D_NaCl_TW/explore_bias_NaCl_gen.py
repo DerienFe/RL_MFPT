@@ -107,7 +107,7 @@ def propagate(context, gaussian_params, prop_index, NaCl_dist, time_tag, steps=1
     #print(f"Inside the propagate function, lenght of dist is: {len(dist)}")
 
     for index_d, d in enumerate(dist):
-        if d >= 7: #note here is in angstrom.
+        if d >= 8: #note here is in angstrom.
             reach = index_d * dcdfreq
 
     #we concatenate the new dist to the old dist.
@@ -283,7 +283,6 @@ if __name__ == "__main__":
                 #save the gaussian params to a txt file.
                 np.savetxt(f"gaussian_params/{time_tag}_gaussian_params_{i}.txt", gaussian_params)
 
-                ## construct an OpenMM context
                 #we use context.setParameters() to update the bias potential.
                 for j in range(10):
                     context.setParameter(f'a{j}', gaussian_params[j] * 4.184) #unit in openmm is kJ/mol, the a is fitted in kcal/mol, so we multiply by 4.184
