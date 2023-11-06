@@ -8,7 +8,7 @@ from openmm.unit import Quantity
 from openmm import Vec3
 
 NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
-num_sim = 8
+num_sim = 10
 sim_steps = int(5e7) #change to run for a whole day.
 pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
 time_tag = time.strftime("%Y%m%d-%H%M%S")
