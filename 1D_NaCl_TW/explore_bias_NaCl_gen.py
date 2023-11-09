@@ -248,7 +248,7 @@ if __name__ == "__main__":
                                                 platform=platform, 
                                                 stepsize=stepsize,
                                                 )
-                print(M.shape)
+                #print(M.shape)
                 #finding the closest element in MM to the end point. 7A in np.linspace(2.0, 9, 150+1)
                 #trim the zero rows and columns markov matrix to avoid 0 rows.
                 #!!!do everything in index space. !!!

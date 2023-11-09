@@ -36,7 +36,7 @@ def count_transitions(b, numbins, lagtime, endpt=None):
                 continue
     sumtr = np.sum(Ntr, axis=0)
     trvec = np.sum(Ntr, axis=2)
-    sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
+    #sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
     # anti = 0.5 * (sumtr - np.transpose(sumtr))
     # print("Degree of symmetry:",
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))
@@ -130,8 +130,8 @@ class DHAM:
         from util import compute_free_energy, compute_free_energy_power_method
         #peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
         peq, mU2 = compute_free_energy_power_method(MM)
-        print(peq)
-        print(sum(peq))
+        #rint(peq)
+        print("sum of peq in dham reconstruction: ", sum(peq))
 
         if True:
             #unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
@@ -143,7 +143,7 @@ class DHAM:
             plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.num_bins))
             plt.xlim(0, 2*np.pi)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
-            plt.close()
+            plt.close()        
         return mU2, MM # mU2 is in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):

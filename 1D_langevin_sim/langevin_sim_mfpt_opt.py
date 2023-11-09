@@ -268,32 +268,6 @@ if __name__ == "__main__":
                                                 end_index = closest_index,
                                                 plot = False,
                                                 )
-                
-                #save the gaussian_params
-                np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
-
-                #apply the gaussian_params to openmm system.
-                simulation = update_bias(simulation = simulation,
-                                        gaussian_param = gaussian_params,
-                                        name = "BIAS",
-                                        num_gaussians=config.num_gaussian,
-                                        )
-                
-                #we propagate system again
-                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                    gaussian_params = gaussian_params,
-                                                                    prop_index = i_prop,
-                                                                    pos_traj = pos_traj,
-                                                                    steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
-                                                                    stepsize=config.stepsize,
-                                                                    num_bins=config.num_bins,
-                                                                    pbc=config.pbc,
-                                                                    time_tag = time_tag,
-                                                                    top=top,
-                                                                    reach=reach
-                                                                    )
-                
                 if True:
                     #here we calculate the total bias given the optimized gaussian_params
                     total_bias = get_total_bias(x, gaussian_params, num_gaussians=config.num_gaussian) * 4.184 #convert to kcal/mol
@@ -305,9 +279,9 @@ if __name__ == "__main__":
                     #here we plot the reconstructed fes from MM.
                     # we also plot the most_visited_state and closest_index.
                     #plt.figure()
-                    plt.plot(x, F_M, label="DHAM fes")
-                    plt.plot(x[most_visited_state], F_M[most_visited_state], marker='o', markersize=3, color="blue", label = "most visited state (local start)")
-                    plt.plot(x[closest_index], F_M[closest_index], marker='o', markersize=3, color="red", label = "closest state (local target)")
+                    plt.plot(x, F_M*4.184, label="DHAM fes")
+                    plt.plot(x[most_visited_state], F_M[most_visited_state]*4.184, marker='o', markersize=3, color="blue", label = "most visited state (local start)")
+                    plt.plot(x[closest_index], F_M[closest_index]*4.184, marker='o', markersize=3, color="red", label = "closest state (local target)")
                     #plt.legend()
                     #plt.savefig(f"./figs/explore/{time_tag}_reconstructed_fes_{i_prop}.png")
                     #plt.close()
@@ -336,15 +310,40 @@ if __name__ == "__main__":
 
                     plt.scatter(x[history_traj], fes[history_traj], s=3.5, alpha=0.3, c='grey')
                     plt.scatter(x[recent_traj], fes[recent_traj], s=3.5, alpha=0.8, c='black')
-                    plt.legend()                                     
+                    plt.legend(loc='upper left')
                     plt.savefig(f"./figs/explore/{time_tag}_fes_traj_{i_prop}.png")
                     plt.close()
 
 
+                #save the gaussian_params
+                np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
+
+                #apply the gaussian_params to openmm system.
+                simulation = update_bias(simulation = simulation,
+                                        gaussian_param = gaussian_params,
+                                        name = "BIAS",
+                                        num_gaussians=config.num_gaussian,
+                                        )
+                
+                #we propagate system again
+                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
+                                                                    gaussian_params = gaussian_params,
+                                                                    prop_index = i_prop,
+                                                                    pos_traj = pos_traj,
+                                                                    steps=config.propagation_step,
+                                                                    dcdfreq=config.dcdfreq,
+                                                                    stepsize=config.stepsize,
+                                                                    num_bins=config.num_bins,
+                                                                    pbc=config.pbc,
+                                                                    time_tag = time_tag,
+                                                                    top=top,
+                                                                    reach=reach
+                                                                    )
                 #update working_MM and working_indices
                 working_MM, working_indices = get_working_MM(MM)
                 #update closest_index
                 closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
+                
                 i_prop += 1
 
         #we have reached target state, thus we record the steps used.

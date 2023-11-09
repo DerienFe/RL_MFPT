@@ -69,7 +69,8 @@ def propagate(simulation,
     coor_xy_digitized = np.stack([coor_x_digitized, coor_y_digitized], axis=1) #shape: [all_frames, 2]
 
     #changed order = F, temporary fix for the DHAM?
-    coor_xy_digitized_ravel = np.array([np.ravel_multi_index(x, (num_bins, num_bins), order='F') for x in coor_xy_digitized]) #shape: [all_frames,]
+    #print(x)
+    coor_xy_digitized_ravel = np.array([np.ravel_multi_index(coor_temp, (num_bins, num_bins), order='F') for coor_temp in coor_xy_digitized]) #shape: [all_frames,]
 
     """coor_xy_digitized_ravel = []
     for x in coor_xy_digitized:

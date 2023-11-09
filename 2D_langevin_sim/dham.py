@@ -147,8 +147,8 @@ class DHAM:
         """
         from util import compute_free_energy, compute_free_energy_power_method, Markov_mfpt_calc, kemeny_constant_check
            
-        peq,mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64), self.KbT)
-       # peq,mU2 = compute_free_energy_power_method(MM.T.astype(np.float64), self.KbT)
+        #peq,mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64), self.KbT)
+        peq,mU2 = compute_free_energy_power_method(MM.T.astype(np.float64), self.KbT)
         mfpts = Markov_mfpt_calc(peq, MM)
         kemeny_constant_check(mfpts, peq)
         #print("peq", peq)

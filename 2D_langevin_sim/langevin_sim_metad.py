@@ -28,7 +28,6 @@ if __name__ == "__main__":
 
     pbc = config.pbc
     time_tag = time.strftime("%Y%m%d-%H%M%S")
-    amp = 1 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
     #metaD parameters
     npoints = 101
@@ -158,7 +157,7 @@ if __name__ == "__main__":
         print("minimizing energy done, time: %.2f" % (time.time()-s))
 
 
-        pos_traj = np.zeros([config.sim_steps, 3])
+        pos_traj = np.zeros([int(config.sim_steps/config.dcdfreq), 3])
 
         #store fes in 2D way
         #fes = np.zeros([int(sim_steps/dcdfreq), 50, 50])
@@ -231,7 +230,7 @@ if __name__ == "__main__":
         plt.title("FES mode = multiwell, pbc=False")
 
         #plot the trajectory
-        plot_inteval = len(pos_traj)//10000 #plot 10000 points
+        plot_inteval = len(pos_traj)//1000 #plot 10000 points
         plt.scatter(pos_traj[::plot_inteval,0], pos_traj[::plot_inteval,1], s=3.5, alpha = 0.5, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()

@@ -196,6 +196,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     end_state: the ending state. note this has to be converted into the index space.
     index_offset: the offset of the index space. e.g. if the truncated M (with shape [20, 20]) matrix starts from 13 to 33, then the index_offset is 13.
     """
+    x = np.linspace(0, 2*np.pi, config.num_bins+1) #hard coded for now.
+    best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     #first we convert the big index into "index to the working indices".
 
@@ -204,17 +206,21 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     start_state_working_index = np.argmin(np.abs(working_indices - start_index))
     end_state_working_index = np.argmin(np.abs(working_indices - end_index))
     print("optimizing to get g_param from start state:", start_state_working_index, "to end state:", end_state_working_index, "in working indices.")
-    
+    print("converted to xspace that's from:", x[working_indices[start_state_working_index]], "to", x[working_indices[end_state_working_index]])
     #now our M/working_indices could be incontinues. #N = M.shape[0]
-    x = np.linspace(0, 2*np.pi, config.num_bins+1) #hard coded for now.
-    best_mfpt = 1e20 #initialise the best mfpt np.inf
+    
+    #we get the upper/lower bound of the gaussian params.
+    upper = x[working_indices[-1]]
+    lower = x[working_indices[0]]
+    print("upper bound:", upper, "lower bound:", lower)
 
-    for i in range(1000): 
+    for try_num in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) #* 1.5
+        a = np.ones(num_gaussian) 
         b = rng.uniform(0, 2*np.pi, num_gaussian)
-        c = rng.uniform(0.3, 1.5, num_gaussian)
+        #b = rng.uniform(lower, upper, num_gaussian)
+        c = rng.uniform(0.3, 2, num_gaussian)
         
         #we convert the working_indices to the qspace.
 
@@ -241,15 +247,15 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = 0
 
 
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
-        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        #peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
         #print(peq)
         #kemeny_constant_check(M.shape[0], mfpts_biased, peq)
-        if i % 100 == 0:
-            print("random try:", i, "mfpt:", mfpt_biased)
+        if try_num % 100 == 0:
+            print("random try:", try_num, "mfpt:", mfpt_biased)
             kemeny_constant_check(M.shape[0], mfpts_biased, peq)
             #we plot the F.
             
@@ -304,8 +310,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = M_biased[i, :] / row_sum
             else:
                 M_biased[i, :] = 0
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
-        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        #peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
 
@@ -318,8 +324,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 1.5)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-3)
+                   bounds= [(0.1, 2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 2)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e0)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
@@ -422,7 +428,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             
             if plot:
                 #plot the fes.
-                x = np.linspace(0, 2*np.pi, 100)
+                x = np.linspace(0, 2*np.pi, config.num_bins)
                 Z = np.zeros_like(x)
                 for i in range(num_hills):
                     Z += A_i[i] * 4.184 * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))

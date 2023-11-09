@@ -14,11 +14,11 @@ pbc = False #True is not implemented, we got problem fitting periodic function t
 time_tag = time.strftime("%Y%m%d-%H%M%S")
 amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
-propagation_step = 10000
+propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
 stepsize_unbias = 0.2 * unit.picoseconds #100 times.
 num_bins = 100 #used to discretize the traj, and used in the DHAM.
-dcdfreq = 100
+dcdfreq = 1
 
 platform = openmm.Platform.getPlatformByName('CUDA')
 #platform = openmm.Platform.getPlatformByName('CPU')
