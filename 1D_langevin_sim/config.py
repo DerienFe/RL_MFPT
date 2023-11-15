@@ -9,16 +9,17 @@ from openmm import Vec3
 
 NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
 num_sim = 8
-sim_steps = int(5e6)
+sim_steps = int(5e5)
 pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
+amp = 4 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
 propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
 stepsize_unbias = 0.2 * unit.picoseconds #100 times.
 num_bins = 100 #used to discretize the traj, and used in the DHAM.
-dcdfreq = 1
+dcdfreq = 100
+dcdfreq_mfpt = 1
 
 platform = openmm.Platform.getPlatformByName('CUDA')
 #platform = openmm.Platform.getPlatformByName('CPU')

@@ -40,7 +40,7 @@ def count_transitions(b, numbins, lagtime, endpt=None):
                 continue
     sumtr = np.sum(Ntr, axis=0)
     trvec = np.sum(Ntr, axis=2)
-    sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
+    #sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
     # anti = 0.5 * (sumtr - np.transpose(sumtr))
     # print("Degree of symmetry:",
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))

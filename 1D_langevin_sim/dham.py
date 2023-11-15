@@ -133,7 +133,7 @@ class DHAM:
         #rint(peq)
         print("sum of peq in dham reconstruction: ", sum(peq))
 
-        if True:
+        if False:
             #unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
             #plot the unbiased profile from 0 to 2pi nm.
             #plt.plot(unb_bins, unb_profile, label="ground truth")

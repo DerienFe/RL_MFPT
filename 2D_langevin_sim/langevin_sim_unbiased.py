@@ -54,6 +54,10 @@ if __name__ == "__main__":
                         amp=config.amp, 
                         mode = config.fes_mode,
                         plot = True)
+        #save the fes to a matlab .mat file.
+        if True:
+            import scipy.io
+            scipy.io.savemat(f"./fes_{time_tag}.mat", {'fes':fes})
         z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier

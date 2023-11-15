@@ -41,11 +41,16 @@ if __name__ == "__main__":
     top.addChain()
     top.addResidue("xxx", top._chains[0])
     top.addAtom("X", elem, top._chains[0]._residues[0])
-
     mass = 12.0 * unit.amu
-    #starting point as [1.29,-1.29,0.0]
-
     for i_sim in range(config.num_sim):
+        print("system initializing")
+        #print out all the config.
+        print("config: ", config.__dict__)
+
+        time_tag = time.strftime("%Y%m%d-%H%M%S")
+        #print current time tag.
+        print("time_tag: ", time_tag)
+
         system = openmm.System()
         system.addParticle(mass)
 
@@ -65,9 +70,12 @@ if __name__ == "__main__":
                                 amp=config.amp, 
                                 mode = config.fes_mode,
                                 plot = True)
+        y_pot = openmm.CustomExternalForce("1e3 * y^2") # very large force constant in y
+        y_pot.addParticle(0)
         z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier
+        system.addForce(y_pot)
         #pbc section
         if pbc:
             a = unit.Quantity((2*np.pi*unit.nanometers, 0*unit.nanometers, 0*unit.nanometers))
@@ -85,63 +93,39 @@ if __name__ == "__main__":
         if not os.path.exists(aux_file_path):
             os.makedirs(aux_file_path)
 
-        #apply the rmsd restraint as BiasVariable
         target_pos = config.end_state
 
-        """
-        rmsd_cv = openmm.RMSDForce(target_pos, [0])
-        rmsd_cv.setReferencePositions(target_pos)
-        print(rmsd_cv.getParticles())
-        print(rmsd_cv.getReferencePositions())
-        custom_force = openmm.CustomCVForce("k*RMSD")
-        custom_force.addGlobalParameter("k", 1.0)
-        custom_force.addCollectiveVariable("RMSD", rmsd_cv)
-
-        rmsd_Bias_var = BiasVariable(custom_force, 1.0, 10, 1, False)
-        """
-        x0, y0 = target_pos[0][0], target_pos[0][1]
+        x0 = target_pos[0][0] #this is final position.
         if pbc:
+            raise NotImplementedError #not implementedd for pbc yet.
             x_cv = openmm.CustomExternalForce("1.0*(periodicdistance(x,0,0, x0,0,0))^2")
         else:
-            x_cv = openmm.CustomExternalForce("1.0*(x-x0)^2")
+            x_cv = openmm.CustomExternalForce("x")
         x_cv.addGlobalParameter("x0", x0)
         x_cv.addParticle(0)
         x_force = openmm.CustomCVForce("k*x_cv")
         x_force.addGlobalParameter("k", 1.0)
         x_force.addCollectiveVariable("x_cv", x_cv)
 
-        if pbc:
-            y_cv = openmm.CustomExternalForce("1.0*(periodicdistance(0,y,0, 0,y0,0))^2")
-        else:
-            y_cv = openmm.CustomExternalForce("1.0*(y-y0)^2")
-        y_cv.addGlobalParameter("y0", y0)
-        y_cv.addParticle(0)
-        y_force = openmm.CustomCVForce("k*y_cv")
-        y_force.addGlobalParameter("k", 1.0)
-        y_force.addCollectiveVariable("y_cv", y_cv)
-
-        x_Bias_var = BiasVariable(x_force, 2.0, 10, 0.2, config.pbc)
-        y_Bias_var = BiasVariable(y_force, 2.0, 10, 0.2, config.pbc)
+        x_Bias_var = BiasVariable(x_force, 0, 2*np.pi, 0.5, config.pbc) #this cv range from 2 to 2pi. with width of 0.2
 
         #check forces #the forces are correct. it is possible the BiasVariable is not compatible with ExternalForce class.
         #for force in system.getForces():
         #    print(force)
 
         metaD = Metadynamics(system=system,
-                                variables=[x_Bias_var, y_Bias_var], #variables=[rmsd_Bias_var],
-                                temperature=300*unit.kelvin,
-                                biasFactor=2,
-                                height=1.0*unit.kilocalorie_per_mole,
-                                frequency=meta_freq, #1000
-                                saveFrequency=meta_freq,
-                                biasDir=aux_file_path,)
+                            variables=[x_Bias_var], #variables=[rmsd_Bias_var],
+                            temperature=300*unit.kelvin,
+                            biasFactor=2,
+                            height=1.0*unit.kilojoules_per_mole,
+                            frequency=meta_freq, #1000
+                            saveFrequency=meta_freq,
+                            biasDir=aux_file_path,)
 
         platform = openmm.Platform.getPlatformByName('CUDA') #CUDA
-
-        #integrator
         integrator = openmm.LangevinIntegrator(300*unit.kelvin, 
                                             1.0/unit.picoseconds, 
-                                            0.002*unit.picoseconds)
+                                            config.stepsize)
 
         #run the simulation
         simulation = openmm.app.Simulation(top, system, integrator, platform)
@@ -151,12 +135,10 @@ if __name__ == "__main__":
         #minimize the energy
         s = time.time()
         print("minimizing energy")
-
         for _ in range(50):
-            openmm.LocalEnergyMinimizer.minimize(simulation.context, 1e-2, 1000)
+            openmm.LocalEnergyMinimizer.minimize(simulation.context, 1, 1000)
 
         print("minimizing energy done, time: %.2f" % (time.time()-s))
-
 
         pos_traj = np.zeros([config.sim_steps, 3])
 
@@ -188,6 +170,10 @@ if __name__ == "__main__":
             dcd_file.writeModel(state.getPositions(asNumpy=True))
         file_handle.close()
 
+        energy_CV = metaD.getFreeEnergy()
+        print("energy_CV: ", energy_CV)
+        np.save(f"./visited_states/{time_tag}_metaD_energy_CV.npy", np.array(energy_CV))
+
 
         #zip traj, biasand save.
         np.save(f"./visited_states/{time_tag}_metaD_pos_traj_.npy", np.array(pos_traj))
@@ -218,26 +204,24 @@ if __name__ == "__main__":
 
 
         ### VISUALIZATION ###
-
+        x = np.linspace(0, 2*np.pi, config.num_bins)
         #we plot the pos_traj.
         plt.figure()
         #here we plot the fes.
-        plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7 * 4.184, origin="lower")
-        plt.colorbar()
+        plt.plot(x, fes, label="original fes")
         plt.xlabel("x")
         #plt.xlim([-1, 2*np.pi+1])
         #plt.ylim([-1, 2*np.pi+1])
         plt.ylabel("y")
-        plt.title("FES mode = multiwell, pbc=False")
 
         #plot the trajectory
         plot_inteval = len(pos_traj)//1000
-        plt.scatter(pos_traj[:,0:plot_inteval], pos_traj[:,1:plot_inteval], s=1.5, alpha = 0.3, c="black")
+        traj = pos_traj[::plot_inteval][:,0].squeeze() #we only take x axis coordinate.
+        traj = np.digitize(traj, x)
+
+        plt.scatter(x[traj], fes[traj], s=3.5, alpha = 0.5, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
-
-
-
 
 
 print("all done")

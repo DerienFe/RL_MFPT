@@ -178,7 +178,14 @@ if __name__ == "__main__":
         system = openmm.System() #we initialize the system every
         system.addParticle(mass)
         #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
-        system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = None, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
+        system, fes = apply_fes(system = system, 
+                                particle_idx=0, 
+                                gaussian_param = None, 
+                                pbc = config.pbc, 
+                                amp = config.amp, 
+                                name = "FES",
+                                mode=config.fes_mode, 
+                                plot = True)
         y_pot = openmm.CustomExternalForce("1e3 * y^2") # very large force constant in y
         y_pot.addParticle(0)
         z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z

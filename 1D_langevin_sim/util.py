@@ -217,7 +217,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     for try_num in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) 
+        a = np.ones(num_gaussian) *0.35
         b = rng.uniform(0, 2*np.pi, num_gaussian)
         #b = rng.uniform(lower, upper, num_gaussian)
         c = rng.uniform(0.3, 2, num_gaussian)
@@ -324,7 +324,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          end_state_working_index,
                          working_indices), 
                    method='Nelder-Mead', 
-                   bounds= [(0.1, 2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 2)]*config.num_gaussian, #add bounds to the parameters
+                   bounds= [(0.1, 0.7)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 2)]*config.num_gaussian, #add bounds to the parameters
                    tol=1e0)
     return res.x    #, best_params
 
