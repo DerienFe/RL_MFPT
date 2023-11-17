@@ -217,7 +217,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     for try_num in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) *0.35
+        a = np.ones(num_gaussian) * 0.4
         b = rng.uniform(0, 2*np.pi, num_gaussian)
         #b = rng.uniform(lower, upper, num_gaussian)
         c = rng.uniform(0.3, 2, num_gaussian)
@@ -254,7 +254,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
         #print(peq)
         #kemeny_constant_check(M.shape[0], mfpts_biased, peq)
-        if try_num % 100 == 0:
+        if try_num % 1000 == 0:
             print("random try:", try_num, "mfpt:", mfpt_biased)
             kemeny_constant_check(M.shape[0], mfpts_biased, peq)
             #we plot the F.
@@ -314,7 +314,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
-
+        print("in the optimization the mfpt has been updated to:", mfpt_biased)
         return mfpt_biased
 
     res = minimize(mfpt_helper, #minimize comes from scipy.
@@ -325,7 +325,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          working_indices), 
                    method='Nelder-Mead', 
                    bounds= [(0.1, 0.7)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 2)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e0)
+                   tol=1e1)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):

@@ -25,7 +25,7 @@ def propagate(simulation,
               prop_index, 
               pos_traj,   #this records the trajectory of the particle. in shape: [prop_index, sim_steps, 3]
               steps=config.propagation_step,
-              dcdfreq=config.dcdfreq,
+              dcdfreq=config.dcdfreq_mfpt,
               stepsize=config.stepsize,
               num_bins=config.num_bins,
               pbc=config.pbc,
@@ -89,7 +89,7 @@ def propagate(simulation,
         #if the distance of current pos is the config.target_state, we set reach to index_d.
         target_distance = np.linalg.norm(d - end_state_x)
         if target_distance < 0.1:
-            reach = index_d * config.dcdfreq
+            reach = index_d * config.dcdfreq_mfpt
 
     return cur_pos, pos_traj, MM, reach, F_M
 
@@ -206,7 +206,7 @@ if __name__ == "__main__":
                                             0.002*unit.picoseconds)
 
         num_propagation = int(config.sim_steps/config.propagation_step)
-        frame_per_propagation = int(config.propagation_step/config.dcdfreq)
+        frame_per_propagation = int(config.propagation_step/config.dcdfreq_mfpt)
         #this stores the digitized, ravelled, x, y coordinates of the particle, for every propagation.
         pos_traj = np.zeros([num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
 
@@ -244,7 +244,7 @@ if __name__ == "__main__":
                                                                     prop_index = i_prop,
                                                                     pos_traj = pos_traj,
                                                                     steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
+                                                                    dcdfreq=config.dcdfreq_mfpt,
                                                                     stepsize=config.stepsize,
                                                                     num_bins=config.num_bins,
                                                                     pbc=config.pbc,
@@ -338,7 +338,7 @@ if __name__ == "__main__":
                                                                     prop_index = i_prop,
                                                                     pos_traj = pos_traj,
                                                                     steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
+                                                                    dcdfreq=config.dcdfreq_mfpt,
                                                                     stepsize=config.stepsize,
                                                                     num_bins=config.num_bins,
                                                                     pbc=config.pbc,
@@ -354,7 +354,7 @@ if __name__ == "__main__":
                 i_prop += 1
 
         #we have reached target state, thus we record the steps used.
-        total_steps = i_prop * config.propagation_step + reach * config.dcdfreq
+        total_steps = i_prop * config.propagation_step + reach * config.dcdfreq_mfpt
         print("total steps used: ", total_steps)
 
         with open("./total_steps_mfpt.csv", "a") as f:
