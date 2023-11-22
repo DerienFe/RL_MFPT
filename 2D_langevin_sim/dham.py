@@ -35,12 +35,13 @@ def count_transitions(b, numbins, lagtime, endpt=None):
     for k in range(b.shape[0]):
         for i in range(lagtime, b.shape[1]):
             try:
-                Ntr[k, endpt[k, i], b[k, i - lagtime]] += 1
+                #Ntr[k, b[k, i - lagtime], endpt[k, i]] += 1
+                Ntr[k,  endpt[k, i], b[k, i - lagtime]] += 1
             except IndexError:
                 continue
     sumtr = np.sum(Ntr, axis=0)
     trvec = np.sum(Ntr, axis=2)
-    #sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
+    sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
     # anti = 0.5 * (sumtr - np.transpose(sumtr))
     # print("Degree of symmetry:",
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))
@@ -62,13 +63,9 @@ class DHAM:
     lagtime = 1
 
     def __init__(self, gaussian_params):
-        #unpack it to self.a, self.bx, self.by, self.cx, self.cy
-        num_gaussian = len(gaussian_params)//5
-        self.a = gaussian_params[:num_gaussian]
-        self.bx = gaussian_params[num_gaussian:2*num_gaussian]
-        self.by = gaussian_params[2*num_gaussian:3*num_gaussian]
-        self.cx = gaussian_params[3*num_gaussian:4*num_gaussian]
-        self.cy = gaussian_params[4*num_gaussian:5*num_gaussian]
+        #gaussian_params comes in shape [prop_index + 1, num_gaussian, 5]
+        num_gaussian = gaussian_params.shape[1]
+        self.gaussian_params = gaussian_params
         x,y = np.meshgrid(np.linspace(0, 2*np.pi, self.numbins), np.linspace(0, 2*np.pi, self.numbins))
         self.x = x
         self.y = y
@@ -87,11 +84,6 @@ class DHAM:
         MM = np.empty(shape=(N*N, N*N), dtype=np.longdouble)
         if biased:
             MM = np.zeros(shape=(N*N, N*N), dtype=np.longdouble)
-            #compute the total bias u.
-            u = np.zeros_like(self.x)
-            for n in range(len(self.a)):
-                u += gaussian_2d(self.x, self.y, self.a[n], self.bx[n], self.by[n], self.cx[n], self.cy[n])
-            
             for i in range(N*N):
                 for j in range(N*N):
                     if sumtr[i, j] > 0:
@@ -100,6 +92,11 @@ class DHAM:
                         j_x, j_y = np.unravel_index(j, (self.numbins, self.numbins), order='C')
 
                         for k in range(trvec.shape[0]):
+                            #compute the total bias u.
+                            u = np.zeros_like(self.x)
+                            for g in range(self.gaussian_params.shape[1]):
+                                ax, bx, by, cx, cy = self.gaussian_params[k, g, :]
+                                u += gaussian_2d(self.x, self.y, ax, bx, by, cx, cy)
                             if trvec[k, i] > 0:
                                 sump1 += trvec[k, i] * np.exp((u[j_x, j_y] - u[i_x, i_y]) / (2*self.KbT))
                         if sump1 > 0:
@@ -130,7 +127,7 @@ class DHAM:
         """
         #digitialize the data into 2D mesh.
         #b = np.digitize(self.data, np.linspace(0, 2*np.pi, self.numbins*self.numbins+1))
-        b = self.data.reshape(1,-1).astype(np.int64)
+        b = self.data.astype(np.int64)
         
         sumtr, trvec = count_transitions(b, self.numbins * self.numbins, self.lagtime)
 
@@ -147,12 +144,12 @@ class DHAM:
         """
         from util import compute_free_energy, compute_free_energy_power_method, Markov_mfpt_calc, kemeny_constant_check
            
-        #peq,mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64), self.KbT)
-        peq,mU2 = compute_free_energy_power_method(MM.T.astype(np.float64), self.KbT)
+        peq,mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64), self.KbT)
+        #peq,mU2 = compute_free_energy_power_method(MM.T.astype(np.float64), self.KbT)
         mfpts = Markov_mfpt_calc(peq, MM)
         kemeny_constant_check(mfpts, peq)
         #print("peq", peq)
-        #print(sum(peq))
+        print("sum of peq from DHAM", np.sum(peq))
 
         if False:
             plt.figure()

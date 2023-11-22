@@ -32,8 +32,11 @@ if __name__ == "__main__":
     top.addResidue("xxx", top._chains[0])
     top.addAtom("X", elem, top._chains[0]._residues[0])
     mass = 12.0 * unit.amu
-    end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
-        
+    end_state_xyz = config.end_state_unbiased.value_in_unit_system(openmm.unit.md_unit_system)[0]
+    
+
+    x = np.linspace(0, 2*np.pi, config.num_bins)
+
     #starting point as [1.29,-1.29,0.0]
     for i_sim in range(config.num_sim):
         time_tag = time.strftime("%Y%m%d-%H%M%S")
@@ -88,41 +91,38 @@ if __name__ == "__main__":
         if config.pbc:
             simulation.context.setPeriodicBoxVectors(a,b,c)
 
-        pos_traj = np.zeros([int(config.sim_steps/config.dcdfreq), 3]) #note config.sim_steps represents the maximum number of steps here in the unbiased case.
+        pos_traj = np.zeros([int(config.sim_steps_unbiased/config.dcdfreq), 3]) #note config.sim_steps represents the maximum number of steps here in the unbiased case.
         reach = None
         i=0
         
-        file_handle = open(f'trajectories/unbias/{time_tag}_unbias_traj.dcd', 'wb')
+        file_handle = open(f'trajectory/unbias/{time_tag}_unbias_traj.dcd', 'wb')
         dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize_unbias)
-        #for i in tqdm(range(config.sim_steps)):
-        while reach is None:
+        for i in tqdm(range(int(config.sim_steps_unbiased//config.dcdfreq))):
+        #while reach is None:
             simulation.step(config.dcdfreq)
             state = simulation.context.getState(getPositions=True, enforcePeriodicBox=config.pbc)
-            pos_traj.append(state.getPositions(asNumpy=True)[0,:])
+            #record pos_traj array
+            pos_traj[i,:] = state.getPositions(asNumpy=True)[0]
 
             #we determine if we reached endstate.
             cur_pos = np.array(pos_traj[-1])
             
-            i+=1
-            if np.linalg.norm(cur_pos - end_state_xyz) < 0.1:
-                print("reached end state")
-                reach = True
+            #i+=1
+            #if np.linalg.norm(cur_pos - end_state_xyz) < 0.1:
+            #    print("reached end state")
+            #    reach = True
             
             if i % 10000 == 0: 
                 print("simulation step: ", i * config.dcdfreq)
                 ### VISUALIZATION ###
-                x,y = np.meshgrid(np.linspace(0, 2*np.pi, 100), np.linspace(0, 2*np.pi, 100)) #fes in shape [100,100]
-
                 plt.figure()
-                plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7 * 4.184, origin = "lower")
-                plt.colorbar()
                 #we only take the most recent i*2000 steps.
-                #plt.scatter(np.array(pos_traj)[::3,0], np.array(pos_traj)[::3,1], s=0.5, alpha=0.5, c='yellow')
-                plt.scatter(np.array(pos_traj)[-2000::5,0], np.array(pos_traj)[-2000::5,1], s=0.5, alpha=0.5, c='yellow')
-                plt.xlabel("x")
-                plt.xlim([0, 2*np.pi])
-                plt.ylim([0, 2*np.pi])
-                plt.ylabel("y")
+                plt.plot(x, fes, label="original fes")
+                plt.title("FES mode = multiwell, pbc=False")
+                #we plot scatter points on fes. using only the x coor from pos_traj.
+                plt.scatter(pos_traj[:i,0], fes[np.floor(pos_traj[:i,0] / (2*np.pi/config.num_bins)).astype(int)], label="unbiased trajectory", s=0.5, alpha = 0.5)
+                plt.xlabel("x-coor position (nm)")
+                plt.ylabel("fes (kJ/mol)")
                 plt.title(f"Unbiased Trajectory, pbc={config.pbc}")
                 #plt.show()
                 plt.savefig(f"./figs/unbias/unbias_traj_{time_tag}_simstep_{i*config.dcdfreq}.png")

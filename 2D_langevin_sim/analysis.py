@@ -94,8 +94,6 @@ if plot_modified_fes:
     ax.legend()
     plt.savefig("modified_fes.png")
 
-    
-
 if unbias_analysis:
     traj_path_list = []
     for file in os.listdir("trajectories/unbiased/"):

@@ -58,11 +58,9 @@ class DHAM:
     lagtime = 1
 
     def __init__(self, gaussian_params, num_bins):
-        #unpack it to self.a, self.b, self.c
-        num_gaussian = len(gaussian_params)//3
-        self.a = gaussian_params[:num_gaussian]
-        self.b = gaussian_params[num_gaussian:2*num_gaussian]
-        self.c = gaussian_params[2*num_gaussian:]
+        #gaussian_params comes in shape [prop_index + 1, num_gaussian, 3]
+        num_gaussian = gaussian_params.shape[1]
+        self.gaussian_params = gaussian_params
         self.x = np.linspace(0, 2*np.pi, self.num_bins)
         return
 
@@ -77,17 +75,21 @@ class DHAM:
         MM = np.empty(shape=sumtr.shape, dtype=np.longdouble)
         if biased:
             MM = np.zeros(shape=sumtr.shape, dtype=np.longdouble)
-
-            #compute total bias u. used for dham unbias.
-            u = np.zeros_like(self.qspace)
-            for n in range(len(self.a)):
-                u += gaussian(self.qspace, self.a[n], self.b[n], self.c[n])
             #qsp = self.qspace[1] - self.qspace[0] #step size between bins
             for i in range(sumtr.shape[0]):
                 for j in range(sumtr.shape[1]):
                     if sumtr[i, j] > 0:
                         sump1 = 0.0
                         for k in range(trvec.shape[0]):
+                            #the k represents the trajectory index.
+
+                            #for each chunk of trajectory, we load the gaussian parameters.
+                            # and calculate total bias in u, used to unbias the traj later.
+                            u = np.zeros_like(self.qspace)
+                            for g in range(self.gaussian_params.shape[1]):
+                                a,b,c = self.gaussian_params[k, g, :]
+                                u += gaussian(self.qspace, a, b, c)
+                            
                             if trvec[k, i] > 0:
                                 sump1 += trvec[k, i] * np.exp(-(u[j] - u[i]) / (2*self.KbT))
                         if sump1 > 0:
@@ -118,22 +120,13 @@ class DHAM:
         qspace = np.linspace(0, 2*np.pi, self.num_bins + 1) #hard coded for now.
         self.qspace = qspace
         b = np.digitize(self.data[:, :], qspace)
-        b = b.reshape(1, -1)
         sumtr, trvec = count_transitions(b, self.num_bins, self.lagtime, use_symmetry=use_symmetry)
-        #print("Number of transitions:", np.sum(sumtr))
-        #print("Transition vector:", np.sum(trvec, axis=0))
-        MM = self.build_MM(sumtr, trvec, biased)
-        """d, v = eig(MM.T)
-        mpeq = v[:, np.where(d == np.max(d))[0][0]]
-        mpeq = mpeq / np.sum(mpeq)
-        mpeq = mpeq.real
-        #rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
-        mU2 = - self.KbT * np.log(mpeq)"""
 
+        MM = self.build_MM(sumtr, trvec, biased)
         from util import compute_free_energy, compute_free_energy_power_method
-        #peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
-        peq, mU2 = compute_free_energy_power_method(MM)
-        #rint(peq)
+        peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
+        #peq, mU2 = compute_free_energy_power_method(MM)
+        #print(peq)
         print("sum of peq in dham reconstruction: ", sum(peq))
 
         if False:

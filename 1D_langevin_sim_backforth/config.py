@@ -17,7 +17,7 @@ amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is nor
 propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
 stepsize_unbias = 0.2 * unit.picoseconds #100 times.
-num_bins = 40 #100 #used to discretize the traj, and used in the DHAM.
+num_bins = 100 #used to discretize the traj, and used in the DHAM.
 dcdfreq = 100
 dcdfreq_mfpt = 1
 

@@ -1,0 +1,221 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f4b5fc48650>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f4b5fc48650>, origin='/home/tj/WORK/RL_MFPT/1D_langevin_sim/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/1D_langevin_sim/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/1D_langevin_sim/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7f4b5e061680>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'NUMBER_OF_PROCESSES': 4, 'num_sim': 10, 'sim_steps': 50000000, 'pbc': False, 'time_tag': '20231120-151545', 'amp': 6, 'propagation_step': 5000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.2, unit=picosecond), 'num_bins': 100, 'dcdfreq': 100, 'dcdfreq_mfpt': 1, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7f4b5dc399e0> >, 'num_gaussian': 20, 'start_state': Quantity(value=[Vec3(x=2.0, y=0.0, z=0.0)], unit=nanometer), 'end_state': Quantity(value=[Vec3(x=5.0, y=0.0, z=0.0)], unit=nanometer), 'fes_mode': 'multiwell'}
+time_tag:  20231120-151546
+A0*exp(-(x-x00)^2/(2*sigma_x0^2))
+A1*exp(-(x-x01)^2/(2*sigma_x1^2))
+A2*exp(-(x-x02)^2/(2*sigma_x2^2))
+A3*exp(-(x-x03)^2/(2*sigma_x3^2))
+A4*exp(-(x-x04)^2/(2*sigma_x4^2))
+A5*exp(-(x-x05)^2/(2*sigma_x5^2))
+A6*exp(-(x-x06)^2/(2*sigma_x6^2))
+A7*exp(-(x-x07)^2/(2*sigma_x7^2))
+A8*exp(-(x-x08)^2/(2*sigma_x8^2))
+propagation 0 starting
+Ag0*exp(-(x-x0g0)^2/(2*sigma_xg0^2))
+Ag1*exp(-(x-x0g1)^2/(2*sigma_xg1^2))
+Ag2*exp(-(x-x0g2)^2/(2*sigma_xg2^2))
+Ag3*exp(-(x-x0g3)^2/(2*sigma_xg3^2))
+Ag4*exp(-(x-x0g4)^2/(2*sigma_xg4^2))
+Ag5*exp(-(x-x0g5)^2/(2*sigma_xg5^2))
+Ag6*exp(-(x-x0g6)^2/(2*sigma_xg6^2))
+Ag7*exp(-(x-x0g7)^2/(2*sigma_xg7^2))
+Ag8*exp(-(x-x0g8)^2/(2*sigma_xg8^2))
+Ag9*exp(-(x-x0g9)^2/(2*sigma_xg9^2))
+Ag10*exp(-(x-x0g10)^2/(2*sigma_xg10^2))
+Ag11*exp(-(x-x0g11)^2/(2*sigma_xg11^2))
+Ag12*exp(-(x-x0g12)^2/(2*sigma_xg12^2))
+Ag13*exp(-(x-x0g13)^2/(2*sigma_xg13^2))
+Ag14*exp(-(x-x0g14)^2/(2*sigma_xg14^2))
+Ag15*exp(-(x-x0g15)^2/(2*sigma_xg15^2))
+Ag16*exp(-(x-x0g16)^2/(2*sigma_xg16^2))
+Ag17*exp(-(x-x0g17)^2/(2*sigma_xg17^2))
+Ag18*exp(-(x-x0g18)^2/(2*sigma_xg18^2))
+Ag19*exp(-(x-x0g19)^2/(2*sigma_xg19^2))
+system added with bias.
+Propagation 0:   0%|          | 0/5000 [00:00<?, ?it/s]Propagation 0:   2%|▏         | 115/5000 [00:00<00:04, 1147.08it/s]Propagation 0:   5%|▍         | 239/5000 [00:00<00:03, 1200.63it/s]Propagation 0:   7%|▋         | 366/5000 [00:00<00:03, 1232.11it/s]Propagation 0:  10%|▉         | 496/5000 [00:00<00:03, 1256.57it/s]Propagation 0:  12%|█▎        | 625/5000 [00:00<00:03, 1266.67it/s]Propagation 0:  15%|█▌        | 758/5000 [00:00<00:03, 1287.02it/s]Propagation 0:  18%|█▊        | 887/5000 [00:00<00:03, 1268.95it/s]Propagation 0:  21%|██        | 1028/5000 [00:00<00:03, 1312.12it/s]Propagation 0:  23%|██▎       | 1169/5000 [00:00<00:02, 1339.95it/s]Propagation 0:  26%|██▌       | 1306/5000 [00:01<00:02, 1347.24it/s]Propagation 0:  29%|██▉       | 1459/5000 [00:01<00:02, 1402.09it/s]Propagation 0:  32%|███▏      | 1605/5000 [00:01<00:02, 1419.45it/s]Propagation 0:  35%|███▍      | 1747/5000 [00:01<00:02, 1411.43it/s]Propagation 0:  38%|███▊      | 1893/5000 [00:01<00:02, 1425.13it/s]Propagation 0:  41%|████      | 2055/5000 [00:01<00:01, 1480.99it/s]Propagation 0:  44%|████▍     | 2204/5000 [00:01<00:01, 1438.71it/s]Propagation 0:  47%|████▋     | 2349/5000 [00:01<00:01, 1378.58it/s]Propagation 0:  50%|████▉     | 2488/5000 [00:01<00:01, 1371.36it/s]Propagation 0:  53%|█████▎    | 2626/5000 [00:01<00:01, 1366.67it/s]Propagation 0:  55%|█████▌    | 2763/5000 [00:02<00:01, 1353.38it/s]Propagation 0:  58%|█████▊    | 2899/5000 [00:02<00:01, 1347.17it/s]Propagation 0:  61%|██████    | 3037/5000 [00:02<00:01, 1353.59it/s]Propagation 0:  63%|██████▎   | 3173/5000 [00:02<00:01, 1320.02it/s]Propagation 0:  66%|██████▌   | 3306/5000 [00:02<00:01, 1291.95it/s]Propagation 0:  69%|██████▉   | 3449/5000 [00:02<00:01, 1331.01it/s]Propagation 0:  72%|███████▏  | 3583/5000 [00:02<00:01, 1333.41it/s]Propagation 0:  74%|███████▍  | 3717/5000 [00:02<00:00, 1323.58it/s]Propagation 0:  77%|███████▋  | 3850/5000 [00:02<00:00, 1319.08it/s]Propagation 0:  80%|███████▉  | 3995/5000 [00:02<00:00, 1357.37it/s]Propagation 0:  83%|████████▎ | 4157/5000 [00:03<00:00, 1435.02it/s]Propagation 0:  86%|████████▋ | 4318/5000 [00:03<00:00, 1486.30it/s]Propagation 0:  89%|████████▉ | 4467/5000 [00:03<00:00, 1415.21it/s]Propagation 0:  92%|█████████▏| 4617/5000 [00:03<00:00, 1437.61it/s]Propagation 0:  95%|█████████▌| 4762/5000 [00:03<00:00, 1385.06it/s]Propagation 0:  98%|█████████▊| 4903/5000 [00:03<00:00, 1389.02it/s]Propagation 0: 100%|██████████| 5000/5000 [00:03<00:00, 1355.34it/s]
+/home/tj/WORK/RL_MFPT/1D_langevin_sim/util.py:114: RuntimeWarning: divide by zero encountered in log
+  F = -kT * np.log(peq) #add a small number to avoid log(0)) # + 1e-16
+coor_x_total shape:  (5000,)
+coor_x_total shape:  (1, 5000, 1)
+gaussian_params for propagation 0 loaded.
+sum of peq in dham reconstruction:  1.0
+propagation number 1 starting
+optimizing to get g_param from start state: 5 to end state: 8 in working indices.
+converted to xspace that's from: 2.261946710584651 to 2.450442269800039
+upper bound: 2.450442269800039 lower bound: 1.9477874452256718
+random try: 0 mfpt: 3095.3401912113195
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1504.333552124418 1504.3335521244182
+random try: 100 mfpt: 2999.3545491941227
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1514.8151024723595 1514.8151024723597
+random try: 200 mfpt: 2918.269751237057
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1491.756923389127 1491.7569233891275
+random try: 300 mfpt: 3036.7864186758943
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1510.588160979211 1510.5881609792114
+random try: 400 mfpt: 3008.516967353305
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1494.728837469917 1494.7288374699174
+random try: 500 mfpt: 2870.2085305315263
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1488.7545053564568 1488.7545053564572
+random try: 600 mfpt: 2885.4334912717404
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1497.6902589423864 1497.6902589423867
+random try: 700 mfpt: 2996.1716461924443
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1502.9663339263557 1502.9663339263557
+random try: 800 mfpt: 2956.255131407021
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1495.998610618592 1495.998610618592
+random try: 900 mfpt: 2957.36896257333
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1494.8777108114878 1494.8777108114882
+best mfpt: 2650.9997494453587
+system bias updated
+Propagation 1:   0%|          | 0/5000 [00:00<?, ?it/s]Propagation 1:   3%|▎         | 139/5000 [00:00<00:03, 1382.40it/s]Propagation 1:   6%|▌         | 289/5000 [00:00<00:03, 1451.14it/s]Propagation 1:   9%|▊         | 435/5000 [00:00<00:03, 1431.90it/s]Propagation 1:  12%|█▏        | 579/5000 [00:00<00:03, 1381.38it/s]Propagation 1:  14%|█▍        | 718/5000 [00:00<00:03, 1331.94it/s]Propagation 1:  17%|█▋        | 852/5000 [00:00<00:03, 1326.98it/s]Propagation 1:  20%|█▉        | 985/5000 [00:00<00:03, 1312.49it/s]Propagation 1:  23%|██▎       | 1129/5000 [00:00<00:02, 1350.27it/s]Propagation 1:  25%|██▌       | 1266/5000 [00:00<00:02, 1353.98it/s]Propagation 1:  28%|██▊       | 1402/5000 [00:01<00:02, 1333.23it/s]Propagation 1:  31%|███       | 1549/5000 [00:01<00:02, 1371.06it/s]Propagation 1:  34%|███▍      | 1696/5000 [00:01<00:02, 1398.78it/s]Propagation 1:  37%|███▋      | 1837/5000 [00:01<00:02, 1364.46it/s]Propagation 1:  39%|███▉      | 1974/5000 [00:01<00:02, 1354.73it/s]Propagation 1:  42%|████▏     | 2119/5000 [00:01<00:02, 1380.29it/s]Propagation 1:  45%|████▌     | 2259/5000 [00:01<00:01, 1384.59it/s]Propagation 1:  48%|████▊     | 2398/5000 [00:01<00:01, 1372.53it/s]Propagation 1:  51%|█████▏    | 2564/5000 [00:01<00:01, 1455.42it/s]Propagation 1:  54%|█████▍    | 2720/5000 [00:01<00:01, 1485.42it/s]Propagation 1:  57%|█████▋    | 2869/5000 [00:02<00:01, 1442.17it/s]Propagation 1:  61%|██████    | 3032/5000 [00:02<00:01, 1495.82it/s]Propagation 1:  64%|██████▎   | 3182/5000 [00:02<00:01, 1354.20it/s]Propagation 1:  66%|██████▋   | 3321/5000 [00:02<00:01, 1312.60it/s]Propagation 1:  69%|██████▉   | 3462/5000 [00:02<00:01, 1338.36it/s]Propagation 1:  72%|███████▏  | 3605/5000 [00:02<00:01, 1363.61it/s]Propagation 1:  75%|███████▍  | 3743/5000 [00:02<00:00, 1360.49it/s]Propagation 1:  78%|███████▊  | 3909/5000 [00:02<00:00, 1444.90it/s]Propagation 1:  82%|████████▏ | 4077/5000 [00:02<00:00, 1511.11it/s]Propagation 1:  85%|████████▍ | 4234/5000 [00:03<00:00, 1525.78it/s]Propagation 1:  88%|████████▊ | 4388/5000 [00:03<00:00, 1507.95it/s]Propagation 1:  91%|█████████ | 4540/5000 [00:03<00:00, 1502.95it/s]Propagation 1:  94%|█████████▍| 4691/5000 [00:03<00:00, 1453.64it/s]Propagation 1:  97%|█████████▋| 4837/5000 [00:03<00:00, 1406.48it/s]Propagation 1: 100%|█████████▉| 4979/5000 [00:03<00:00, 1322.34it/s]Propagation 1: 100%|██████████| 5000/5000 [00:03<00:00, 1391.52it/s]
+coor_x_total shape:  (2, 5000)
+coor_x_total shape:  (2, 5000, 1)
+gaussian_params for propagation 0 loaded.
+gaussian_params for propagation 1 loaded.
+sum of peq in dham reconstruction:  0.9999999999999998
+propagation number 2 starting
+optimizing to get g_param from start state: 5 to end state: 12 in working indices.
+converted to xspace that's from: 2.261946710584651 to 2.7017696820872223
+upper bound: 2.7017696820872223 lower bound: 1.9477874452256718
+random try: 0 mfpt: 47136.15517850048
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1939.654421690263 1939.6544216902637
+random try: 100 mfpt: 45701.734166714574
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1929.8752547364106 1929.875254736411
+random try: 200 mfpt: 45049.989636174265
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1933.27943877925 1933.2794387792505
+random try: 300 mfpt: 47616.88687999851
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1927.896753363296 1927.8967533632967
+random try: 400 mfpt: 47149.36950245737
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1948.2001571789692 1948.2001571789697
+random try: 500 mfpt: 45511.160685508185
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1934.5657698371183 1934.565769837119
+random try: 600 mfpt: 43359.657047975954
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1950.4311100400544 1950.431110040055
+random try: 700 mfpt: 42833.79212194274
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1949.0659431133474 1949.0659431133479
+random try: 800 mfpt: 45132.733271439116
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1941.2418153762155 1941.2418153762162
+random try: 900 mfpt: 48649.8648417507
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 1942.6070358475417 1942.6070358475422
+best mfpt: 37829.550294867244
+system bias updated
+Propagation 2:   0%|          | 0/5000 [00:00<?, ?it/s]Propagation 2:   3%|▎         | 142/5000 [00:00<00:03, 1413.31it/s]Propagation 2:   6%|▌         | 284/5000 [00:00<00:03, 1398.60it/s]Propagation 2:   8%|▊         | 424/5000 [00:00<00:03, 1390.92it/s]Propagation 2:  11%|█▏        | 565/5000 [00:00<00:03, 1396.86it/s]Propagation 2:  14%|█▍        | 722/5000 [00:00<00:02, 1455.92it/s]Propagation 2:  17%|█▋        | 868/5000 [00:00<00:03, 1365.03it/s]Propagation 2:  21%|██        | 1026/5000 [00:00<00:02, 1429.58it/s]Propagation 2:  23%|██▎       | 1170/5000 [00:00<00:02, 1430.73it/s]Propagation 2:  26%|██▋       | 1314/5000 [00:00<00:02, 1428.10it/s]Propagation 2:  29%|██▉       | 1472/5000 [00:01<00:02, 1472.58it/s]Propagation 2:  32%|███▏      | 1620/5000 [00:01<00:02, 1419.64it/s]Propagation 2:  35%|███▌      | 1763/5000 [00:01<00:02, 1381.93it/s]Propagation 2:  38%|███▊      | 1917/5000 [00:01<00:02, 1426.88it/s]Propagation 2:  41%|████▏     | 2066/5000 [00:01<00:02, 1444.55it/s]Propagation 2:  44%|████▍     | 2220/5000 [00:01<00:01, 1471.81it/s]Propagation 2:  47%|████▋     | 2368/5000 [00:01<00:01, 1426.29it/s]Propagation 2:  50%|█████     | 2512/5000 [00:01<00:01, 1313.21it/s]Propagation 2:  53%|█████▎    | 2646/5000 [00:01<00:01, 1263.34it/s]Propagation 2:  55%|█████▌    | 2774/5000 [00:02<00:01, 1207.49it/s]Propagation 2:  58%|█████▊    | 2896/5000 [00:02<00:01, 1195.06it/s]Propagation 2:  60%|██████    | 3017/5000 [00:02<00:01, 1146.05it/s]Propagation 2:  63%|██████▎   | 3146/5000 [00:02<00:01, 1183.21it/s]Propagation 2:  65%|██████▌   | 3271/5000 [00:02<00:01, 1201.91it/s]Propagation 2:  68%|██████▊   | 3409/5000 [00:02<00:01, 1250.49it/s]Propagation 2:  71%|███████   | 3535/5000 [00:02<00:01, 1204.16it/s]Propagation 2:  73%|███████▎  | 3657/5000 [00:02<00:01, 1169.65it/s]Propagation 2:  76%|███████▌  | 3775/5000 [00:02<00:01, 1159.45it/s]Propagation 2:  78%|███████▊  | 3892/5000 [00:02<00:00, 1114.63it/s]Propagation 2:  81%|████████  | 4029/5000 [00:03<00:00, 1185.58it/s]Propagation 2:  83%|████████▎ | 4168/5000 [00:03<00:00, 1242.05it/s]Propagation 2:  86%|████████▌ | 4302/5000 [00:03<00:00, 1267.46it/s]Propagation 2:  89%|████████▊ | 4430/5000 [00:03<00:00, 1195.25it/s]Propagation 2:  91%|█████████ | 4551/5000 [00:03<00:00, 1165.10it/s]Propagation 2:  93%|█████████▎| 4669/5000 [00:03<00:00, 1164.24it/s]Propagation 2:  96%|█████████▌| 4787/5000 [00:03<00:00, 1119.71it/s]Propagation 2:  98%|█████████▊| 4900/5000 [00:03<00:00, 1118.97it/s]Propagation 2: 100%|██████████| 5000/5000 [00:03<00:00, 1268.22it/s]
+coor_x_total shape:  (3, 5000)
+coor_x_total shape:  (3, 5000, 1)
+gaussian_params for propagation 0 loaded.
+gaussian_params for propagation 1 loaded.
+gaussian_params for propagation 2 loaded.
+sum of peq in dham reconstruction:  1.0000000000000002
+propagation number 3 starting
+optimizing to get g_param from start state: 31 to end state: 34 in working indices.
+converted to xspace that's from: 3.8955748904513436 to 4.084070449666731
+upper bound: 4.084070449666731 lower bound: 1.9477874452256718
+random try: 0 mfpt: 22682.279061394038
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 14888.442188196192 14888.442188196206
+random try: 100 mfpt: 22614.674346972653
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 15171.800383392874 15171.800383392885
+random try: 200 mfpt: 22958.38442915101
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 13930.623507055567 13930.623507055574
+random try: 300 mfpt: 22732.30581286499
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 14761.645147954656 14761.645147954665
+random try: 400 mfpt: 23041.91518087091
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 13927.336371316533 13927.33637131654
+random try: 500 mfpt: 22654.67429283314
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 14496.515484166897 14496.515484166906
+random try: 600 mfpt: 22536.06889898352
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 14840.36654848656 14840.366548486567
+random try: 700 mfpt: 23337.547978048293
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 13743.754277566037 13743.754277566044
+random try: 800 mfpt: 22660.985400973357
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 14828.816764977038 14828.816764977048
+random try: 900 mfpt: 23168.510640882218
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 13667.164849854254 13667.164849854264
+best mfpt: 21861.876482754924
+system bias updated
+Propagation 3:   0%|          | 0/5000 [00:00<?, ?it/s]Propagation 3:   2%|▏         | 123/5000 [00:00<00:03, 1228.42it/s]Propagation 3:   5%|▌         | 265/5000 [00:00<00:03, 1336.71it/s]Propagation 3:   8%|▊         | 399/5000 [00:00<00:03, 1328.18it/s]Propagation 3:  11%|█         | 532/5000 [00:00<00:03, 1308.93it/s]Propagation 3:  13%|█▎        | 667/5000 [00:00<00:03, 1321.36it/s]Propagation 3:  16%|█▋        | 823/5000 [00:00<00:02, 1399.34it/s]Propagation 3:  19%|█▉        | 969/5000 [00:00<00:02, 1417.09it/s]Propagation 3:  23%|██▎       | 1126/5000 [00:00<00:02, 1462.11it/s]Propagation 3:  25%|██▌       | 1273/5000 [00:00<00:02, 1435.49it/s]Propagation 3:  28%|██▊       | 1417/5000 [00:01<00:02, 1391.72it/s]Propagation 3:  31%|███       | 1557/5000 [00:01<00:02, 1381.46it/s]Propagation 3:  34%|███▍      | 1696/5000 [00:01<00:02, 1354.79it/s]Propagation 3:  37%|███▋      | 1859/5000 [00:01<00:02, 1434.45it/s]Propagation 3:  40%|████      | 2003/5000 [00:01<00:02, 1377.01it/s]Propagation 3:  43%|████▎     | 2142/5000 [00:01<00:02, 1336.07it/s]Propagation 3:  46%|████▌     | 2277/5000 [00:01<00:02, 1316.66it/s]Propagation 3:  48%|████▊     | 2411/5000 [00:01<00:01, 1323.17it/s]Propagation 3:  51%|█████▏    | 2573/5000 [00:01<00:01, 1407.75it/s]Propagation 3:  54%|█████▍    | 2715/5000 [00:01<00:01, 1357.92it/s]Propagation 3:  57%|█████▋    | 2852/5000 [00:02<00:01, 1351.15it/s]Propagation 3:  60%|██████    | 3011/5000 [00:02<00:01, 1418.78it/s]Propagation 3:  63%|██████▎   | 3154/5000 [00:02<00:01, 1398.78it/s]Propagation 3:  66%|██████▌   | 3311/5000 [00:02<00:01, 1446.74it/s]Propagation 3:  69%|██████▉   | 3457/5000 [00:02<00:01, 1418.01it/s]Propagation 3:  72%|███████▏  | 3600/5000 [00:02<00:01, 1354.71it/s]Propagation 3:  75%|███████▍  | 3737/5000 [00:02<00:00, 1301.11it/s]Propagation 3:  78%|███████▊  | 3878/5000 [00:02<00:00, 1331.30it/s]Propagation 3:  80%|████████  | 4012/5000 [00:02<00:00, 1311.64it/s]Propagation 3:  83%|████████▎ | 4152/5000 [00:03<00:00, 1336.69it/s]Propagation 3:  86%|████████▌ | 4304/5000 [00:03<00:00, 1389.81it/s]Propagation 3:  89%|████████▉ | 4450/5000 [00:03<00:00, 1407.93it/s]Propagation 3:  92%|█████████▏| 4592/5000 [00:03<00:00, 1387.07it/s]Propagation 3:  95%|█████████▍| 4732/5000 [00:03<00:00, 1343.73it/s]Propagation 3:  97%|█████████▋| 4867/5000 [00:03<00:00, 1300.93it/s]Propagation 3: 100%|█████████▉| 4998/5000 [00:03<00:00, 1280.70it/s]Propagation 3: 100%|██████████| 5000/5000 [00:03<00:00, 1359.79it/s]
+coor_x_total shape:  (4, 5000)
+coor_x_total shape:  (4, 5000, 1)
+gaussian_params for propagation 0 loaded.
+gaussian_params for propagation 1 loaded.
+gaussian_params for propagation 2 loaded.
+gaussian_params for propagation 3 loaded.
+sum of peq in dham reconstruction:  1.0
+propagation number 4 starting
+optimizing to get g_param from start state: 29 to end state: 37 in working indices.
+converted to xspace that's from: 3.769911184307752 to 4.272566008882119
+upper bound: 4.272566008882119 lower bound: 1.9477874452256718
+random try: 0 mfpt: 60450.156591570514
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 33035.49123869468 33035.49123869471
+random try: 100 mfpt: 60151.1263768502
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 35833.50957867915 35833.509578679186
+random try: 200 mfpt: 59650.009454296574
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 34879.77191342069 34879.77191342074
+random try: 300 mfpt: 60232.19078512452
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 32181.043397962767 32181.043397962778
+random try: 400 mfpt: 61005.83534023887
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 33389.36305528382 33389.36305528384
+random try: 500 mfpt: 61532.33133615328
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 33296.68063673077 33296.6806367308
+random try: 600 mfpt: 60648.96500082504
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 31802.963279736963 31802.96327973698
+random try: 700 mfpt: 60960.58445862251
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 31248.078838470898 31248.078838470916
+random try: 800 mfpt: 59347.379659865386
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 35971.30889819135 35971.30889819138
+random try: 900 mfpt: 62287.30105650773
+Performing Kemeny constant check...
+the min/max of the Kemeny constant is: 29131.52363966733 29131.52363966735
+best mfpt: 57675.838236628115
+system bias updated
+Propagation 4:   0%|          | 0/5000 [00:00<?, ?it/s]Propagation 4:   2%|▏         | 122/5000 [00:00<00:04, 1214.07it/s]Propagation 4:   5%|▌         | 251/5000 [00:00<00:03, 1255.36it/s]Propagation 4:   8%|▊         | 377/5000 [00:00<00:03, 1253.07it/s]Propagation 4:  10%|█         | 504/5000 [00:00<00:03, 1258.02it/s]Propagation 4:  13%|█▎        | 636/5000 [00:00<00:03, 1278.14it/s]Propagation 4:  15%|█▌        | 769/5000 [00:00<00:03, 1295.58it/s]Propagation 4:  18%|█▊        | 908/5000 [00:00<00:03, 1323.63it/s]Propagation 4:  21%|██        | 1059/5000 [00:00<00:02, 1382.09it/s]Propagation 4:  24%|██▍       | 1205/5000 [00:00<00:02, 1404.26it/s]Propagation 4:  27%|██▋       | 1357/5000 [00:01<00:02, 1437.12it/s]Propagation 4:  30%|███       | 1501/5000 [00:01<00:02, 1341.91it/s]Propagation 4:  33%|███▎      | 1637/5000 [00:01<00:02, 1298.97it/s]Propagation 4:  36%|███▌      | 1793/5000 [00:01<00:02, 1371.47it/s]Propagation 4:  39%|███▊      | 1932/5000 [00:01<00:02, 1345.84it/s]Propagation 4:  41%|████▏     | 2068/5000 [00:01<00:02, 1326.65it/s]Propagation 4:  44%|████▍     | 2225/5000 [00:01<00:01, 1395.42it/s]Propagation 4:  47%|████▋     | 2366/5000 [00:01<00:01, 1352.89it/s]Propagation 4:  50%|█████     | 2502/5000 [00:01<00:01, 1342.67it/s]Propagation 4:  53%|█████▎    | 2641/5000 [00:01<00:01, 1355.68it/s]Propagation 4:  56%|█████▌    | 2797/5000 [00:02<00:01, 1414.11it/s]Propagation 4:  59%|█████▉    | 2939/5000 [00:02<00:01, 1381.49it/s]Propagation 4:  62%|██████▏   | 3091/5000 [00:02<00:01, 1419.62it/s]Propagation 4:  65%|██████▌   | 3256/5000 [00:02<00:01, 1486.46it/s]Propagation 4:  68%|██████▊   | 3412/5000 [00:02<00:01, 1506.91it/s]Propagation 4:  71%|███████▏  | 3564/5000 [00:02<00:00, 1436.43it/s]Propagation 4:  74%|███████▍  | 3709/5000 [00:02<00:00, 1364.43it/s]Propagation 4:  77%|███████▋  | 3847/5000 [00:02<00:00, 1314.54it/s]Propagation 4:  80%|███████▉  | 3980/5000 [00:02<00:00, 1294.08it/s]Propagation 4:  82%|████████▏ | 4111/5000 [00:03<00:00, 1296.78it/s]Propagation 4:  85%|████████▌ | 4267/5000 [00:03<00:00, 1371.50it/s]Propagation 4:  88%|████████▊ | 4405/5000 [00:03<00:00, 1351.42it/s]Propagation 4:  91%|█████████ | 4541/5000 [00:03<00:00, 1323.74it/s]Propagation 4:  94%|█████████▎| 4680/5000 [00:03<00:00, 1339.81it/s]Propagation 4:  96%|█████████▋| 4820/5000 [00:03<00:00, 1356.47it/s]Propagation 4:  99%|█████████▉| 4960/5000 [00:03<00:00, 1368.37it/s]Propagation 4: 100%|██████████| 5000/5000 [00:03<00:00, 1357.00it/s]
+coor_x_total shape:  (5, 5000)
+coor_x_total shape:  (5, 5000, 1)
+gau

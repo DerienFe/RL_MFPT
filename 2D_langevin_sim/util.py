@@ -32,7 +32,7 @@ def random_initial_bias_2d(initial_position, num_gaussians = 20):
     #we convert the initial position from openmm quantity object to array with just the value.
     initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm.
     rng = np.random.default_rng()
-    a = np.ones(num_gaussians) * 0.1#* 4 #
+    a = np.ones(num_gaussians) * 0.01#* 4 #
     #ay = np.ones(num_gaussians) * 0.1 #there's only one amplitude!
     bx = rng.uniform(initial_position[0]-1, initial_position[0]+1, num_gaussians)
     by = rng.uniform(initial_position[1]-1, initial_position[1]+1, num_gaussians)
@@ -111,7 +111,7 @@ def kemeny_constant_check(mfpt, peq):
         for j in range(N2):
             kemeny[i] = kemeny[i] + mfpt[i, j] * peq[j]
     #print("Performing Kemeny constant check...")
-    #print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
+    print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
     """
     if np.max(kemeny) - np.min(kemeny) > 1e-6:
         print("Kemeny constant check failed!")
@@ -194,7 +194,7 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
 
     for try_num in range(1000):
         rng = np.random.default_rng()
-        a = np.ones(num_gaussian) * 2
+        a = np.ones(num_gaussian)
         bx = rng.uniform(0, 2*np.pi, num_gaussian)
         by = rng.uniform(0, 2*np.pi, num_gaussian)
         cx = rng.uniform(0.3, 1.5, num_gaussian)
@@ -269,16 +269,16 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
         return mfpt_biased
 
-    
     res = minimize(mfpt_helper, 
                    best_params, 
                    args=(M,
                          start_state_working_index, 
                          end_state_working_index,
                          working_indices), 
-                   method='Nelder-Mead', 
+                   #method='Nelder-Mead',
+                   method="L-BFGS-B", 
                    bounds= [(0.1, 2)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e0)
+                   tol=1e-4)
     
     #print("local optimisation result:", res.x)
     return res.x

@@ -69,7 +69,6 @@ def mfpt_calc(peq, K):
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
-
 def bias_K_1D(K, total_bias, kT=0.5981):
     """
     K is the unperturbed transition matrix.
@@ -179,7 +178,6 @@ def Markov_mfpt_calc(peq, M):
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
-
 def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_index=0, plot = False):
     #print("inside try and optim_M")
     """
@@ -196,7 +194,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     end_state: the ending state. note this has to be converted into the index space.
     index_offset: the offset of the index space. e.g. if the truncated M (with shape [20, 20]) matrix starts from 13 to 33, then the index_offset is 13.
     """
-    x = np.linspace(0, 2*np.pi, config.num_bins+1) #hard coded for now.
+    x = np.linspace(0, 2*np.pi, config.num_bins) #hard coded for now.
     best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     #first we convert the big index into "index to the working indices".
@@ -217,7 +215,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     for try_num in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) *0.35
+        a = np.ones(num_gaussian) * 0.6
         b = rng.uniform(0, 2*np.pi, num_gaussian)
         #b = rng.uniform(lower, upper, num_gaussian)
         c = rng.uniform(0.3, 2, num_gaussian)
@@ -247,8 +245,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = 0
 
 
-        #peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
-        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -261,7 +259,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
             
         if best_mfpt > mfpt_biased:
             best_mfpt = mfpt_biased
-            best_params = np.concatenate((a, b, c)) #we concatenate the params into a single array. in shape (30,)
+            best_params = np.concatenate((a, b, c)) #we concatenate the params into a single array. in shape (3*num_gaussian,)
 
     print("best mfpt:", best_mfpt)
     if False: 
@@ -310,8 +308,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = M_biased[i, :] / row_sum
             else:
                 M_biased[i, :] = 0
-        #peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
-        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
 
@@ -323,9 +321,10 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          start_state_working_index, 
                          end_state_working_index,
                          working_indices), 
-                   method='Nelder-Mead', 
-                   bounds= [(0.1, 0.7)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 2)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e0)
+                   #method='Nelder-Mead', 
+                   method="L-BFGS-B",
+                   bounds= [(0.1, 1.2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 5)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e-2)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
