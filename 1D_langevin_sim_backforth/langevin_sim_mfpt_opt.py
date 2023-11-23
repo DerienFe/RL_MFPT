@@ -77,10 +77,10 @@ def propagate(simulation,
         plt.savefig("./test.png")
         plt.close()
     #we append the coor_xy_digitized into the pos_traj.
-    pos_traj[cycle_count,prop_index,:] = coor_x.squeeze()
+    pos_traj[prop_index,:] = coor_x.squeeze()
 
     #we take all previous digitized x and feed it into DHAM.
-    coor_x_total = pos_traj[:cycle_count+1,:prop_index+1,:].squeeze() #note this is in coordinate space np.linspace(0, 2*np.pi, num_bins)
+    coor_x_total = pos_traj[:prop_index+1,:].squeeze() #note this is in coordinate space np.linspace(0, 2*np.pi, num_bins)
     coor_x_total = coor_x_total.reshape(prop_index+1, -1, 1)
     print("coor_x_total shape feed into dham: ", coor_x_total.shape)
 
@@ -228,10 +228,10 @@ if __name__ == "__main__":
                                             1.0/unit.picoseconds, 
                                             0.002*unit.picoseconds)
 
-        num_propagation = int(config.sim_steps/config.propagation_step)
+        num_propagation = 100 #hard coded for now, we give it 10 propagation per cycle, and 10 cycles.
         frame_per_propagation = int(config.propagation_step/config.dcdfreq_mfpt)
         #this stores the digitized, ravelled, x, y coordinates of the particle, for every propagation.
-        pos_traj = np.zeros([config.max_cycle, num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
+        pos_traj = np.zeros([num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
 
         x = np.linspace(0, 2*np.pi, config.num_bins)
 
@@ -293,7 +293,7 @@ if __name__ == "__main__":
                     print(f"cycle {cycle_count} propagation number {i_prop} starting")
 
                     #find the most visited state in last propagation.
-                    last_traj = pos_traj[cycle_count, i_prop-1, :].squeeze()
+                    last_traj = pos_traj[i_prop-1, :].squeeze()
                     last_traj_index = np.digitize(last_traj, x).astype(np.int64)
                     most_visited_state = np.argmax(np.bincount(last_traj_index)) #this is in digitized
                     last_visited_state = last_traj_index[-1] #this is in digitized
@@ -343,8 +343,8 @@ if __name__ == "__main__":
                         #history_traj = pos_traj[:i_prop, :].squeeze() #note this is only the x coor.
                         #recent_traj = pos_traj[i_prop:, :].squeeze()
 
-                        history_traj = pos_traj[:cycle_count+1, :i_prop, :].squeeze() #note this is only the x coor.
-                        recent_traj = pos_traj[:cycle_count+1, i_prop:, :].squeeze()
+                        history_traj = pos_traj[:i_prop, :].squeeze() #note this is only the x coor.
+                        recent_traj = pos_traj[i_prop:, :].squeeze()
 
                         #here we digitize this so we can plot it to fes.
                         history_traj = np.digitize(history_traj, x)
