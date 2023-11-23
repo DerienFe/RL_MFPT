@@ -91,8 +91,8 @@ class DHAM:
                                 sump1 += trvec[k, i] * np.exp(-(u[j] - u[i]) / (2*self.KbT))
                         if sump1 > 0:
                             MM[i, j] = sumtr[i, j] / sump1
-                        else:
-                            MM[i, j] = 0
+                    else:
+                        MM[i, j] = 0
             #epsilon_offset = 1e-15
             #MM = MM / (np.sum(MM, axis=1)[:, None])#+epsilon_offset) #normalize the M matrix #this is returning NaN?.
             for i in range(MM.shape[0]):
@@ -138,7 +138,7 @@ class DHAM:
             plt.xlim(0, 2*np.pi)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
             plt.close()
-        return mU2, MM # mU2 is in unit kcal/mol.
+        return mU2, MM.T # mU2 is in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)

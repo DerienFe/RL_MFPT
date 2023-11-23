@@ -171,7 +171,7 @@ def random_initial_bias(initial_position, num_gaussians):
     initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm
     rng = np.random.default_rng()
     #a = np.ones(10)
-    a = np.ones(num_gaussians) * 0.01 * 4.184 #convert to kJ/mol
+    a = np.ones(num_gaussians) * 0.01 #convert to kJ/mol
     b = rng.uniform(initial_position[0]-0.5, initial_position[0]+0.5, num_gaussians)
     c = rng.uniform(0, 2*np.pi, num_gaussians)
     return np.concatenate((a,b,c), axis=None)
@@ -385,6 +385,8 @@ if __name__ == "__main__":
                     #update working_MM and working_indices
                     working_MM, working_indices = get_working_MM(MM)
                     #update closest_index
+                    final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
+                    final_index = np.digitize(final_coor, x)
                     closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
                     
                     i_prop += 1
@@ -395,6 +397,13 @@ if __name__ == "__main__":
                 current_target_state = config.start_state
             else:
                 current_target_state = config.end_state
+                
+            #update working_MM and working_indices
+            working_MM, working_indices = get_working_MM(MM)
+            #update closest_index
+            final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
+            final_index = np.digitize(final_coor, x)
+            closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
             
             cycle_count += 1
             reach = None
@@ -403,17 +412,15 @@ if __name__ == "__main__":
 
         #final dham to get the smoothed fes.
         # note this step we dont use the sym.
-        #here we take whole pos_traj and feed it into DHAM using use_symmetry=False.
-        pos_traj_ravel_digitized = np.digitize(pos_traj.ravel(), x)
 
         #here we load all gaussian_params.
-        gaussian_params = np.zeros([i_prop+1, config.num_gaussian, 3])
-        for i in range(i_prop+1):
-            gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_cyc_{cycle_count}_prop_{i}.txt").reshape(-1,3)
+        gaussian_params = np.zeros([i_prop, config.num_gaussian, 3])
+        for i in range(i_prop):
+            gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
             print(f"gaussian_params for propagation {i} loaded.")
 
         #use DHAM_it to get the MM and F_M.
-        F_M, MM = DHAM_it(pos_traj_ravel_digitized.reshape(i_prop+1, -1, 1), 
+        F_M, MM = DHAM_it(pos_traj[:i_prop,:].ravel().reshape(i_prop, -1, 1), 
                             gaussian_params, 
                             T=300, 
                             lagtime=1, 
@@ -425,7 +432,8 @@ if __name__ == "__main__":
 
         #plot the total F_M at last.
         plt.figure()
-        plt.plot(x, F_M*4.184, label="DHAM fes")
+        plt.plot(x, (F_M- F_M.min())*4.184, label="DHAM fes")
+        plt.plot(x,fes - fes.min(), label="original fes")
         plt.title("total F_M")
         plt.xlabel("x-coor position (nm)")
         plt.ylabel("fes (kJ/mol)")
@@ -434,7 +442,7 @@ if __name__ == "__main__":
 
         ############# post processing #################
         #we have reached target state, thus we record the steps used.
-        total_steps = i_prop * config.propagation_step + reach * config.dcdfreq_mfpt
+        total_steps = i_prop * config.propagation_step
         print("total steps used: ", total_steps)
 
         with open("./total_steps_mfpt.csv", "a") as f:

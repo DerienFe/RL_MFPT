@@ -216,9 +216,9 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         rng = np.random.default_rng()
         #we set a to be 1
         a = np.ones(num_gaussian) * 0.6
-        b = rng.uniform(0, 2*np.pi, num_gaussian)
-        #b = rng.uniform(lower, upper, num_gaussian)
-        c = rng.uniform(0.3, 2, num_gaussian)
+        #b = rng.uniform(0, 2*np.pi, num_gaussian)
+        b = rng.uniform(lower, upper, num_gaussian)
+        c = rng.uniform(0.7, 1, num_gaussian)
         
         #we convert the working_indices to the qspace.
 
@@ -323,8 +323,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          working_indices), 
                    #method='Nelder-Mead', 
                    method="L-BFGS-B",
-                   bounds= [(0.1, 1.0)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 5)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-0)
+                   bounds= [(0.1, 1.2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e-4)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
@@ -333,8 +333,8 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     """
     pi = np.pi #we need convert this into nm.
     k = 5
-    max_barrier = '1e2'
-    offset = 0.5
+    max_barrier = '1e3'
+    offset = 0.4
     left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
     right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
     left_pot.addParticle(particle_idx)

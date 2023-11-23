@@ -114,9 +114,9 @@ if __name__ == "__main__":
         metaD = Metadynamics(system=system,
                             variables=[x_Bias_var], #variables=[rmsd_Bias_var],
                             temperature=300*unit.kelvin,
-                            biasFactor=2,
-                            height=0.1*unit.kilojoules_per_mole,
-                            frequency=meta_freq, #1000
+                            biasFactor=4,
+                            height=1.0*unit.kilojoules_per_mole,
+                            frequency=meta_freq, #5000
                             saveFrequency=meta_freq,
                             biasDir=aux_file_path,)
 
