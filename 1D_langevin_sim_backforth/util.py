@@ -216,8 +216,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         rng = np.random.default_rng()
         #we set a to be 1
         a = np.ones(num_gaussian) * 0.6
-        #b = rng.uniform(0, 2*np.pi, num_gaussian)
-        b = rng.uniform(lower, upper, num_gaussian)
+        b = rng.uniform(0, 2*np.pi, num_gaussian)
+        #b = rng.uniform(lower, upper, num_gaussian)
         c = rng.uniform(0.7, 1, num_gaussian)
         
         #we convert the working_indices to the qspace.
@@ -323,8 +323,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          working_indices), 
                    #method='Nelder-Mead', 
                    method="L-BFGS-B",
-                   bounds= [(0.1, 1.2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-4)
+                   bounds= [(0.1, 1.0)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e-2)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
@@ -440,7 +440,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 x = np.linspace(0, 2*np.pi, config.num_bins)
                 Z = np.zeros_like(x)
                 for i in range(num_hills):
-                    Z += A_i[i] * 4.184 * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
+                    Z += A_i[i] * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
 
                 #add the x boundary barrier in plot
                 Z += float(max_barrier) * (1 / (1 + np.exp(k * (x - (-offset))))) #left
@@ -562,7 +562,7 @@ def apply_bias(system, particle_idx, gaussian_param, pbc = False, name = "BIAS",
         print(force.getEnergyFunction())
 
         force.addGlobalParameter(f"Ag{i}", A[i] * 4.184) #convert to kJ/mol
-        force.addGlobalParameter(f"x0g{i}", x0[i]) #convert to nm
+        force.addGlobalParameter(f"x0g{i}", x0[i]) 
         force.addGlobalParameter(f"sigma_xg{i}", sigma_x[i])
         force.addParticle(particle_idx)
         #we append the force to the system.
@@ -589,7 +589,7 @@ def update_bias(simulation, gaussian_param, name = "BIAS", num_gaussians = 20):
     #note globalparameter does NOT need to be updated in the context.
     for i in range(num_gaussians):
         simulation.context.setParameter(f"Ag{i}", A[i] * 4.184) #convert to kJ/mol
-        simulation.context.setParameter(f"x0g{i}", x0[i]) #convert to nm
+        simulation.context.setParameter(f"x0g{i}", x0[i])
         simulation.context.setParameter(f"sigma_xg{i}", sigma_x[i])
     
     print("system bias updated")

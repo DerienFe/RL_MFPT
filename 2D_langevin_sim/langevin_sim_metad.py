@@ -32,7 +32,7 @@ if __name__ == "__main__":
     #metaD parameters
     npoints = 101
     meta_freq = 5000
-    meta_height = 1
+    meta_height = config.amp * 1/2
 
     #
     elem = Element(0, "X", "X", 1.0)
@@ -129,8 +129,8 @@ if __name__ == "__main__":
         metaD = Metadynamics(system=system,
                                 variables=[x_Bias_var, y_Bias_var], #variables=[rmsd_Bias_var],
                                 temperature=300*unit.kelvin,
-                                biasFactor=2,
-                                height=1.0*unit.kilocalorie_per_mole,
+                                biasFactor=5,
+                                height=meta_height*unit.kilocalorie_per_mole,
                                 frequency=meta_freq, #1000
                                 saveFrequency=meta_freq,
                                 biasDir=aux_file_path,)
@@ -218,7 +218,7 @@ if __name__ == "__main__":
 
         ### VISUALIZATION ###
 
-        #we plot the pos_traj.
+        """#we plot the pos_traj.
         plt.figure()
         #here we plot the fes.
         plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7 * 4.184, origin="lower")
@@ -235,7 +235,7 @@ if __name__ == "__main__":
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
 
-
+"""
 
 
 

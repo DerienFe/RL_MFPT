@@ -1,0 +1,64 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7fe7ea24f810>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7fe7ea24f810>, origin='/home/tj/WORK/RL_MFPT/1D_langevin_sim/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/1D_langevin_sim/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/1D_langevin_sim/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7fe7e94b4cf0>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'NUMBER_OF_PROCESSES': 4, 'num_sim': 20, 'sim_steps': 50000000, 'sim_steps_unbiased': 10000000, 'pbc': False, 'time_tag': '20231123-171538', 'amp': 6, 'propagation_step': 5000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.2, unit=picosecond), 'num_bins': 100, 'dcdfreq': 100, 'dcdfreq_mfpt': 1, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7fe7ea233180> >, 'num_gaussian': 20, 'start_state': Quantity(value=[Vec3(x=2.0, y=0.0, z=0.0)], unit=nanometer), 'end_state': Quantity(value=[Vec3(x=5.2, y=0.0, z=0.0)], unit=nanometer), 'end_state_unbiased': Quantity(value=[Vec3(x=3.9, y=0.0, z=0.0)], unit=nanometer), 'fes_mode': 'multiwell'}
+time_tag:  20231123-171538
+A0*exp(-(x-x00)^2/(2*sigma_x0^2))
+A1*exp(-(x-x01)^2/(2*sigma_x1^2))
+A2*exp(-(x-x02)^2/(2*sigma_x2^2))
+A3*exp(-(x-x03)^2/(2*sigma_x3^2))
+A4*exp(-(x-x04)^2/(2*sigma_x4^2))
+A5*exp(-(x-x05)^2/(2*sigma_x5^2))
+A6*exp(-(x-x06)^2/(2*sigma_x6^2))
+A7*exp(-(x-x07)^2/(2*sigma_x7^2))
+A8*exp(-(x-x08)^2/(2*sigma_x8^2))
+minimizing energy
+minimizing energy done, time: 0.09
+  0%|          | 0/500000.0 [00:00<?, ?it/s] 10%|█         | 50000/500000.0 [33:36<5:02:31, 24.79it/s] 10%|█         | 50000/500000.0 [33:50<5:02:31, 24.79it/s] 20%|██        | 100000/500000.0 [1:07:15<4:29:04, 24.78it/s] 20%|██        | 100000/500000.0 [1:07:30<4:29:04, 24.78it/s] 30%|███       | 150000/500000.0 [1:40:35<3:54:29, 24.88it/s] 30%|███       | 150000/500000.0 [1:40:50<3:54:29, 24.88it/s] 40%|████      | 200000/500000.0 [2:13:54<3:20:32, 24.93it/s] 40%|████      | 200000/500000.0 [2:14:10<3:20:32, 24.93it/s] 50%|█████     | 250000/500000.0 [2:47:14<2:46:56, 24.96it/s] 50%|█████     | 250000/500000.0 [2:47:30<2:46:56, 24.96it/s] 60%|██████    | 300000/500000.0 [3:20:34<2:13:29, 24.97it/s] 60%|██████    | 300000/500000.0 [3:20:50<2:13:29, 24.97it/s] 70%|███████   | 350000/500000.0 [3:53:53<1:40:04, 24.98it/s] 70%|███████   | 350000/500000.0 [3:54:10<1:40:04, 24.98it/s] 80%|████████  | 400000/500000.0 [4:27:11<1:06:40, 25.00it/s] 80%|████████  | 400000/500000.0 [4:27:30<1:06:40, 25.00it/s] 90%|█████████ | 450000/500000.0 [5:00:33<33:20, 24.99it/s]   90%|█████████ | 450000/500000.0 [5:00:50<33:20, 24.99it/s]100%|█████████▉| 499999/500000.0 [5:33:56<00:00, 24.98it/s]energy_CV:  [-29.86075757 -31.93347706 -33.26221574 -33.84996576 -33.78119085
+ -33.20258333 -32.2951623  -31.24439417 -30.21441581 -29.33038124
+ -28.6703664  -28.26603498 -28.10989179 -28.16646965 -28.38493758
+ -28.71104276 -29.09679058 -29.50678547 -29.92075574 -30.33248533
+ -30.74607171 -31.17091905 -31.61696205 -32.09123915 -32.59623418
+ -33.12967863 -33.68506472 -34.25213465 -34.81702822 -35.36233811
+ -35.86771715 -36.31167769 -36.67479187 -36.94382323 -37.11570021
+ -37.19997145 -37.21861915 -37.20280551 -37.18706127 -37.20226458
+ -37.26919957 -37.39436353 -37.5690529  -37.77182867 -37.97356389
+ -38.14369458 -38.25617086 -38.29390007 -38.25101116 -38.13283707
+ -37.95395269 -37.73486625 -37.49806802 -37.26414173 -37.04856118
+ -36.85962194 -36.6976994  -36.55574151 -36.42070289 -36.27559955
+ -36.1020062  -35.88300211 -35.60660611 -35.26949524 -34.88032499
+ -34.46150523 -34.04816853 -33.68353314 -33.41089416 -33.26375508
+ -33.25663259 -33.37934648 -33.59690833 -33.85558954 -34.09386901
+ -34.25539699 -34.30043789 -34.21273046 -34.00016216 -33.68957523
+ -33.31773422 -32.92143147 -32.52963787 -32.15964055 -31.81764879
+ -31.50290254 -31.21332206 -30.95043787 -30.72175741 -30.53968704
+ -30.41733356 -30.3626091  -30.37273014 -30.43121877 -30.50883837
+ -30.56869708 -30.57438832 -30.49895353 -30.33203411 -30.0830052
+ -29.77904239 -29.45858935 -29.1620631  -28.92240222 -28.75800196
+ -28.66975585 -28.64265869 -28.65115645 -28.666536   -28.66433386
+ -28.62999415 -28.56164929 -28.46969701 -28.37359597 -28.29686052
+ -28.26153077 -28.28340375 -28.36904604 -28.51512315 -28.7099809
+ -28.93684471 -29.17762008 -29.4161984  -29.64043014 -29.8424537
+ -30.01769414 -30.16335066 -30.27736986 -30.35865092 -30.40861171
+ -30.43349584 -30.44624542 -30.46668625 -30.51926479 -30.62848283
+ -30.81313635 -31.08106926 -31.42612829 -31.8283405  -32.25728835
+ -32.67764898 -33.05529366 -33.3624256  -33.58090936 -33.70389886
+ -33.73666143 -33.69773046 -33.62103553 -33.55861495 -33.58236524
+ -33.78261781 -34.26163578 -35.121531   -36.44826842 -38.29558944
+ -40.67391491 -43.54885608 -46.85170138] kJ/mol
+energy_CV shape:  (158,)
+Traceback (most recent call last):
+  File "/home/tj/WORK/RL_MFPT/1D_langevin_sim/langevin_sim_metad.py", line 221, in <module>
+    plt.scatter(x[traj], fes[traj], s=3.5, alpha = 0.5, c="black")
+                ~^^^^^^
+IndexError: index 100 is out of bounds for axis 0 with size 100
+100%|█████████▉| 499999/500000.0 [5:34:01<00:00, 24.95it/s]

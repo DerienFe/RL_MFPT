@@ -8,7 +8,7 @@ from openmm.unit import Quantity
 from openmm import Vec3
 
 NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
-num_sim = 20
+num_sim = 1
 sim_steps = int(5e7)
 sim_steps_unbiased = int(1e7)
 pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
@@ -19,7 +19,7 @@ propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
 stepsize_unbias = 0.2 * unit.picoseconds #100 times.
 num_bins = 100 #used to discretize the traj, and used in the DHAM.
-dcdfreq = 100
+dcdfreq = 500
 dcdfreq_mfpt = 1
 
 platform = openmm.Platform.getPlatformByName('CUDA')
@@ -29,7 +29,7 @@ num_gaussian = 20 #number of gaussians used to placing the bias.
 
 #starting state (as in coordinate space, from 0 to 2pi.)
 start_state = Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
-end_state = Quantity(value = [Vec3(5.0,0.0,0.0)], unit = unit.nanometers) #need to change.
+end_state = Quantity(value = [Vec3(5.2,0.0,0.0)], unit = unit.nanometers) #need to change.
 
 end_state_unbiased = Quantity(value = [Vec3(3.9,0.0,0.0)], unit = unit.nanometers) #need to change.
 

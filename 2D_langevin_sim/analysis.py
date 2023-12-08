@@ -25,10 +25,11 @@ metaD_analysis = False
 plot = True
 plot_modified_fes = False
 plot_metad = False
+post_process_unbias = False
 
 if plot_metad:
-    file_list = ['./trajectory/metaD/20231106-102334_metaD_traj.dcd',
-                 './trajectory/metaD/20231107-002511_metaD_traj.dcd']
+    file_list = ['./trajectory/metaD/20231125-1621170_metaD_traj.dcd',
+                 './trajectory/metaD/20231125-2005261_metaD_traj.dcd']
     
     #this chunk we get the fes. 
     ###############################
@@ -71,6 +72,20 @@ if plot_metad:
         plt.savefig(f"./figs/metaD/replot_{file.split('/')[-1].split('.')[0]}_traj.png")
         plt.close()
 
+if post_process_unbias:
+    file_list_all = os.listdir("./trajectory/unbias/")
+    file_list = []
+    for file in file_list_all:
+        if "20231128" in file.split('.')[0].split('_')[0]:
+            file_list.append(file)
+    
+    #we load dcd files and use mdtraj get the xyz coordinates.
+    for file in file_list:
+        traj = mdtraj.load(f"./trajectory/unbias/{file}", top="./trajectory/explore/20231101-133419_langevin_sim_explore_0.pdb")
+        coor = traj.xyz[:,0,:] 
+        #save coor in txt
+        np.savetxt(f"./visited_states/{file.split('.')[0]}.txt", coor)
+
 
 if plot_modified_fes:
     #we load uniased_profile
@@ -96,14 +111,20 @@ if plot_modified_fes:
 
 if unbias_analysis:
     traj_path_list = []
-    for file in os.listdir("trajectories/unbiased/"):
+    for file in os.listdir("trajectory/unbias/"):
         if file.endswith(".dcd"):
-            traj_path_list.append(file)
+            if '20231128' in file.split('.')[0].split('_')[0]:
+                traj_path_list.append(file)
 
     for traj_path in traj_path_list:
-        traj = mdtraj.load(f"trajectories/unbiased/{traj_path}", top="./toppar/step3_input25A.pdb")
 
-        NaCl_dist = mdtraj.compute_distances(traj, [[0, 1]]) #distance in nm
+        print(f"Processing {traj_path}")
+        traj = mdtraj.load(f"trajectory/unbias/{traj_path}", top="./trajectory/explore/20231101-133419_langevin_sim_explore_0.pdb")
+        coor = traj.xyz[:,0,:2]
+        np.savetxt(f"visited_states/{traj_path.split('.')[0]}.csv", coor, delimiter=",")
+
+
+"""        NaCl_dist = mdtraj.compute_distances(traj, [[0, 1]]) #distance in nm
         NaCl_dist = np.array(NaCl_dist)
 
         #get the first time NaCl_dist > 7A
@@ -117,7 +138,7 @@ if unbias_analysis:
         with open("total_steps_unbiased.csv", 'a') as f:
             writer = csv.writer(f)
             writer.writerow([steps_to_7A * 100])
-
+"""
 if metaD_analysis:
     traj_path_list = []
     for file in os.listdir("trajectories/metaD/"):
@@ -180,28 +201,22 @@ if plot:
     ax.boxplot([mfpt_data, unbias_data], positions=[1, 2])
     box3 = ax.boxplot(metaD_data, positions=[3], patch_artist=True)
     for box in box3['boxes']:
-        box.set_linestyle('--')
+        box.set_linestyle('-')
     for whisker in box3['whiskers']:
-        whisker.set_linestyle('--')
+        whisker.set_linestyle('-')
     for cap in box3['caps']:
-        cap.set_linestyle('--')
+        cap.set_linestyle('-')
     for median in box3['medians']:
-        median.set_linestyle('--')
+        median.set_linestyle('-')
 
     # Setting x-ticks and labels
     ax.set_xticks([1, 2, 3])
-    ax.set_xticklabels(['MFPT', 'Unbiased (In Progress)', 'MetaD (In Progress)'])
+    ax.set_xticklabels(['MFPT', 'Unbiased (estimated)', 'MetaD'])
 
     # Adding the y-axis label, title and setting y-scale to log
     ax.set_ylabel("Time (ps)")
     ax.set_title("Time to reach destination")
     ax.set_yscale('log')
-
-    # Adding legend
-    from matplotlib.lines import Line2D
-    legend_elements = [Line2D([0], [0], color='b', lw=1, linestyle='-'),
-                    Line2D([0], [0], color='b', lw=1, linestyle='--')]
-    ax.legend(legend_elements, ['Completed', 'In Progress'], loc='best')
 
     # Saving the figure
     plt.savefig("./figs/box_plot_log.png")

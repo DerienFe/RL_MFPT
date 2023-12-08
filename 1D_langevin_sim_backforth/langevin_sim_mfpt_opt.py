@@ -21,7 +21,6 @@ from dham import *
 from util import *
 
 def propagate(simulation,
-              gaussian_params,
               prop_index,
               cycle_count,
               pos_traj,   #this records the trajectory of the particle. in shape: [prop_index, sim_steps, 3]
@@ -65,7 +64,7 @@ def propagate(simulation,
     coor = traj.xyz[:,0,:] #[all_frames,particle_index,xyz] # we grep the particle 0.
 
     #we digitize the x, y coordinate into meshgrid (0, 2pi, num_bins)
-    x = np.linspace(0, 2*np.pi, num_bins) #hardcoded.
+
 
     #we digitize the coor into the meshgrid.
     coor_x = coor.squeeze()[:,:1] #we only take the xcoordinate.
@@ -171,7 +170,7 @@ def random_initial_bias(initial_position, num_gaussians):
     initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm
     rng = np.random.default_rng()
     #a = np.ones(10)
-    a = np.ones(num_gaussians) * 0.01 #convert to kJ/mol
+    a = np.ones(num_gaussians) * 0.01 
     b = rng.uniform(initial_position[0]-0.5, initial_position[0]+0.5, num_gaussians)
     c = rng.uniform(0, 2*np.pi, num_gaussians)
     return np.concatenate((a,b,c), axis=None)
@@ -287,6 +286,8 @@ if __name__ == "__main__":
 
                     final_index = np.digitize(final_coor, x)
                     closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
+                    print("closest_index updated: ", closest_index)
+                    print("converted to x space that's: ", x[closest_index])
                     i_prop += 1
                 else:
 
@@ -388,7 +389,8 @@ if __name__ == "__main__":
                     final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
                     final_index = np.digitize(final_coor, x)
                     closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
-                    
+                    print("closest_index updated: ", closest_index)
+                    print("converted to x space that's: ", x[closest_index])
                     i_prop += 1
             
             #here we reached the current_target_state.
@@ -397,48 +399,49 @@ if __name__ == "__main__":
                 current_target_state = config.start_state
             else:
                 current_target_state = config.end_state
-                
-            #update working_MM and working_indices
-            working_MM, working_indices = get_working_MM(MM)
-            #update closest_index
-            final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-            final_index = np.digitize(final_coor, x)
-            closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
-            
             cycle_count += 1
             reach = None
             #i_prop = 0 #we keep the i_prop, so its easier to reshape the pos_traj.
             print("cycle number completed: ", cycle_count)
 
-        #final dham to get the smoothed fes.
-        # note this step we dont use the sym.
+            #we also updadte the closest_index.
+            #update working_MM and working_indices
+            working_MM, working_indices = get_working_MM(MM)
+            #update closest_index
+            final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
+            final_index = np.digitize(final_coor, x)
+            closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.    
+            print("closest_index updated: ", closest_index)
+            print("converted to x space that's: ", x[closest_index])
+            
+            #each time we finish a cycle, we plot the total F_M.
+            #here we load all gaussian_params.
+            gaussian_params = np.zeros([i_prop, config.num_gaussian, 3])
+            for i in range(i_prop):
+                gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
+                print(f"gaussian_params for propagation {i} loaded.")
 
-        #here we load all gaussian_params.
-        gaussian_params = np.zeros([i_prop, config.num_gaussian, 3])
-        for i in range(i_prop):
-            gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
-            print(f"gaussian_params for propagation {i} loaded.")
-
-        #use DHAM_it to get the MM and F_M.
-        F_M, MM = DHAM_it(pos_traj[:i_prop,:].ravel().reshape(i_prop, -1, 1), 
-                            gaussian_params, 
-                            T=300, 
-                            lagtime=1, 
-                            num_bins=config.num_bins, 
-                            time_tag=time_tag, 
-                            prop_index=0,
-                            use_symmetry=False
-                            )
-
-        #plot the total F_M at last.
-        plt.figure()
-        plt.plot(x, (F_M- F_M.min())*4.184, label="DHAM fes")
-        plt.plot(x,fes - fes.min(), label="original fes")
-        plt.title("total F_M")
-        plt.xlabel("x-coor position (nm)")
-        plt.ylabel("fes (kJ/mol)")
-        plt.savefig(f"./figs/explore/{time_tag}_total_F_M.png")
-        plt.close()
+            #use DHAM_it to get the MM and F_M.
+            F_M_plot, _ = DHAM_it(pos_traj[:i_prop,:].ravel().reshape(i_prop, -1, 1), 
+                                gaussian_params, 
+                                T=300, 
+                                lagtime=1, 
+                                num_bins=config.num_bins, 
+                                time_tag=time_tag, 
+                                prop_index=0,
+                                use_symmetry=False
+                                )
+            F_M_cleaned = np.where(np.isfinite(F_M_plot), F_M_plot, np.nan)
+            #plot the total F_M at last.
+            plt.figure()
+            plt.plot(x, (F_M_plot - np.nanmin(F_M_cleaned)), label="DHAM fes")
+            plt.plot(x,fes - fes.min(), label="original fes")
+            plt.title("total F_M")
+            plt.xlabel("x-coor position (nm)")
+            plt.ylabel("fes (kcal/mol)")
+            plt.legend()
+            plt.savefig(f"./figs/explore/{time_tag}_cycle_{cycle_count}_total_fes.png")
+            plt.close()
 
         ############# post processing #################
         #we have reached target state, thus we record the steps used.

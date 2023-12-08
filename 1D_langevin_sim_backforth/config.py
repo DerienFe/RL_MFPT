@@ -12,7 +12,7 @@ num_sim = 1
 sim_steps = int(5e6)
 pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
+amp = 4 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
 propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
@@ -24,7 +24,7 @@ dcdfreq_mfpt = 1
 platform = openmm.Platform.getPlatformByName('CUDA')
 #platform = openmm.Platform.getPlatformByName('CPU')
 
-num_gaussian = 20 #number of gaussians used to placing the bias.
+num_gaussian = 10 #number of gaussians used to placing the bias.
 
 #starting state (as in coordinate space, from 0 to 2pi.)
 start_state = Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
@@ -35,4 +35,4 @@ fes_mode = 'multiwell' #chose from ['gaussian', 'multiwell', 'funnel']
 #fes_param_path = ['./params/gaussian_fes_param.txt', './params/multi_well_fes_param.txt', './params/funnel_fes_param.txt']
 
 ##### back n forth settings #####
-max_cycle = 4 #we will run max_iteration times of back n forth.
+max_cycle = 20 #we will run max_iteration times of back n forth.

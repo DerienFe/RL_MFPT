@@ -2,7 +2,7 @@ from scipy.io import loadmat
 import numpy as np
 import matplotlib.pyplot as plt
 from os import path
-plt.rcParams.update({'font.size': 17})
+plt.rcParams.update({'font.size': 20})
 
 #here we load the precalculated 1D optim bias and zero it on 89 state.
 # note all loaded data is gaussian parameters in 1D.
@@ -108,7 +108,11 @@ F = F[:89]
 #plt.plot(F)
 #plt.show()
 colormap = plt.cm.get_cmap('coolwarm', gaussian_params_pos.shape[0])
-
+#plot the FES. up until 88.
+plt.figure(figsize=(8,6))
+plt.plot(88, F[88], marker = 'x', color = 'red', markersize = 10)
+#plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
+plt.plot(F, color = 'black', linewidth = 2)
 F_biased_total=[]
 for pos_i in range(0, gaussian_params_pos.shape[0],3):
     #unpack all the gaussian params. 20 center_gaussian and 20 std gaussian.
@@ -130,28 +134,25 @@ for pos_i in range(0, gaussian_params_pos.shape[0],3):
     F_biased -= F_biased[88]
     F_biased_total.append(F_biased)
 
-    #plot the FES. up until 88.
-    plt.figure(figsize=(6,6))
-    plt.plot(88, F[88], marker = 'x', color = 'red', markersize = 10)
+    
     #plot the current position on F.
-    plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
-    plt.plot(F, color = 'grey')
+    
     for i in range(len(F_biased_total)):
         plt.plot(F_biased_total[i], color = colormap(i*3), alpha = 0.7)
 
     #plot agin the current position on F.
-    plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
+    #plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
     #plot the current position on lastest F_biased.
-    plt.plot(pos_i, F_biased_total[-1][pos_i], marker = 'o', color = 'red', markersize = 10, alpha = 0.5)
+    #plt.plot(pos_i, F_biased_total[-1][pos_i], marker = 'o', color = 'red', markersize = 10, alpha = 0.5)
     
-    #position legend on the top right with alpha=0.7
-    plt.legend(['target state', 'current state','unbiased FES', f'biased FES',], loc='upper left', bbox_to_anchor=(0,1.3,1,0.2), fontsize=12, framealpha=0.5, mode="expand", borderaxespad=0)
-    plt.xlabel('state')
-    plt.ylabel('FES (kcal/mol)')
-    plt.tight_layout()
-    #plt.show()
-    plt.savefig(f'./figs/1D_gif/optim-{pos_i}_overlap.png')
-    plt.close()
+#position legend on the top right with alpha=0.7
+plt.legend()
+plt.xlabel('state')
+plt.ylabel('FES (kcal/mol)')
+plt.tight_layout()
+#plt.show()
+plt.savefig(f'./figs/1D_gif/optim-{pos_i}_overlap.png')
+plt.close()
 
 
 

@@ -31,7 +31,7 @@ if __name__ == "__main__":
     #metaD parameters
     npoints = 101
     meta_freq = 5000
-    meta_height = 1
+    meta_height = config.amp * 1/2
 
     #
     elem = Element(0, "X", "X", 1.0)
@@ -98,7 +98,8 @@ if __name__ == "__main__":
             raise NotImplementedError #not implementedd for pbc yet.
             x_cv = openmm.CustomExternalForce("1.0*(periodicdistance(x,0,0, x0,0,0))^2")
         else:
-            x_cv = openmm.CustomExternalForce("1.0*(x-x0)^2")
+            #x_cv = openmm.CustomExternalForce("1.0*(x-x0)^2")
+            x_cv = openmm.CustomExternalForce("x")
         x_cv.addGlobalParameter("x0", x0)
         x_cv.addParticle(0)
         x_force = openmm.CustomCVForce("k*x_cv")
@@ -114,9 +115,9 @@ if __name__ == "__main__":
         metaD = Metadynamics(system=system,
                             variables=[x_Bias_var], #variables=[rmsd_Bias_var],
                             temperature=300*unit.kelvin,
-                            biasFactor=4,
-                            height=1.0*unit.kilojoules_per_mole,
-                            frequency=meta_freq, #5000
+                            biasFactor=5,
+                            height=meta_height * unit.kilojoules_per_mole,
+                            frequency=meta_freq,
                             saveFrequency=meta_freq,
                             biasDir=aux_file_path,)
 
@@ -216,9 +217,12 @@ if __name__ == "__main__":
         #plot the trajectory
         plot_inteval = len(pos_traj)//10000
         traj = pos_traj[::plot_inteval][:,0].squeeze() #we only take x axis coordinate.
-        traj = np.digitize(traj, x)
+        traj_digitized = np.digitize(traj, x)
 
-        plt.scatter(x[traj], fes[traj], s=3.5, alpha = 0.5, c="black")
+        #we truncate such that the traj_digitized is within the range of x.
+        traj_digitized = traj_digitized[traj_digitized < 100]
+
+        plt.scatter(x[traj_digitized], fes[traj_digitized], s=3.5, alpha = 0.5, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
 
