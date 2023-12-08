@@ -6,6 +6,9 @@ import openmm
 
 from openmm.unit import Quantity
 from openmm import Vec3
+from scipy.sparse import csr_matrix, csc_matrix, coo_matrix
+import jax.scipy as jsp
+from jax.scipy import sparse
 
 NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
 num_sim = 20
@@ -18,9 +21,10 @@ amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is nor
 propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
 stepsize_unbias = 0.2 * unit.picoseconds #100 times.
-num_bins = 100 #used to discretize the traj, and used in the DHAM.
+num_bins = 1000 #used to discretize the traj, and used in the DHAM.
 dcdfreq = 100
 dcdfreq_mfpt = 1
+sparse_mat = (coo_matrix,csr_matrix)
 
 platform = openmm.Platform.getPlatformByName('CUDA')
 #platform = openmm.Platform.getPlatformByName('CPU')

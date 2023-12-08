@@ -15,6 +15,7 @@ from openmm.app.topology import Topology
 from openmm.app.element import Element
 import mdtraj
 import csv
+import os
 
 import config
 from dham import *
@@ -38,7 +39,10 @@ def propagate(simulation,
     use the DHAM_it to process CV_total, get the partially observed Markov matrix from trajectory.
     return the current position, the CV_total, and the partially observed Markov matrix.
     """
-    
+    directory_paths = ["./trajectory/explore","./figs/explore","./params","./visited_states"]
+    for i in directory_paths:
+        if not os.path.exists(i):
+            os.makedirs(i)
     file_handle = open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_{prop_index}.dcd", 'bw')
     dcd_file = openmm.app.dcdfile.DCDFile(file_handle, top, dt = stepsize) #note top is no longer a global pararm, we need pass this.
     for _ in tqdm(range(int(steps/dcdfreq)), desc=f"Propagation {prop_index}"):
@@ -87,6 +91,7 @@ def propagate(simulation,
     for i in range(prop_index+1):
         gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_fes_param_{i}.txt").reshape(-1,3)
         print(f"gaussian_params for propagation {i} loaded.")
+    print(gaussian_params)
 
     #here we use the DHAM.
     F_M, MM = DHAM_it(coor_x_total, 
