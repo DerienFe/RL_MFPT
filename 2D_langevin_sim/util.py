@@ -303,7 +303,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
 
     k = 5  # Steepness of the sigmoid curve
     max_barrier = "1e2"  # Scaling factor for the potential maximum
-    offset = 0.5 #the offset of the boundary energy barrier.
+    offset = 0.7 #the offset of the boundary energy barrier.
     # Defining the potentials using a sigmoid function
     left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
     right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")

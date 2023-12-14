@@ -30,7 +30,8 @@ def propagate(simulation,
               pbc=config.pbc,
               time_tag=None,
               top=None,
-              reach=None
+              reach=None,
+              global_gaussian_params=None,
               ):
     """
     here we use the openmm context object to propagate the system.
@@ -83,14 +84,16 @@ def propagate(simulation,
     #here we load all the gaussian_params from previous propagations.
     #size of gaussian_params: [num_propagation, num_gaussian, 3] (a,b,c),
     # note for 2D this would be [num_propagation, num_gaussian, 5] (a,bx,by,cx,cy)
-    gaussian_params = np.zeros([prop_index+1, config.num_gaussian, 3])
+    """gaussian_params = np.zeros([prop_index+1, config.num_gaussian, 3])
     for i in range(prop_index+1):
         gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_fes_param_{i}.txt").reshape(-1,3)
         print(f"gaussian_params for propagation {i} loaded.")
+    """
+    #note: gaussian_params will be passed global now, as a numpy array, in shape [num_propagation, num_gaussian, 3]
 
     #here we use the DHAM.
     F_M, MM = DHAM_it(coor_x_total, 
-                      gaussian_params, 
+                      global_gaussian_params, 
                       T=300, 
                       lagtime=1, 
                       num_bins=num_bins, 
@@ -141,7 +144,7 @@ def find_closest_index(working_indices, final_index, N):
     closest_index = np.ravel_multi_index(closest_state, (N,N), order='C')
     return closest_index
 
-def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None):
+def DHAM_it(CV, gloabl_gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None):
     """
     intput:
     CV: the collective variable we are interested in. now it's 2d.
@@ -153,7 +156,7 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, t
     the Markov Matrix
     Free energy surface probed by DHAM.
     """
-    d = DHAM(gaussian_params, num_bins=num_bins)
+    d = DHAM(gloabl_gaussian_params, num_bins=num_bins)
     d.setup(CV, T, prop_index=prop_index, time_tag=time_tag)
 
     d.lagtime = lagtime
@@ -241,6 +244,7 @@ if __name__ == "__main__":
                 print("propagation 0 starting")
                 gaussian_params = random_initial_bias(initial_position = config.start_state, num_gaussians = config.num_gaussian)
                 
+                global_gaussian_params = gaussian_params.reshape(1, config.num_gaussian, 3) #this is in shape [1, num_gaussian, 3]
                 #we save the gaussian_params as prop_0 params. later this will be loaded in dham.
                 np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
 
@@ -268,7 +272,8 @@ if __name__ == "__main__":
                                                                     pbc=config.pbc,
                                                                     time_tag = time_tag,
                                                                     top=top,
-                                                                    reach=reach
+                                                                    reach=reach,
+                                                                    global_gaussian_params=global_gaussian_params,
                                                                     )
 
                 working_MM, working_indices = get_working_MM(MM)
@@ -294,6 +299,9 @@ if __name__ == "__main__":
                                                 end_index = closest_index,
                                                 plot = False,
                                                 )
+                #np.concate this onto global_gaussian_params
+                global_gaussian_params = np.concatenate((global_gaussian_params, gaussian_params.reshape(1, config.num_gaussian, 3)), axis=0)
+                
                 if True:
                     #here we calculate the total bias given the optimized gaussian_params
                     total_bias = get_total_bias(x, gaussian_params, num_gaussians=config.num_gaussian) * 4.184 #convert to kcal/mol
@@ -363,7 +371,8 @@ if __name__ == "__main__":
                                                                     pbc=config.pbc,
                                                                     time_tag = time_tag,
                                                                     top=top,
-                                                                    reach=reach
+                                                                    reach=reach,
+                                                                    global_gaussian_params=global_gaussian_params,
                                                                     )
                 #update working_MM and working_indices
                 working_MM, working_indices = get_working_MM(MM)

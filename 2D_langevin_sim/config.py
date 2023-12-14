@@ -13,7 +13,7 @@ sim_steps = int(5e6) #change to run for a whole day.
 sim_steps_unbiased = int(5e7)
 pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
+amp = 0.5 #6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
 propagation_step = 5000
 stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.

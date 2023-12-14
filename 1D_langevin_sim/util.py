@@ -142,7 +142,7 @@ def bias_M_1D(M, total_bias, kT=0.5981):
     for i in range(N):
         for j in range(N):
             u_ij = total_bias[j] - total_bias[i]
-            M_biased[i, j] = M[i, j] * np.exp(-u_ij / 2*kT)
+            M_biased[i, j] = M[i, j] * np.exp(-u_ij / (2*kT))
         M_biased[i, i] = M[i,i]
 
     """for i in range(N):
