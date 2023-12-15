@@ -14,7 +14,7 @@ import config
 from scipy.sparse import linalg
 #from jax.scipy.sparse import linalg
 from scipy.sparse import diags, eye
-from numba import jit,njit
+from numba import jit,njit,prange
 import time
 import pandas as pd
 
@@ -23,8 +23,8 @@ class TIME:
         self.log = dict(zip(np.linspace(1,sections,sections),[[] for i in range(sections)]))
     def log_event(self,duration,section):
         self.log[section].append(duration)
-    def make_df(self):
-        return pd.DataFrame(self.log)
+    # def make_df(self):
+    #     return pd.DataFrame(self.log)
 
 def gaussian(x, a, b, c): #self-defined gaussian function
         return a * np.exp(-(x - b)**2 / ((2*c)**2)) 
@@ -271,6 +271,18 @@ def Markov_mfpt_calc_sparse(peq, M): ##### implement jj hunter algorithm
     #mfpt_optimized_sparse = config.sparse_mat[1](mfpt_dense)
     return mfpt
 
+@njit(parallel=True)
+def Markov_mfpt_calc_helper(Qinv,mfpt,Idn,N,peq):
+    for j in prange(N):
+        for i in range(N):
+            term1 = Qinv[j, j] - Qinv[i, j] + Idn[i, j]
+            if peq[j] * term1 == 0:
+                mfpt[i, j] = 1000000000000
+            else:
+                mfpt[i, j] = 1/peq[j] * term1
+    #result = kemeny_constant_check(N, mfpt, peq)
+    return mfpt
+
 def Markov_mfpt_calc(peq, M):
     N = M.shape[0]
     onevec = np.ones((N, 1))
@@ -280,15 +292,7 @@ def Markov_mfpt_calc(peq, M):
     A = A.T
     Qinv = inv(Idn + A - M)
     mfpt = np.zeros((N, N))
-    for j in range(N):
-        for i in range(N):
-            term1 = Qinv[j, j] - Qinv[i, j] + Idn[i, j]
-            if peq[j] * term1 == 0:
-                mfpt[i, j] = 1000000000000
-            else:
-                mfpt[i, j] = 1/peq[j] * term1
-    #result = kemeny_constant_check(N, mfpt, peq)
-    return mfpt
+    return Markov_mfpt_calc_helper(Qinv,mfpt,Idn,N,peq)
 
 ##### used
 def try_and_optim_sparse_M(M,working_indices, time_class,num_gaussian=10, start_index=0, end_index=0, plot = False,):
