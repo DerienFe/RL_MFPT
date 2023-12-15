@@ -36,3 +36,4 @@ fes_mode = 'multiwell' #chose from ['gaussian', 'multiwell', 'funnel']
 
 ##### back n forth settings #####
 max_cycle = 20 #we will run max_iteration times of back n forth.
+num_propagation = 200 #max number of propagations 

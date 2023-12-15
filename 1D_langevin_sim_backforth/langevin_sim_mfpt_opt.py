@@ -22,6 +22,7 @@ from util import *
 
 def propagate(simulation,
               prop_index,
+              gaussian_params,
               cycle_count,
               pos_traj,   #this records the trajectory of the particle. in shape: [prop_index, sim_steps, 3]
               steps=config.propagation_step,
@@ -45,37 +46,24 @@ def propagate(simulation,
     print("cycle count: ", cycle_count)
     print("prop index: ", prop_index)
     file_handle = open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.dcd", 'bw')
-    dcd_file = openmm.app.dcdfile.DCDFile(file_handle, top, dt = stepsize) #note top is no longer a global pararm, we need pass this.
+    dcd_file = openmm.app.dcdfile.DCDFile(file_handle, top, dt = stepsize)
     for _ in tqdm(range(int(steps/dcdfreq)), desc=f"cycle {cycle_count} Propagation {prop_index}"):
         simulation.integrator.step(dcdfreq)
         state = simulation.context.getState(getPositions=True, enforcePeriodicBox=pbc)
         dcd_file.writeModel(state.getPositions(asNumpy=True))
     file_handle.close()
 
-    #save the top to pdb.
+
     with open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb", 'w') as f:
         openmm.app.PDBFile.writeFile(simulation.topology, state.getPositions(), f)
     
-    #we load the pdb and pass it to mdtraj_top
+
     mdtraj_top = mdtraj.load(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb")
-
-    #use mdtraj to get the coordinate of the particle.
-    traj = mdtraj.load_dcd(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.dcd", top = mdtraj_top)#top = mdtraj.Topology.from_openmm(top)) #this will yield error because we using imaginary element X.
-    coor = traj.xyz[:,0,:] #[all_frames,particle_index,xyz] # we grep the particle 0.
-
-    #we digitize the x, y coordinate into meshgrid (0, 2pi, num_bins)
+    traj = mdtraj.load_dcd(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.dcd", top = mdtraj_top)
+    coor = traj.xyz[:,0,:] #[all_frames,particle_index,xyz]
 
 
-    #we digitize the coor into the meshgrid.
-    coor_x = coor.squeeze()[:,:1] #we only take the xcoordinate.
-    #we test.
-    if False: 
-        plt.figure()
-        plt.plot(coor_x)
-        plt.xlim([0, 2*np.pi])
-        plt.savefig("./test.png")
-        plt.close()
-    #we append the coor_xy_digitized into the pos_traj.
+    coor_x = coor.squeeze()[:,:1] #only take the xcoordinate.
     pos_traj[prop_index,:] = coor_x.squeeze()
 
     #we take all previous digitized x and feed it into DHAM.
@@ -227,10 +215,9 @@ if __name__ == "__main__":
                                             1.0/unit.picoseconds, 
                                             0.002*unit.picoseconds)
 
-        num_propagation = 100 #hard coded for now, we give it 10 propagation per cycle, and 10 cycles.
-        frame_per_propagation = int(config.propagation_step/config.dcdfreq_mfpt)
+        frame_per_propagation = int(round(config.propagation_step/config.dcdfreq_mfpt))
         #this stores the digitized, ravelled, x, y coordinates of the particle, for every propagation.
-        pos_traj = np.zeros([num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
+        pos_traj = np.zeros([config.num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
 
         x = np.linspace(0, 2*np.pi, config.num_bins)
 
@@ -241,22 +228,18 @@ if __name__ == "__main__":
         #for i_prop in range(num_propagation):
         while cycle_count < config.max_cycle:
             while reach is None:
-                if i_prop >= num_propagation:
+                if i_prop >= config.num_propagation:
                     print("propagation number exceeds num_propagation, break")
                     break
                 if i_prop == 0:
                     print("propagation 0 starting")
                     gaussian_params = random_initial_bias(initial_position = config.start_state, num_gaussians = config.num_gaussian)
                     np.savetxt(f"./params/{time_tag}_gaussian_param_prop_{i_prop}.txt", gaussian_params)
-                    #we apply the initial gaussian bias (v small) to the system
-                    system = apply_bias(system = system, particle_idx=0, gaussian_param = gaussian_params, pbc = config.pbc, name = "BIAS", num_gaussians = config.num_gaussian)
 
-                    #create simulation object, this create a context object automatically.
-                    # when we need to pass a context object, we can pass simulation instead.
+                    system = apply_bias(system = system, particle_idx=0, gaussian_param = gaussian_params, pbc = config.pbc, name = "BIAS", num_gaussians = config.num_gaussian)
                     simulation = openmm.app.Simulation(top, system, integrator, config.platform)
                     simulation.context.setPositions(config.start_state)
                     simulation.context.setVelocitiesToTemperature(300*unit.kelvin)
-
                     simulation.minimizeEnergy()
                     if config.pbc:
                         simulation.context.setPeriodicBoxVectors(a,b,c)
@@ -280,10 +263,7 @@ if __name__ == "__main__":
 
                     working_MM, working_indices = get_working_MM(MM)
 
-                    #final_coor = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-                    #we adapt this to current_target_state
                     final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-
                     final_index = np.digitize(final_coor, x)
                     closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
                     print("closest_index updated: ", closest_index)
@@ -293,11 +273,10 @@ if __name__ == "__main__":
 
                     print(f"cycle {cycle_count} propagation number {i_prop} starting")
 
-                    #find the most visited state in last propagation.
                     last_traj = pos_traj[i_prop-1, :].squeeze()
                     last_traj_index = np.digitize(last_traj, x).astype(np.int64)
-                    most_visited_state = np.argmax(np.bincount(last_traj_index)) #this is in digitized
-                    last_visited_state = last_traj_index[-1] #this is in digitized
+                    most_visited_state = np.argmax(np.bincount(last_traj_index))
+                    last_visited_state = last_traj_index[-1]
 
                     gaussian_params = try_and_optim_M(working_MM,
                                                     working_indices = working_indices,

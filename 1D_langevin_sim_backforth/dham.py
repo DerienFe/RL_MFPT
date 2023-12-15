@@ -10,6 +10,7 @@ from scipy.linalg import eig
 from scipy.optimize import minimize
 from util import gaussian
 
+from MSM import *
 
 def rmsd(offset, a, b):
     return np.sqrt(np.mean(np.square((a + offset) - b)))
@@ -123,11 +124,10 @@ class DHAM:
         sumtr, trvec = count_transitions(b, self.num_bins, self.lagtime, use_symmetry=use_symmetry)
 
         MM = self.build_MM(sumtr, trvec, biased)
-        from util import compute_free_energy, compute_free_energy_power_method
-        peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
-        #peq, mU2 = compute_free_energy_power_method(MM)
-        #print(peq)
-        print("sum of peq in dham reconstruction: ", sum(peq))
+        msm = MSM()
+        msm.M = MM.T
+        msm._compute_peq_fes_M()
+        print("sum of peq in dham reconstruction: ", sum(msm.peq))
 
         if False:
             #unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
@@ -140,7 +140,7 @@ class DHAM:
             plt.xlim(0, 2*np.pi)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
             plt.close()        
-        return mU2, MM.T # mU2 is in unit kcal/mol.
+        return msm.free_energy, MM.T # mU2 is in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)
