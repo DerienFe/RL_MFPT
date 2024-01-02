@@ -3,37 +3,45 @@
 import time
 from openmm import unit
 import openmm
-
 from openmm.unit import Quantity
 from openmm import Vec3
+import numpy as np
 
-NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
+#simulation settings
 num_sim = 1
 sim_steps = int(5e6)
-pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
+pbc = False 
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-amp = 4 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
+amp = 6 
+platform = openmm.Platform.getPlatformByName('CUDA')
+start_state = Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
+end_state = Quantity(value = [Vec3(5.2,0.0,0.0)], unit = unit.nanometers)
+fes_mode = 'multiwell'                      #['gaussian', 'multiwell', 'funnel']
+load_global_gaussian_params_from_txt = False
 
+#MD settings
+T = 300 #unit in kelvin
 propagation_step = 5000
-stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
-stepsize_unbias = 0.2 * unit.picoseconds #100 times.
-num_bins = 100 #used to discretize the traj, and used in the DHAM.
+stepsize = 0.002 * unit.picoseconds 
+stepsize_unbias = 0.002 * unit.picoseconds 
 dcdfreq = 100
 dcdfreq_mfpt = 1
 
-platform = openmm.Platform.getPlatformByName('CUDA')
-#platform = openmm.Platform.getPlatformByName('CPU')
+#digitization & DHAM settings
+qspace_num_bins = 100                       #used for plotting
+qspace_low = 0
+qspace_high = 2*np.pi
 
-num_gaussian = 10 #number of gaussians used to placing the bias.
+use_dynamic_bins = True
+DHAM_num_bins = 50                          #used in the DHAM to discretize the traj
 
-#starting state (as in coordinate space, from 0 to 2pi.)
-start_state = Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
-end_state = Quantity(value = [Vec3(5.2,0.0,0.0)], unit = unit.nanometers) #3.8
+qspace = np.linspace(qspace_low, qspace_high, qspace_num_bins)
 
-#here we have 3 pre-defined 2D fes, stored as different functions.
-fes_mode = 'multiwell' #chose from ['gaussian', 'multiwell', 'funnel']
-#fes_param_path = ['./params/gaussian_fes_param.txt', './params/multi_well_fes_param.txt', './params/funnel_fes_param.txt']
 
-##### back n forth settings #####
-max_cycle = 20 #we will run max_iteration times of back n forth.
-num_propagation = 200 #max number of propagations 
+#biasing settings
+num_gaussian = 10 
+
+
+#back n forth settings
+max_cycle = 20                              #we will run max_iteration times of back n forth.
+num_propagation = 400                       #max number of propagations 

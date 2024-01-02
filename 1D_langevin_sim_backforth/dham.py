@@ -9,7 +9,7 @@ from glob import glob
 from scipy.linalg import eig
 from scipy.optimize import minimize
 from util import gaussian
-
+import config
 from MSM import *
 
 def rmsd(offset, a, b):
@@ -47,22 +47,20 @@ def count_transitions(b, numbins, lagtime, endpt=None, use_symmetry=False):
     return sumtr.real, trvec
 
 class DHAM:
-    KbT = 0.001987204259 * 300  # energy unit: kcal/mol
-    epsilon = 0.00001
-    data = None
-    vel = None
-    datlength = None
-    k_val = None
-    constr_val = None
-    qspace = None
-    num_bins = 150
-    lagtime = 1
-
-    def __init__(self, gaussian_params, num_bins):
+    
+    def __init__(self, global_gaussian_params, num_bins):
         #gaussian_params comes in shape [prop_index + 1, num_gaussian, 3]
-        num_gaussian = gaussian_params.shape[1]
-        self.gaussian_params = gaussian_params
-        self.x = np.linspace(0, 2*np.pi, self.num_bins)
+        self.global_gaussian_params = global_gaussian_params
+        self.KbT = 0.001987204259 * 300  # energy unit: kcal/mol
+        self.epsilon = 0.00001
+        self.data = None
+        self.vel = None
+        self.datlength = None
+        self.k_val = None
+        self.constr_val = None
+        self.qspace = None
+        self.num_bins = num_bins
+        self.lagtime = 1
         return
 
     def setup(self, CV, T, prop_index, time_tag):
@@ -87,8 +85,8 @@ class DHAM:
                             #for each chunk of trajectory, we load the gaussian parameters.
                             # and calculate total bias in u, used to unbias the traj later.
                             u = np.zeros_like(self.qspace)
-                            for g in range(self.gaussian_params.shape[1]):
-                                a,b,c = self.gaussian_params[k, g, :]
+                            for g in range(self.global_gaussian_params.shape[1]):
+                                a,b,c = self.global_gaussian_params[k, g, :]
                                 u += gaussian(self.qspace, a, b, c)
                             
                             if trvec[k, i] > 0:
@@ -97,8 +95,6 @@ class DHAM:
                         MM[i, j] = sumtr[i, j] / sump1
                     else:
                         MM[i, j] = 0
-            #epsilon_offset = 1e-15
-            #MM = MM / (np.sum(MM, axis=1)[:, None])#+epsilon_offset) #normalize the M matrix #this is returning NaN?.
             for i in range(MM.shape[0]):
                 row_sum = np.sum(MM[i,:])
                 if row_sum > 0:
@@ -109,7 +105,7 @@ class DHAM:
             raise NotImplementedError
         return MM
 
-    def run(self, plot=False, adjust=True, biased=False, conversion=2E-13, use_symmetry=False):
+    def run(self, plot=False, adjust=True, biased=False, conversion=2E-13, use_symmetry=False, use_dynamic_bins=False):
         """
 
         :param plot:
@@ -118,9 +114,20 @@ class DHAM:
         :param conversion: from timestep to seconds
         :return:
         """
-        qspace = np.linspace(0, 2*np.pi, self.num_bins + 1) #hard coded for now.
-        self.qspace = qspace
-        b = np.digitize(self.data[:, :], qspace)
+        #given the data, we create dynamic qspace based on config.DHAM_num_bins
+        #and discretize the data into bins.
+        #for higher dimension, we discretize and then ravel it into 1D array.
+        if use_dynamic_bins:
+            minval = np.min(self.data[:, :])
+            maxval = np.max(self.data[:, :])
+            self.qspace = np.linspace(minval, maxval, self.num_bins)
+            print("min/max of the data: ", minval, maxval)
+            print("using dynamic Binning with {0:d} bins".format(self.num_bins))
+        else:
+            self.qspace = config.qspace
+            print("using static Binning with {0:d} bins".format(config.qspace_num_bins))
+            
+        b = np.digitize(self.data[:, :], self.qspace)
         sumtr, trvec = count_transitions(b, self.num_bins, self.lagtime, use_symmetry=use_symmetry)
 
         MM = self.build_MM(sumtr, trvec, biased)
@@ -130,17 +137,13 @@ class DHAM:
         print("sum of peq in dham reconstruction: ", sum(msm.peq))
 
         if False:
-            #unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
-            #plot the unbiased profile from 0 to 2pi nm.
-            #plt.plot(unb_bins, unb_profile, label="ground truth")
-            x = np.linspace(0, 2*np.pi, self.num_bins)
             plt.figure()
-            plt.plot(x, mU2, label=" fes from reconstructed M by DHAMsym")
+            plt.plot(self.qspace, msm.free_energy, label=" fes from reconstructed M by DHAMsym")
             plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.num_bins))
-            plt.xlim(0, 2*np.pi)
+            plt.xlim(config.qspace_low, config.qspace_high)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
             plt.close()        
-        return msm.free_energy, MM.T # mU2 is in unit kcal/mol.
+        return self.qspace, msm.free_energy, MM.T # fes in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)

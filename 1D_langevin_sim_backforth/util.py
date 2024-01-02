@@ -3,12 +3,8 @@
 
 import numpy as np
 from MSM import *
-from scipy.linalg import logm, expm
 from scipy.optimize import minimize
-from scipy.linalg import inv
-from scipy.linalg import eig
 import matplotlib.pyplot as plt
-import sys 
 import openmm
 import config
 
@@ -19,7 +15,7 @@ def gaussian(x, a, b, c): #self-defined gaussian function
 # all MSM related functions now using MSM class in MSM.py
 ##############################################################
 
-def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_index=0, plot = False):
+def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_index=0, qspace = config.qspace, plot = False):
     #print("inside try and optim_M")
     """
     here we try different gaussian params 1000 times
@@ -35,35 +31,38 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     end_state: the ending state. note this has to be converted into the index space.
     index_offset: the offset of the index space. e.g. if the truncated M (with shape [20, 20]) matrix starts from 13 to 33, then the index_offset is 13.
     """
-    x = np.linspace(0, 2*np.pi, config.num_bins) #hard coded for now.
-    best_mfpt = 1e20 #initialise the best mfpt np.inf
+    best_mfpt = np.inf
 
     start_state_working_index = np.argmin(np.abs(working_indices - start_index))
     end_state_working_index = np.argmin(np.abs(working_indices - end_index))
     print("optimizing to get g_param from start state:", start_state_working_index, "to end state:", end_state_working_index, "in working indices.")
-    print("converted to xspace that's from:", x[working_indices[start_state_working_index]], "to", x[working_indices[end_state_working_index]])
+    print("converted to xspace that's from:", qspace[working_indices[start_state_working_index]], "to", qspace[working_indices[end_state_working_index]])
     
-    upper = x[working_indices[-1]]
-    lower = x[working_indices[0]]
+    upper = qspace[working_indices[-1]]
+    lower = qspace[working_indices[0]]
     print("upper bound:", upper, "lower bound:", lower)
 
     #initialize msm object
     msm = MSM()
-    msm.qspace = x
+    msm.qspace = qspace
+    msm.build_MSM_from_M(M, dim=1, time_step = config.dcdfreq_mfpt * config.stepsize.value_in_unit(openmm.unit.nanoseconds))
+    msm._compute_peq_fes_M()
+    energy_gap = msm.free_energy.max() - msm.free_energy.min()
+    qspace_low = qspace[0]
+    qspace_high = qspace[-1]
 
     for try_num in range(1000): 
         #we initialize the msm object.
-        msm.build_MSM_from_M(M, dim=1)
-        
+        msm.build_MSM_from_M(M, dim=1, time_step = config.dcdfreq_mfpt * config.stepsize.value_in_unit(openmm.unit.nanoseconds))
+       
         rng = np.random.default_rng()
         a = np.ones(num_gaussian) * 0.6
-        b = rng.uniform(0, 2*np.pi, num_gaussian)
-        #b = rng.uniform(lower, upper, num_gaussian)
+        b = rng.uniform(qspace_low, qspace_high, num_gaussian)
         c = rng.uniform(0.7, 1, num_gaussian)
         
         total_bias = np.zeros_like(msm.qspace)
         for j in range(num_gaussian):
-            total_bias += gaussian(x, a[j], b[j], c[j])
+            total_bias += gaussian(qspace, a[j], b[j], c[j])
 
         working_bias = total_bias[working_indices]
         msm._bias_M(working_bias, method = "direct_bias")
@@ -107,9 +106,9 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         a = params[:num_gaussian]
         b = params[num_gaussian:2*num_gaussian]
         c = params[2*num_gaussian:]
-        total_bias = np.zeros_like(x)
+        total_bias = np.zeros_like(qspace)
         for j in range(num_gaussian):
-            total_bias += gaussian(x, a[j], b[j], c[j])
+            total_bias += gaussian(qspace, a[j], b[j], c[j])
         working_bias = total_bias[working_indices]
         
         msm._bias_M(working_bias, method = "direct_bias")
@@ -128,8 +127,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          working_indices), 
                    #method='Nelder-Mead', 
                    method="L-BFGS-B",
-                   bounds= [(0.1, 1.0)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-2)
+                   bounds= [(0.1, 1.0)]*config.num_gaussian + [(config.qspace_low, config.qspace_high)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e-6)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
@@ -242,7 +241,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             
             if plot:
                 #plot the fes.
-                x = np.linspace(0, 2*np.pi, config.num_bins)
+                x = config.qspace
                 Z = np.zeros_like(x)
                 for i in range(num_hills):
                     Z += A_i[i] * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
@@ -252,8 +251,10 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 Z += float(max_barrier) * (1 / (1 + np.exp(-k * (x - (2 * pi + offset))))) #right
 
                 plt.figure()
-                plt.plot(x, Z, label="multiwell FES")
+                plt.plot(x, Z - Z.min(), label="multiwell FES")
                 plt.xlabel("x")
+                plt.ylabel("FES (kcals/mol)")
+                plt.ylim([0, 12])
                 plt.xlim([0, 2*np.pi])
                 plt.title("FES mode = 1D multiwell, pbc=False")
                 plt.savefig(plot_path)

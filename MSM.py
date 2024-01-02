@@ -186,6 +186,48 @@ class MSM:
                         self.K[i,j] = np.exp((u_ij / (2 * self.kBT)))
                         self.K[j,i] = np.exp((-u_ij / (2 * self.kBT)))
                 self.K[i,i] = -np.sum(self.K[:,i])
+        
+        elif self.num_dimensions == 6:
+            self.num_states = 10
+            self.K = np.zeros((self.num_states**self.num_dimensions, self.num_states**self.num_dimensions), dtype=np.float64)
+
+            #init a 6D fes.
+            a,b,c,d,e,f = np.linspace(-2, 2, self.num_states), np.linspace(-2, 2, self.num_states), np.linspace(-2, 2, self.num_states), np.linspace(-2, 2, self.num_states), np.linspace(-2, 2, self.num_states), np.linspace(-2, 2, self.num_states)
+            A,B,C,D,E,F = np.meshgrid(a,b,c,d,e,f)
+            self.qspace = [A,B,C,D,E,F]
+
+            #here we init some random 3d gaussians and minus it onto the fes U.
+            U = np.zeros_like(A)
+            def gaussian_3D(x, y, z, a, bx, by, bz, cx, cy, cz):
+                return a * np.exp(-((x - bx)**2 / 2 / cx**2 + (y - by)**2 / 2 / cy**2 + (z - bz)**2 / 2 / cz**2))
+            
+            a = [2, 2, 2, 2, 2, 2]
+            bx = [-1, 0, 1, -1, 0 ,1]
+            by = [0, 0, 0, 1, 1, 1]
+            bz = [1, 0, -1, 1, 0, -1]
+            cx = [1, 1, 1, 1, 1, 1]
+            cy = [1, 1, 1, 1, 1, 1]
+            cz = [1, 1, 1, 1, 1, 1]
+
+            for i in range(len(a)):
+                U -= gaussian_3D(A,B,C,a[i],bx[i],by[i],bz[i],cx[i],cy[i],cz[i])
+
+            U = U - U.min()
+
+
+            if plot_init_fes:
+                raise ValueError("plot_init_fes is not implemented for dim=6 yet!")
+            
+            #create K.
+            U = U.ravel(order='C')
+            for i in range(self.num_states**self.num_dimensions):
+                for j in range(i, self.num_states**self.num_dimensions):
+                    coor_i, coor_j, is_adjacent = self._is_adjacent(i,j)
+                    if is_adjacent:
+                        u_ij = U[j] - U[i]
+                        self.K[i,j] = np.exp((u_ij / (2 * self.kBT)))
+                        self.K[j,i] = np.exp((-u_ij / (2 * self.kBT)))
+                self.K[i,i] = -np.sum(self.K[:,i])
         return 0
 
     def _build_mfpt_matrix_K(self, check=False):
@@ -480,7 +522,7 @@ if __name__ == "__main__":
         msm._plot_fes(filename = './free_energy_Mbiased.png')
 
     #here we test dim=2 cases.
-    if True:
+    if False:
         msm._init_sample_K(dim=2, plot_init_fes=True)
         msm._compute_peq_fes_K()
         msm._plot_fes(filename = './free_energy_K_2D.png')
@@ -541,3 +583,12 @@ if __name__ == "__main__":
         msm._compute_peq_fes_M()
         msm._plot_fes(filename = './free_energy_Mbiased_3D.png')
         print("MSM test passed!")
+
+
+    if False:
+        #here we initialize a 6D MSM.
+        msm._init_sample_K(dim=6, plot_init_fes=False)
+        msm._compute_peq_fes_K()
+        msm._build_mfpt_matrix_K(check=True)
+
+        print("all done")

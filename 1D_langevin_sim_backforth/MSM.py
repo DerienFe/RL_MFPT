@@ -26,7 +26,7 @@ class MSM:
         self.verbose = False
         return
     
-    def build_MSM_from_M(self, M, dim):
+    def build_MSM_from_M(self, M, dim, time_step = 0.1):
         """
         M is the transition matrix
         dim is the dimension of the phase space
@@ -34,6 +34,7 @@ class MSM:
         self.M = M
         self.num_dimensions = dim
         self.num_states = round(M.shape[0] ** (1/self.num_dimensions))
+        self.time_step = time_step
         return 0
     
     def build_MSM_from_data(self, data, lagtime):
@@ -234,7 +235,7 @@ class MSM:
                         mfpts[i, j] = 1 / self.peq[j] * term1
 
             #now we account for self.time_step
-            mfpts = mfpts / self.time_step
+            mfpts = mfpts * self.time_step
         
         if method == 'JJhunter':
             from numba import njit, prange
@@ -271,7 +272,7 @@ class MSM:
                 MD = (I - ZD + E @ np.diag(np.diag(ZD))) @ DD
                 return MD
             mfpts = jjhunter_numba(self.M.T)
-            mfpts = mfpts / self.time_step
+            mfpts = mfpts * self.time_step
         self.mfpts = mfpts
         if check:
             self._kemeny_constant_check()
@@ -480,7 +481,7 @@ if __name__ == "__main__":
         msm._plot_fes(filename = './free_energy_Mbiased.png')
 
     #here we test dim=2 cases.
-    if True:
+    if False:
         msm._init_sample_K(dim=2, plot_init_fes=True)
         msm._compute_peq_fes_K()
         msm._plot_fes(filename = './free_energy_K_2D.png')
@@ -512,7 +513,7 @@ if __name__ == "__main__":
         print("MSM test passed!")
 
     #to do: test the dim=3 cases.
-    if False:
+    if True:
         msm._init_sample_K(dim=3, plot_init_fes=True)
         msm._compute_peq_fes_K()
         msm._plot_fes(filename = './free_energy_K_3D.png')

@@ -22,13 +22,12 @@ from util import *
 
 def propagate(simulation,
               prop_index,
-              gaussian_params,
+              global_gaussian_params,
               cycle_count,
               pos_traj,   #this records the trajectory of the particle. in shape: [prop_index, sim_steps, 3]
               steps=config.propagation_step,
               dcdfreq=config.dcdfreq_mfpt,
               stepsize=config.stepsize,
-              num_bins=config.num_bins,
               pbc=config.pbc,
               time_tag=None,
               top=None,
@@ -36,15 +35,20 @@ def propagate(simulation,
               current_target_state = None,
               ):
     """
-    here we use the openmm context object to propagate the system.
-    save the CV and append it into the CV_total.
-    use the DHAM_it to process CV_total, get the partially observed Markov matrix from trajectory.
-    return the current position, the CV_total, and the partially observed Markov matrix.
+    1.  use the openmm context object to propagate the system.
+    2. save the raw data ([x,y,z] coordinates) into a numpy array (pos_traj).
+    3. use the DHAM_it to process pos_traj, get the partially observed Markov matrix from trajectory.
+       also get the free energy surface probed by DHAM, discretized into num_bins over min/max of data sampled in MD.
+    4. return the current position, the pos_traj, FES sampled, with min/max qspace and the partially observed Markov matrix.
     """
     print("propagating")
     print("current target state: ", current_target_state)
     print("cycle count: ", cycle_count)
     print("prop index: ", prop_index)
+
+
+
+    #Actual MD simulation
     file_handle = open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.dcd", 'bw')
     dcd_file = openmm.app.dcdfile.DCDFile(file_handle, top, dt = stepsize)
     for _ in tqdm(range(int(steps/dcdfreq)), desc=f"cycle {cycle_count} Propagation {prop_index}"):
@@ -54,42 +58,50 @@ def propagate(simulation,
     file_handle.close()
 
 
+
+    #load traj and process it with mdtraj.
     with open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb", 'w') as f:
         openmm.app.PDBFile.writeFile(simulation.topology, state.getPositions(), f)
-    
-
     mdtraj_top = mdtraj.load(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb")
     traj = mdtraj.load_dcd(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.dcd", top = mdtraj_top)
     coor = traj.xyz[:,0,:] #[all_frames,particle_index,xyz]
-
-
     coor_x = coor.squeeze()[:,:1] #only take the xcoordinate.
     pos_traj[prop_index,:] = coor_x.squeeze()
-
-    #we take all previous digitized x and feed it into DHAM.
     coor_x_total = pos_traj[:prop_index+1,:].squeeze() #note this is in coordinate space np.linspace(0, 2*np.pi, num_bins)
     coor_x_total = coor_x_total.reshape(prop_index+1, -1, 1)
     print("coor_x_total shape feed into dham: ", coor_x_total.shape)
 
-    #here we load all gaussian_params.
-    gaussian_params = np.zeros([prop_index+1, config.num_gaussian, 3])
-    for i in range(prop_index+1):
-        gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
-        print(f"gaussian_params for propagation {i} loaded.")
 
-    #here we use the DHAM.
-    F_M, MM = DHAM_it(coor_x_total, 
-                      gaussian_params, 
-                      T=300, 
+
+    #load global_gaussian_params
+    if config.load_global_gaussian_params_from_txt:
+        global_gaussian_params = np.zeros([prop_index+1, config.num_gaussian, 3])
+        for i in range(prop_index+1):
+            global_gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
+            print(f"gaussian_params for propagation {i} loaded.")
+
+    assert global_gaussian_params is not None, "global_gaussian_params is None, please check."
+    assert global_gaussian_params.shape[0] == prop_index+1, "global_gaussian_params shape does not match prop_index+1, please check."
+    assert global_gaussian_params.shape[1] == config.num_gaussian, "global_gaussian_params shape does not match num_gaussian, please check."
+    assert global_gaussian_params.shape[2] == 3, "global_gaussian_params shape does not match 3 (1D), please check."
+
+
+
+    #DHAM.
+    dham_qspace, F_M, MM = DHAM_it(coor_x_total, 
+                      global_gaussian_params, 
+                      T=config.T, 
                       lagtime=1, 
-                      num_bins=num_bins, 
+                      num_bins=config.DHAM_num_bins, #changed for dynamic DHAM binning.
                       time_tag=time_tag, 
                       prop_index=prop_index,
                       use_symmetry=True
                       )
-    cur_pos = coor_x_total[-1] #the current position of the particle, in ravelled 1D form.
     
-    #determine if the particle has reached the target state.
+
+
+    #post processing
+    cur_pos = coor_x_total[-1] #the current position of the particle, in ravelled 1D form.
     end_state_xyz = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0] #config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
     end_state_x = end_state_xyz[:1]
     for index_d, d in enumerate(coor_x):
@@ -98,7 +110,7 @@ def propagate(simulation,
         if target_distance < 0.1:
             reach = index_d * config.dcdfreq_mfpt
 
-    return cur_pos, pos_traj, MM, reach, F_M
+    return cur_pos, pos_traj, MM, reach, F_M, dham_qspace
 
 def get_working_MM(M):
     zero_rows = np.where(~M.any(axis=1))[0]
@@ -132,7 +144,7 @@ def find_closest_index(working_indices, final_index, N):
     closest_index = np.ravel_multi_index(closest_state, (N,N), order='C')
     return closest_index
 
-def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None, use_symmetry=True):
+def DHAM_it(CV, global_gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None, use_symmetry=True):
     """
     intput:
     CV: the collective variable we are interested in. now it's 2d.
@@ -144,12 +156,11 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, t
     the Markov Matrix
     Free energy surface probed by DHAM.
     """
-    d = DHAM(gaussian_params, num_bins=num_bins)
+    d = DHAM(global_gaussian_params, num_bins=num_bins)
     d.setup(CV, T, prop_index=prop_index, time_tag=time_tag)
 
     d.lagtime = lagtime
-    d.num_bins = num_bins #num of bins, arbitrary.
-    results = d.run(biased = True, plot=True, use_symmetry=use_symmetry)
+    results = d.run(biased = True, plot=True, use_symmetry=use_symmetry, use_dynamic_bins=config.use_dynamic_bins)
     return results
 
 def random_initial_bias(initial_position, num_gaussians):
@@ -175,19 +186,14 @@ if __name__ == "__main__":
     top.addAtom("X", elem, top._chains[0]._residues[0])
     mass = 12.0 * unit.amu
     for i_sim in range(config.num_sim):
-    #def simulate_once():
-        print("system initializing")
-        #print out all the config.
-        print("config: ", config.__dict__)
-        
         time_tag = time.strftime("%Y%m%d-%H%M%S")
-
-        #print current time tag.
+        print("system initializing")
+        print("config: ", config.__dict__)
         print("time_tag: ", time_tag)
 
-        system = openmm.System() #we initialize the system every
+        #initialize peseudo atom system.
+        system = openmm.System()
         system.addParticle(mass)
-        #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
         system, fes = apply_fes(system = system, 
                                 particle_idx=0, 
                                 gaussian_param = None, 
@@ -202,8 +208,6 @@ if __name__ == "__main__":
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier
         system.addForce(y_pot) #on y, large barrier
-
-        #pbc section
         if config.pbc:
             a = unit.Quantity((2*np.pi*unit.nanometers, 0*unit.nanometers, 0*unit.nanometers))
             b = unit.Quantity((0*unit.nanometers, 2*np.pi*unit.nanometers, 0*unit.nanometers))
@@ -216,15 +220,11 @@ if __name__ == "__main__":
                                             0.002*unit.picoseconds)
 
         frame_per_propagation = int(round(config.propagation_step/config.dcdfreq_mfpt))
-        #this stores the digitized, ravelled, x, y coordinates of the particle, for every propagation.
-        pos_traj = np.zeros([config.num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
+        pos_traj = np.zeros([config.num_propagation, frame_per_propagation]) 
 
-        x = np.linspace(0, 2*np.pi, config.num_bins)
-
-        #we start propagation.
-        #note num_propagation = config.sim_steps/config.propagation_step
         reach = None
         i_prop = 0
+        global_gaussian_params = None
         #for i_prop in range(num_propagation):
         while cycle_count < config.max_cycle:
             while reach is None:
@@ -234,6 +234,8 @@ if __name__ == "__main__":
                 if i_prop == 0:
                     print("propagation 0 starting")
                     gaussian_params = random_initial_bias(initial_position = config.start_state, num_gaussians = config.num_gaussian)
+                    global_gaussian_params = gaussian_params
+                    global_gaussian_params = global_gaussian_params.reshape(1, config.num_gaussian, 3)
                     np.savetxt(f"./params/{time_tag}_gaussian_param_prop_{i_prop}.txt", gaussian_params)
 
                     system = apply_bias(system = system, particle_idx=0, gaussian_param = gaussian_params, pbc = config.pbc, name = "BIAS", num_gaussians = config.num_gaussian)
@@ -245,98 +247,78 @@ if __name__ == "__main__":
                         simulation.context.setPeriodicBoxVectors(a,b,c)
 
                     #now we propagate the system, i.e. run the langevin simulation.
-                    cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                        gaussian_params = gaussian_params,
-                                                                        prop_index = i_prop,
-                                                                        cycle_count = cycle_count,
-                                                                        pos_traj = pos_traj,
-                                                                        steps=config.propagation_step,
-                                                                        dcdfreq=config.dcdfreq_mfpt,
-                                                                        stepsize=config.stepsize,
-                                                                        num_bins=config.num_bins,
-                                                                        pbc=config.pbc,
-                                                                        time_tag = time_tag,
-                                                                        top=top,
-                                                                        reach=reach,
-                                                                        current_target_state = current_target_state
-                                                                        )
+                    cur_pos, pos_traj, MM, reach, F_M, dham_qspace = propagate(simulation = simulation,
+                                                                  global_gaussian_params = global_gaussian_params,
+                                                                  prop_index = i_prop,
+                                                                  cycle_count = cycle_count,
+                                                                  pos_traj = pos_traj,
+                                                                  steps=config.propagation_step,
+                                                                  dcdfreq=config.dcdfreq_mfpt,
+                                                                  stepsize=config.stepsize,
+                                                                  pbc=config.pbc,
+                                                                  time_tag = time_tag,
+                                                                  top=top,
+                                                                  reach=reach,
+                                                                  current_target_state = current_target_state
+                                                                  )
 
+                    #get the local start state and local target state in qspace/dham_qspace.
                     working_MM, working_indices = get_working_MM(MM)
 
+                    # Determine the appropriate qspace based on the condition
+                    current_qspace = dham_qspace if config.use_dynamic_bins else config.qspace
+
                     final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-                    final_index = np.digitize(final_coor, x)
-                    closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
-                    print("closest_index updated: ", closest_index)
-                    print("converted to x space that's: ", x[closest_index])
+                    final_index = np.digitize(final_coor, current_qspace) - 1
+                    closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))]
+
+                    last_traj = pos_traj[i_prop, :].squeeze()
+                    last_visited_state = np.digitize(last_traj[-1], current_qspace).astype(np.int64) - 1
+
+                    print("closest_index (local target) updated. converted to x space that's: ", current_qspace[closest_index])
+                    print("last visited state (local start) updated. converted to x space that's: ", current_qspace[last_visited_state])
                     i_prop += 1
                 else:
 
                     print(f"cycle {cycle_count} propagation number {i_prop} starting")
-
-                    last_traj = pos_traj[i_prop-1, :].squeeze()
-                    last_traj_index = np.digitize(last_traj, x).astype(np.int64)
-                    most_visited_state = np.argmax(np.bincount(last_traj_index))
-                    last_visited_state = last_traj_index[-1]
 
                     gaussian_params = try_and_optim_M(working_MM,
                                                     working_indices = working_indices,
                                                     num_gaussian = config.num_gaussian,
                                                     start_index = last_visited_state,
                                                     end_index = closest_index,
+                                                    qspace = current_qspace,
                                                     plot = False,
                                                     )
                     if True:
                         #here we calculate the total bias given the optimized gaussian_params
-                        total_bias = get_total_bias(x, gaussian_params, num_gaussians=config.num_gaussian) * 4.184 #convert to kcal/mol
+                        total_bias = get_total_bias(config.qspace, gaussian_params, num_gaussians=config.num_gaussian) # unit in kcal/mol
                         plt.figure()
-                        plt.plot(x, total_bias, label="total bias applied")
-                        #plt.savefig(f"./figs/explore/{time_tag}_total_bias_{i_prop}.png")
-                        #plt.close()
-                        
-                        #here we plot the reconstructed fes from MM.
-                        # we also plot the most_visited_state and closest_index.
-                        #plt.figure()
-                        plt.plot(x, F_M*4.184, label="DHAM fes")
-                        #plt.plot(x[most_visited_state], F_M[most_visited_state]*4.184, marker='o', markersize=3, color="blue", label = "most visited state (local start)")
-                        plt.plot(x[last_visited_state], F_M[last_visited_state]*4.184, marker='o', markersize=3, color="blue", label = "last visited state (local start)")
-                        plt.plot(x[closest_index], F_M[closest_index]*4.184, marker='o', markersize=3, color="red", label = "closest state (local target)")
-                        #plt.legend()
-                        #plt.savefig(f"./figs/explore/{time_tag}_reconstructed_fes_{i_prop}.png")
-                        #plt.close()
+                        plt.plot(config.qspace, total_bias, label="total bias applied")
+                        plt.plot(current_qspace, F_M, label="DHAM fes")
+                        plt.plot(current_qspace[last_visited_state], F_M[last_visited_state], marker='o', markersize=3, color="blue", label = "last visited state (local start)")
+                        plt.plot(current_qspace[closest_index], F_M[closest_index], marker='o', markersize=3, color="red", label = "closest state (local target)")
 
                         #we plot here to check the original fes, total_bias and trajectory.
-                    
-                        #we add the total bias to the fes.
-                        #fes += total_bias_big
-                        #plt.figure()
-                        plt.plot(x, fes, label="original fes")
+                        plt.plot(config.qspace, (fes - fes.min()), label="original fes")
                         plt.xlabel("x-coor position (nm)")
-                        #plt.xlim([-1, 2*np.pi+1])
-                        #plt.ylim([-1, 2*np.pi+1])
-                        plt.ylabel("fes (kJ/mol)")
+                        plt.ylabel("fes (kcal/mol)")
+                        plt.ylim(0, 20)
                         plt.title("FES mode = multiwell, pbc=False")
-                        
-                        #additionally we plot the trajectory.
-                        # first we process the pos_traj into x, y coordinate.
-                        # we plot all, but highlight the last prop_step points with higher alpha.
-
-                        #history_traj = pos_traj[:i_prop, :].squeeze() #note this is only the x coor.
-                        #recent_traj = pos_traj[i_prop:, :].squeeze()
 
                         history_traj = pos_traj[:i_prop, :].squeeze() #note this is only the x coor.
                         recent_traj = pos_traj[i_prop:, :].squeeze()
 
-                        #here we digitize this so we can plot it to fes.
-                        history_traj = np.digitize(history_traj, x)
-                        recent_traj = np.digitize(recent_traj, x)
+                        history_traj = np.digitize(history_traj, config.qspace) - 1
+                        recent_traj = np.digitize(recent_traj, config.qspace) - 1
 
-                        plt.scatter(x[history_traj], fes[history_traj], s=3.5, alpha=0.3, c='grey')
-                        plt.scatter(x[recent_traj], fes[recent_traj], s=3.5, alpha=0.8, c='black')
+                        plt.scatter(config.qspace[history_traj], (fes - fes.min())[history_traj], s=3.5, alpha=0.3, c='grey')
+                        plt.scatter(config.qspace[recent_traj], (fes - fes.min())[recent_traj], s=3.5, alpha=0.8, c='black')
                         plt.legend(loc='upper left')
                         plt.savefig(f"./figs/explore/{time_tag}_fes_traj_cyc_{cycle_count}_prop_{i_prop}.png")
                         plt.close()
 
-                    #save the gaussian_params
+                    global_gaussian_params = np.concatenate((global_gaussian_params, gaussian_params.reshape(1, config.num_gaussian, 3)), axis=0)
                     np.savetxt(f"./params/{time_tag}_gaussian_param_prop_{i_prop}.txt", gaussian_params)
 
                     #apply the gaussian_params to openmm system.
@@ -345,31 +327,36 @@ if __name__ == "__main__":
                                             name = "BIAS",
                                             num_gaussians=config.num_gaussian,
                                             )
+                    cur_pos, pos_traj, MM, reach, F_M, dham_qspace = propagate(simulation = simulation,
+                                                                  global_gaussian_params = global_gaussian_params,
+                                                                  prop_index = i_prop,
+                                                                  cycle_count = cycle_count,
+                                                                  pos_traj = pos_traj,
+                                                                  steps=config.propagation_step,
+                                                                  dcdfreq=config.dcdfreq_mfpt,
+                                                                  stepsize=config.stepsize,
+                                                                  pbc=config.pbc,
+                                                                  time_tag = time_tag,
+                                                                  top=top,
+                                                                  reach=reach,
+                                                                  current_target_state = current_target_state
+                                                                  )
                     
-                    #we propagate system again
-                    cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                        gaussian_params = gaussian_params,
-                                                                        prop_index = i_prop,
-                                                                        cycle_count = cycle_count,
-                                                                        pos_traj = pos_traj,
-                                                                        steps=config.propagation_step,
-                                                                        dcdfreq=config.dcdfreq_mfpt,
-                                                                        stepsize=config.stepsize,
-                                                                        num_bins=config.num_bins,
-                                                                        pbc=config.pbc,
-                                                                        time_tag = time_tag,
-                                                                        top=top,
-                                                                        reach=reach,
-                                                                        current_target_state = current_target_state
-                                                                        )
-                    #update working_MM and working_indices
+
                     working_MM, working_indices = get_working_MM(MM)
-                    #update closest_index
+
+                    # Determine the appropriate qspace based on the condition
+                    current_qspace = dham_qspace if config.use_dynamic_bins else config.qspace
+
                     final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-                    final_index = np.digitize(final_coor, x)
-                    closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
-                    print("closest_index updated: ", closest_index)
-                    print("converted to x space that's: ", x[closest_index])
+                    final_index = np.digitize(final_coor, current_qspace) -1
+                    closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))]
+
+                    last_traj = pos_traj[i_prop, :].squeeze()
+                    last_visited_state = np.digitize(last_traj[-1], current_qspace).astype(np.int64) -1
+
+                    print("closest_index (local target) updated. converted to x space that's: ", current_qspace[closest_index])
+                    print("last visited state (local start) updated. converted to x space that's: ", current_qspace[last_visited_state])
                     i_prop += 1
             
             #here we reached the current_target_state.
@@ -380,44 +367,44 @@ if __name__ == "__main__":
                 current_target_state = config.end_state
             cycle_count += 1
             reach = None
-            #i_prop = 0 #we keep the i_prop, so its easier to reshape the pos_traj.
             print("cycle number completed: ", cycle_count)
 
-            #we also updadte the closest_index.
+
             #update working_MM and working_indices
             working_MM, working_indices = get_working_MM(MM)
-            #update closest_index
+            current_qspace = dham_qspace if config.use_dynamic_bins else config.qspace
             final_coor = current_target_state.value_in_unit_system(openmm.unit.md_unit_system)[0][:1]
-            final_index = np.digitize(final_coor, x)
-            closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.    
-            print("closest_index updated: ", closest_index)
-            print("converted to x space that's: ", x[closest_index])
+            final_index = np.digitize(final_coor, current_qspace) -1
+            closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))]
+            last_traj = pos_traj[i_prop, :].squeeze()
+            last_visited_state = np.digitize(last_traj[-1], current_qspace).astype(np.int64) -1
+            print("closest_index (local target) updated. converted to x space that's: ", current_qspace[closest_index])
+            print("last visited state (local start) updated. converted to x space that's: ", current_qspace[last_visited_state])
             
-            #each time we finish a cycle, we plot the total F_M.
-            #here we load all gaussian_params.
-            gaussian_params = np.zeros([i_prop, config.num_gaussian, 3])
-            for i in range(i_prop):
-                gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
-                print(f"gaussian_params for propagation {i} loaded.")
+            #each time we finish a cycle, we plot the total F_M with use_symmetry=False.
+            if config.load_global_gaussian_params_from_txt:
+                gaussian_params = np.zeros([i_prop, config.num_gaussian, 3])
+                for i in range(i_prop):
+                    gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_param_prop_{i}.txt").reshape(-1,3)
+                    print(f"gaussian_params for propagation {i} loaded.")
 
-            #use DHAM_it to get the MM and F_M.
-            F_M_plot, _ = DHAM_it(pos_traj[:i_prop,:].ravel().reshape(i_prop, -1, 1), 
-                                gaussian_params, 
-                                T=300, 
-                                lagtime=1, 
-                                num_bins=config.num_bins, 
-                                time_tag=time_tag, 
-                                prop_index=0,
-                                use_symmetry=False
-                                )
+            dham_qspace, F_M_plot, _ = DHAM_it(pos_traj[:i_prop,:].ravel().reshape(i_prop, -1, 1), 
+                                            global_gaussian_params, 
+                                            T=config.T, 
+                                            lagtime=1, 
+                                            num_bins=config.DHAM_num_bins, #changed for dynamic DHAM binning.
+                                            time_tag=time_tag, 
+                                            prop_index=0,
+                                            use_symmetry=True
+                                            )
             F_M_cleaned = np.where(np.isfinite(F_M_plot), F_M_plot, np.nan)
-            #plot the total F_M at last.
             plt.figure()
-            plt.plot(x, (F_M_plot - np.nanmin(F_M_cleaned)), label="DHAM fes")
-            plt.plot(x,fes - fes.min(), label="original fes")
+            plt.plot(dham_qspace, (F_M_plot - np.nanmin(F_M_cleaned)), label="DHAM fes")
+            plt.plot(config.qspace, fes - fes.min(), label="original fes")
             plt.title("total F_M")
             plt.xlabel("x-coor position (nm)")
             plt.ylabel("fes (kcal/mol)")
+            plt.ylim(0, 20)
             plt.legend()
             plt.savefig(f"./figs/explore/{time_tag}_cycle_{cycle_count}_total_fes.png")
             plt.close()
