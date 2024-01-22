@@ -1,0 +1,1597 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7ff1e6db1cd0>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7ff1e6db1cd0>, origin='/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7ff1e774dd10>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'np': <module 'numpy' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/numpy/__init__.py'>, 'num_sim': 15, 'sim_steps': 5000000, 'pbc': False, 'time_tag': '20240118-170937', 'amp': 6, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7ff1e6db65b0> >, 'start_state': 2, 'end_state': 8, 'fes_mode': 'multiwell', 'load_global_gaussian_params_from_txt': False, 'T': 300, 'propagation_step': 5000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.002, unit=picosecond), 'dcdfreq': 100, 'dcdfreq_mfpt': 1, 'backbone_constraint_strength': 1000, 'fricCoef': Quantity(value=1, unit=/picosecond), 'qspace_num_bins': 100, 'qspace_low': 1, 'qspace_high': 10, 'use_dynamic_bins': False, 'DHAM_num_bins': 100, 'qspace': array([ 1.        ,  1.09090909,  1.18181818,  1.27272727,  1.36363636,
+        1.45454545,  1.54545455,  1.63636364,  1.72727273,  1.81818182,
+        1.90909091,  2.        ,  2.09090909,  2.18181818,  2.27272727,
+        2.36363636,  2.45454545,  2.54545455,  2.63636364,  2.72727273,
+        2.81818182,  2.90909091,  3.        ,  3.09090909,  3.18181818,
+        3.27272727,  3.36363636,  3.45454545,  3.54545455,  3.63636364,
+        3.72727273,  3.81818182,  3.90909091,  4.        ,  4.09090909,
+        4.18181818,  4.27272727,  4.36363636,  4.45454545,  4.54545455,
+        4.63636364,  4.72727273,  4.81818182,  4.90909091,  5.        ,
+        5.09090909,  5.18181818,  5.27272727,  5.36363636,  5.45454545,
+        5.54545455,  5.63636364,  5.72727273,  5.81818182,  5.90909091,
+        6.        ,  6.09090909,  6.18181818,  6.27272727,  6.36363636,
+        6.45454545,  6.54545455,  6.63636364,  6.72727273,  6.81818182,
+        6.90909091,  7.        ,  7.09090909,  7.18181818,  7.27272727,
+        7.36363636,  7.45454545,  7.54545455,  7.63636364,  7.72727273,
+        7.81818182,  7.90909091,  8.        ,  8.09090909,  8.18181818,
+        8.27272727,  8.36363636,  8.45454545,  8.54545455,  8.63636364,
+        8.72727273,  8.81818182,  8.90909091,  9.        ,  9.09090909,
+        9.18181818,  9.27272727,  9.36363636,  9.45454545,  9.54545455,
+        9.63636364,  9.72727273,  9.81818182,  9.90909091, 10.        ]), 'num_gaussian': 10, 'max_cycle': 20, 'num_propagation': 400}
+time_tag:  20240118-170946
+propagation number 0 STARTING.
+propagating
+current target state:  8
+cycle count:  0
+prop index:  0
+cycle 0 Propagation 0:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 0:  10%|█         | 500/5000 [00:05<00:46, 97.53it/s]cycle 0 Propagation 0:  20%|██        | 1000/5000 [00:10<00:41, 95.69it/s]cycle 0 Propagation 0:  30%|███       | 1500/5000 [00:15<00:37, 93.86it/s]cycle 0 Propagation 0:  40%|████      | 2000/5000 [00:21<00:32, 93.40it/s]cycle 0 Propagation 0:  50%|█████     | 2500/5000 [00:26<00:26, 92.98it/s]cycle 0 Propagation 0:  60%|██████    | 3000/5000 [00:32<00:21, 91.54it/s]cycle 0 Propagation 0:  70%|███████   | 3500/5000 [00:37<00:16, 91.64it/s]cycle 0 Propagation 0:  80%|████████  | 4000/5000 [00:43<00:10, 91.92it/s]cycle 0 Propagation 0:  90%|█████████ | 4500/5000 [00:48<00:05, 91.95it/s]/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: divide by zero encountered in log
+  self.free_energy = -self.kBT * np.log(self.peq)
+cycle 0 Propagation 0:  90%|█████████ | 4500/5000 [00:53<00:05, 83.61it/s]
+combined dist to be fed into DHAM in shape:  (1, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.4545454545454546
+last visited state (local start) updated. converted to x space that's:  3.1818181818181817
+cycle 0 propagation number 1 starting
+optimizing to get g_param from start state: 0 to end state: 3 in working indices.
+converted to xspace that's from: 3.1818181818181817 to 3.4545454545454546
+upper bound: 3.4545454545454546 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.0003433418238258795
+random try: 100 mfpt: 0.00037609625469713407
+random try: 200 mfpt: 0.0003257722027797663
+random try: 300 mfpt: 0.0003378548275443092
+random try: 400 mfpt: 0.00036218006500298816
+random try: 500 mfpt: 0.0003300385501794412
+random try: 600 mfpt: 0.00039754394744094106
+random try: 700 mfpt: 0.0003546925162024781
+random try: 800 mfpt: 0.0003268216741963837
+random try: 900 mfpt: 0.00033746186158296844
+random try: 1000 mfpt: 0.00037565519907281354
+random try: 1100 mfpt: 0.0003949287077747913
+random try: 1200 mfpt: 0.0004058639985517762
+random try: 1300 mfpt: 0.0003070897056994567
+random try: 1400 mfpt: 0.00038201855042942483
+random try: 1500 mfpt: 0.0003308993196162121
+random try: 1600 mfpt: 0.000398169982397724
+random try: 1700 mfpt: 0.000377329836960904
+random try: 1800 mfpt: 0.0003569985320834987
+random try: 1900 mfpt: 0.0003365019379556418
+best mfpt: 0.0002842655767033849
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  1
+cycle 0 Propagation 1:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 1:  10%|█         | 500/5000 [00:05<00:47, 94.54it/s]cycle 0 Propagation 1:  20%|██        | 1000/5000 [00:10<00:42, 93.91it/s]cycle 0 Propagation 1:  30%|███       | 1500/5000 [00:16<00:37, 93.14it/s]cycle 0 Propagation 1:  40%|████      | 2000/5000 [00:21<00:31, 94.85it/s]cycle 0 Propagation 1:  50%|█████     | 2500/5000 [00:26<00:26, 93.95it/s]cycle 0 Propagation 1:  60%|██████    | 3000/5000 [00:31<00:21, 93.78it/s]cycle 0 Propagation 1:  70%|███████   | 3500/5000 [00:37<00:16, 93.65it/s]cycle 0 Propagation 1:  80%|████████  | 4000/5000 [00:42<00:10, 93.58it/s]cycle 0 Propagation 1:  90%|█████████ | 4500/5000 [00:47<00:05, 94.88it/s]cycle 0 Propagation 1:  90%|█████████ | 4500/5000 [00:52<00:05, 84.96it/s]
+combined dist to be fed into DHAM in shape:  (2, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 2 starting
+optimizing to get g_param from start state: 2 to end state: 5 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.006020423847029738
+random try: 100 mfpt: 0.010845567698304135
+random try: 200 mfpt: 0.010927724446379248
+random try: 300 mfpt: 0.008306168290602853
+random try: 400 mfpt: 0.010097828617600899
+random try: 500 mfpt: 0.008963470598161235
+random try: 600 mfpt: 0.007251940442499641
+random try: 700 mfpt: 0.00896359889889609
+random try: 800 mfpt: 0.008500436713892945
+random try: 900 mfpt: 0.008175992043060382
+random try: 1000 mfpt: 0.010747791124722924
+random try: 1100 mfpt: 0.008803268798002289
+random try: 1200 mfpt: 0.008838578664277563
+random try: 1300 mfpt: 0.008642795184401508
+random try: 1400 mfpt: 0.013706906131947052
+random try: 1500 mfpt: 0.011002684569945125
+random try: 1600 mfpt: 0.008049774627263853
+random try: 1700 mfpt: 0.011604703041074048
+random try: 1800 mfpt: 0.008814025834106605
+random try: 1900 mfpt: 0.006378130981269776
+best mfpt: 0.0041457622242275435
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  2
+cycle 0 Propagation 2:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 2:  10%|█         | 500/5000 [00:05<00:48, 93.35it/s]cycle 0 Propagation 2:  20%|██        | 1000/5000 [00:10<00:43, 92.52it/s]cycle 0 Propagation 2:  30%|███       | 1500/5000 [00:16<00:37, 92.62it/s]cycle 0 Propagation 2:  40%|████      | 2000/5000 [00:21<00:32, 92.94it/s]cycle 0 Propagation 2:  50%|█████     | 2500/5000 [00:26<00:26, 92.78it/s]cycle 0 Propagation 2:  60%|██████    | 3000/5000 [00:32<00:21, 92.47it/s]cycle 0 Propagation 2:  70%|███████   | 3500/5000 [00:37<00:16, 92.76it/s]cycle 0 Propagation 2:  80%|████████  | 4000/5000 [00:43<00:10, 92.86it/s]cycle 0 Propagation 2:  90%|█████████ | 4500/5000 [00:48<00:05, 93.05it/s]cycle 0 Propagation 2:  90%|█████████ | 4500/5000 [00:53<00:05, 83.42it/s]
+/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: invalid value encountered in log
+  self.free_energy = -self.kBT * np.log(self.peq)
+combined dist to be fed into DHAM in shape:  (3, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 3 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.010668464925803128
+random try: 100 mfpt: 0.01769373326982418
+random try: 200 mfpt: 0.013047251248505623
+random try: 300 mfpt: 0.01638324915140623
+random try: 400 mfpt: 0.01593768350520862
+random try: 500 mfpt: 0.012678484766802002
+random try: 600 mfpt: 0.013218857235120134
+random try: 700 mfpt: 0.012715977479652705
+random try: 800 mfpt: 0.014586238859490386
+random try: 900 mfpt: 0.011899138135426262
+random try: 1000 mfpt: 0.0174524251416886
+random try: 1100 mfpt: 0.010735727475050989
+random try: 1200 mfpt: 0.01542946768211583
+random try: 1300 mfpt: 0.009910255942948348
+random try: 1400 mfpt: 0.007367924544850903
+random try: 1500 mfpt: 0.018337589970539258
+random try: 1600 mfpt: 0.014671008778605372
+random try: 1700 mfpt: 0.015616667817046856
+random try: 1800 mfpt: 0.013484820464737852
+random try: 1900 mfpt: 0.015444371844455303
+best mfpt: 0.007367924544850903
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  3
+cycle 0 Propagation 3:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 3:  10%|█         | 500/5000 [00:05<00:49, 91.78it/s]cycle 0 Propagation 3:  20%|██        | 1000/5000 [00:11<00:44, 90.31it/s]cycle 0 Propagation 3:  30%|███       | 1500/5000 [00:16<00:38, 90.95it/s]cycle 0 Propagation 3:  40%|████      | 2000/5000 [00:21<00:32, 91.53it/s]cycle 0 Propagation 3:  50%|█████     | 2500/5000 [00:27<00:27, 91.64it/s]cycle 0 Propagation 3:  60%|██████    | 3000/5000 [00:32<00:21, 91.80it/s]cycle 0 Propagation 3:  70%|███████   | 3500/5000 [00:38<00:16, 91.82it/s]cycle 0 Propagation 3:  80%|████████  | 4000/5000 [00:43<00:10, 91.90it/s]cycle 0 Propagation 3:  90%|█████████ | 4500/5000 [00:48<00:05, 93.20it/s]cycle 0 Propagation 3:  90%|█████████ | 4500/5000 [00:54<00:06, 82.74it/s]
+combined dist to be fed into DHAM in shape:  (4, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 4 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.008895399206870212
+random try: 100 mfpt: 0.01252579125836187
+random try: 200 mfpt: 0.012449991749101188
+random try: 300 mfpt: 0.01151732302569992
+random try: 400 mfpt: 0.012831491818088056
+random try: 500 mfpt: 0.007921375035399693
+random try: 600 mfpt: 0.018555261200849587
+random try: 700 mfpt: 0.010547588449287753
+random try: 800 mfpt: 0.008948331344533862
+random try: 900 mfpt: 0.013794353983787809
+random try: 1000 mfpt: 0.009939679077998621
+random try: 1100 mfpt: 0.009178745506556021
+random try: 1200 mfpt: 0.014974069779580278
+random try: 1300 mfpt: 0.012466660139127136
+random try: 1400 mfpt: 0.011726727478557856
+random try: 1500 mfpt: 0.014307049151318583
+random try: 1600 mfpt: 0.015336656876283421
+random try: 1700 mfpt: 0.016511782966259988
+random try: 1800 mfpt: 0.010830603067945446
+random try: 1900 mfpt: 0.01693650181663818
+best mfpt: 0.006736346012576984
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  4
+cycle 0 Propagation 4:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 4:  10%|█         | 500/5000 [00:05<00:48, 92.86it/s]cycle 0 Propagation 4:  20%|██        | 1000/5000 [00:10<00:42, 93.08it/s]cycle 0 Propagation 4:  30%|███       | 1500/5000 [00:16<00:37, 93.22it/s]cycle 0 Propagation 4:  40%|████      | 2000/5000 [00:21<00:32, 92.68it/s]cycle 0 Propagation 4:  50%|█████     | 2500/5000 [00:26<00:26, 92.77it/s]cycle 0 Propagation 4:  60%|██████    | 3000/5000 [00:32<00:21, 92.75it/s]cycle 0 Propagation 4:  70%|███████   | 3500/5000 [00:37<00:16, 92.57it/s]cycle 0 Propagation 4:  80%|████████  | 4000/5000 [00:43<00:10, 92.54it/s]cycle 0 Propagation 4:  90%|█████████ | 4500/5000 [00:48<00:05, 92.68it/s]cycle 0 Propagation 4:  90%|█████████ | 4500/5000 [00:53<00:05, 83.35it/s]
+combined dist to be fed into DHAM in shape:  (5, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 5 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.009926606825452012
+random try: 100 mfpt: 0.011351750771982534
+random try: 200 mfpt: 0.00903141256221523
+random try: 300 mfpt: 0.010821282421601583
+random try: 400 mfpt: 0.011201762215347029
+random try: 500 mfpt: 0.012036991870237285
+random try: 600 mfpt: 0.010546111658389779
+random try: 700 mfpt: 0.011271275804937553
+random try: 800 mfpt: 0.01182735115043293
+random try: 900 mfpt: 0.015118039699751893
+random try: 1000 mfpt: 0.009405995007631833
+random try: 1100 mfpt: 0.016812220717722686
+random try: 1200 mfpt: 0.012148387016307636
+random try: 1300 mfpt: 0.010361275061219923
+random try: 1400 mfpt: 0.010985838245076198
+random try: 1500 mfpt: 0.01740159456996164
+random try: 1600 mfpt: 0.010256790971680233
+random try: 1700 mfpt: 0.009734927108820464
+random try: 1800 mfpt: 0.011592670985612792
+random try: 1900 mfpt: 0.010559264508382914
+best mfpt: 0.006860535534667226
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  5
+cycle 0 Propagation 5:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 5:  10%|█         | 500/5000 [00:05<00:48, 92.42it/s]cycle 0 Propagation 5:  20%|██        | 1000/5000 [00:10<00:43, 92.03it/s]cycle 0 Propagation 5:  30%|███       | 1500/5000 [00:16<00:38, 91.89it/s]cycle 0 Propagation 5:  40%|████      | 2000/5000 [00:21<00:32, 92.14it/s]cycle 0 Propagation 5:  50%|█████     | 2500/5000 [00:27<00:27, 91.95it/s]cycle 0 Propagation 5:  60%|██████    | 3000/5000 [00:33<00:22, 88.65it/s]cycle 0 Propagation 5:  70%|███████   | 3500/5000 [00:38<00:16, 89.66it/s]cycle 0 Propagation 5:  80%|████████  | 4000/5000 [00:43<00:10, 91.02it/s]cycle 0 Propagation 5:  90%|█████████ | 4500/5000 [00:49<00:05, 91.33it/s]cycle 0 Propagation 5:  90%|█████████ | 4500/5000 [00:54<00:06, 81.95it/s]
+combined dist to be fed into DHAM in shape:  (6, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 6 starting
+optimizing to get g_param from start state: 2 to end state: 5 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.007773774718379978
+random try: 100 mfpt: 0.006878227204118536
+random try: 200 mfpt: 0.006944055620533928
+random try: 300 mfpt: 0.006484735414302836
+random try: 400 mfpt: 0.011702494378241833
+random try: 500 mfpt: 0.008308192399876084
+random try: 600 mfpt: 0.009645599131069984
+random try: 700 mfpt: 0.00670393865070269
+random try: 800 mfpt: 0.008644679889534719
+random try: 900 mfpt: 0.007946078639859432
+random try: 1000 mfpt: 0.006653219550611391
+random try: 1100 mfpt: 0.010589531515198045
+random try: 1200 mfpt: 0.006443882010930378
+random try: 1300 mfpt: 0.008075090523903
+random try: 1400 mfpt: 0.006433817282936668
+random try: 1500 mfpt: 0.0069046495636463055
+random try: 1600 mfpt: 0.009719820710029975
+random try: 1700 mfpt: 0.008440985219489765
+random try: 1800 mfpt: 0.007095072125745485
+random try: 1900 mfpt: 0.0074715388501535845
+best mfpt: 0.0042063040451595654
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  6
+cycle 0 Propagation 6:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 6:  10%|█         | 500/5000 [00:05<00:48, 92.90it/s]cycle 0 Propagation 6:  20%|██        | 1000/5000 [00:10<00:43, 92.52it/s]cycle 0 Propagation 6:  30%|███       | 1500/5000 [00:16<00:37, 92.74it/s]cycle 0 Propagation 6:  40%|████      | 2000/5000 [00:21<00:32, 92.40it/s]cycle 0 Propagation 6:  50%|█████     | 2500/5000 [00:27<00:27, 92.52it/s]cycle 0 Propagation 6:  60%|██████    | 3000/5000 [00:32<00:21, 92.40it/s]cycle 0 Propagation 6:  70%|███████   | 3500/5000 [00:37<00:16, 93.65it/s]cycle 0 Propagation 6:  80%|████████  | 4000/5000 [00:42<00:10, 94.35it/s]cycle 0 Propagation 6:  90%|█████████ | 4500/5000 [00:48<00:05, 93.15it/s]cycle 0 Propagation 6:  90%|█████████ | 4500/5000 [00:53<00:05, 83.43it/s]
+combined dist to be fed into DHAM in shape:  (7, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999998
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 7 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.009564871006812236
+random try: 100 mfpt: 0.008297137020511856
+random try: 200 mfpt: 0.008988576738691877
+random try: 300 mfpt: 0.009110710626509833
+random try: 400 mfpt: 0.009607143163840726
+random try: 500 mfpt: 0.01004468394870316
+random try: 600 mfpt: 0.009417251894499056
+random try: 700 mfpt: 0.009759703593350806
+random try: 800 mfpt: 0.009445212166792142
+random try: 900 mfpt: 0.012363435169342506
+random try: 1000 mfpt: 0.008267068433594862
+random try: 1100 mfpt: 0.009109526491282017
+random try: 1200 mfpt: 0.0077125912188801635
+random try: 1300 mfpt: 0.007047584022791046
+random try: 1400 mfpt: 0.008676722042344136
+random try: 1500 mfpt: 0.00912255946435201
+random try: 1600 mfpt: 0.006922984382408401
+random try: 1700 mfpt: 0.00991133238589434
+random try: 1800 mfpt: 0.007259420699319468
+random try: 1900 mfpt: 0.012540853954862367
+best mfpt: 0.005117122340063168
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  7
+cycle 0 Propagation 7:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 7:  10%|█         | 500/5000 [00:05<00:47, 93.77it/s]cycle 0 Propagation 7:  20%|██        | 1000/5000 [00:10<00:42, 93.43it/s]cycle 0 Propagation 7:  30%|███       | 1500/5000 [00:16<00:37, 93.69it/s]cycle 0 Propagation 7:  40%|████      | 2000/5000 [00:21<00:32, 93.32it/s]cycle 0 Propagation 7:  50%|█████     | 2500/5000 [00:26<00:26, 92.85it/s]cycle 0 Propagation 7:  60%|██████    | 3000/5000 [00:32<00:21, 93.74it/s]cycle 0 Propagation 7:  70%|███████   | 3500/5000 [00:37<00:16, 93.05it/s]cycle 0 Propagation 7:  80%|████████  | 4000/5000 [00:43<00:10, 92.40it/s]cycle 0 Propagation 7:  90%|█████████ | 4500/5000 [00:48<00:05, 92.42it/s]cycle 0 Propagation 7:  90%|█████████ | 4500/5000 [00:54<00:06, 83.05it/s]
+combined dist to be fed into DHAM in shape:  (8, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 8 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.006704179604598654
+random try: 100 mfpt: 0.008073806461946994
+random try: 200 mfpt: 0.010376868866897973
+random try: 300 mfpt: 0.009898550748684891
+random try: 400 mfpt: 0.008466491140553853
+random try: 500 mfpt: 0.010764527862504487
+random try: 600 mfpt: 0.009482794575029287
+random try: 700 mfpt: 0.008058798286369365
+random try: 800 mfpt: 0.007321348982371904
+random try: 900 mfpt: 0.009672313919913213
+random try: 1000 mfpt: 0.011853588098598612
+random try: 1100 mfpt: 0.009974572976163948
+random try: 1200 mfpt: 0.009698675992956277
+random try: 1300 mfpt: 0.008437322403856772
+random try: 1400 mfpt: 0.008330591108266198
+random try: 1500 mfpt: 0.008713948421612841
+random try: 1600 mfpt: 0.011508503694306447
+random try: 1700 mfpt: 0.009045341124300171
+random try: 1800 mfpt: 0.008156832589876147
+random try: 1900 mfpt: 0.008083378814055103
+best mfpt: 0.005027844994568645
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  8
+cycle 0 Propagation 8:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 8:  10%|█         | 500/5000 [00:05<00:49, 90.82it/s]cycle 0 Propagation 8:  20%|██        | 1000/5000 [00:11<00:43, 90.92it/s]cycle 0 Propagation 8:  30%|███       | 1500/5000 [00:16<00:38, 90.60it/s]cycle 0 Propagation 8:  40%|████      | 2000/5000 [00:22<00:33, 90.04it/s]cycle 0 Propagation 8:  50%|█████     | 2500/5000 [00:27<00:27, 90.38it/s]cycle 0 Propagation 8:  60%|██████    | 3000/5000 [00:33<00:22, 89.65it/s]cycle 0 Propagation 8:  70%|███████   | 3500/5000 [00:38<00:16, 90.47it/s]cycle 0 Propagation 8:  80%|████████  | 4000/5000 [00:44<00:11, 90.67it/s]cycle 0 Propagation 8:  90%|█████████ | 4500/5000 [00:49<00:05, 90.85it/s]cycle 0 Propagation 8:  90%|█████████ | 4500/5000 [00:55<00:06, 81.66it/s]
+combined dist to be fed into DHAM in shape:  (9, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 9 starting
+optimizing to get g_param from start state: 1 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.010599245881327237
+random try: 100 mfpt: 0.009421026367145946
+random try: 200 mfpt: 0.008513675949291057
+random try: 300 mfpt: 0.010871658420689469
+random try: 400 mfpt: 0.01007451701141048
+random try: 500 mfpt: 0.01221889587802748
+random try: 600 mfpt: 0.011417843451527434
+random try: 700 mfpt: 0.011660869038023495
+random try: 800 mfpt: 0.008549783745455692
+random try: 900 mfpt: 0.010433923388595055
+random try: 1000 mfpt: 0.01106314946286565
+random try: 1100 mfpt: 0.007161979732246126
+random try: 1200 mfpt: 0.011002575800129576
+random try: 1300 mfpt: 0.012159850499865118
+random try: 1400 mfpt: 0.007193423059792821
+random try: 1500 mfpt: 0.012969123075023079
+random try: 1600 mfpt: 0.0071908457035841
+random try: 1700 mfpt: 0.00846124050334842
+random try: 1800 mfpt: 0.010378540515137669
+random try: 1900 mfpt: 0.008959305595421754
+best mfpt: 0.005672121374418309
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  9
+cycle 0 Propagation 9:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 9:  10%|█         | 500/5000 [00:05<00:48, 93.02it/s]cycle 0 Propagation 9:  20%|██        | 1000/5000 [00:10<00:42, 93.76it/s]cycle 0 Propagation 9:  30%|███       | 1500/5000 [00:16<00:37, 92.97it/s]cycle 0 Propagation 9:  40%|████      | 2000/5000 [00:21<00:32, 92.74it/s]cycle 0 Propagation 9:  50%|█████     | 2500/5000 [00:26<00:27, 92.32it/s]cycle 0 Propagation 9:  60%|██████    | 3000/5000 [00:32<00:21, 92.09it/s]cycle 0 Propagation 9:  70%|███████   | 3500/5000 [00:37<00:16, 92.03it/s]cycle 0 Propagation 9:  80%|████████  | 4000/5000 [00:43<00:10, 92.46it/s]cycle 0 Propagation 9:  90%|█████████ | 4500/5000 [00:49<00:05, 90.45it/s]cycle 0 Propagation 9:  90%|█████████ | 4500/5000 [00:54<00:06, 82.83it/s]
+combined dist to be fed into DHAM in shape:  (10, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 10 starting
+optimizing to get g_param from start state: 2 to end state: 5 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.00896325433005868
+random try: 100 mfpt: 0.008672180440251066
+random try: 200 mfpt: 0.012804420414293307
+random try: 300 mfpt: 0.010304273822637346
+random try: 400 mfpt: 0.012383139528584252
+random try: 500 mfpt: 0.013564056303037178
+random try: 600 mfpt: 0.009609060467292251
+random try: 700 mfpt: 0.00987772182873298
+random try: 800 mfpt: 0.010247593892948405
+random try: 900 mfpt: 0.008442799276002513
+random try: 1000 mfpt: 0.010586492356597848
+random try: 1100 mfpt: 0.009262527941314496
+random try: 1200 mfpt: 0.007815425128934902
+random try: 1300 mfpt: 0.010527059935545587
+random try: 1400 mfpt: 0.010150277907827491
+random try: 1500 mfpt: 0.008478190731101851
+random try: 1600 mfpt: 0.009664447885570929
+random try: 1700 mfpt: 0.011498097169373766
+random try: 1800 mfpt: 0.007726790477207294
+random try: 1900 mfpt: 0.00929109406768583
+best mfpt: 0.005819741208184797
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  10
+cycle 0 Propagation 10:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 10:  10%|█         | 500/5000 [00:05<00:47, 94.52it/s]cycle 0 Propagation 10:  20%|██        | 1000/5000 [00:10<00:42, 93.47it/s]cycle 0 Propagation 10:  30%|███       | 1500/5000 [00:16<00:37, 92.63it/s]cycle 0 Propagation 10:  40%|████      | 2000/5000 [00:21<00:33, 90.24it/s]cycle 0 Propagation 10:  50%|█████     | 2500/5000 [00:27<00:28, 89.20it/s]cycle 0 Propagation 10:  60%|██████    | 3000/5000 [00:32<00:22, 90.58it/s]cycle 0 Propagation 10:  70%|███████   | 3500/5000 [00:38<00:16, 89.46it/s]cycle 0 Propagation 10:  80%|████████  | 4000/5000 [00:44<00:11, 90.41it/s]cycle 0 Propagation 10:  90%|█████████ | 4500/5000 [00:49<00:05, 92.93it/s]cycle 0 Propagation 10:  90%|█████████ | 4500/5000 [00:54<00:06, 82.18it/s]
+/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:235: ComplexWarning: Casting complex values to real discards the imaginary part
+  mfpts[i, j] = 1 / self.peq[j] * term1
+combined dist to be fed into DHAM in shape:  (11, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.6363636363636362
+last visited state (local start) updated. converted to x space that's:  3.4545454545454546
+cycle 0 propagation number 11 starting
+optimizing to get g_param from start state: 3 to end state: 5 in working indices.
+converted to xspace that's from: 3.4545454545454546 to 3.6363636363636362
+upper bound: 3.6363636363636362 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.008680869013198434
+random try: 100 mfpt: 0.012837732293533376
+random try: 200 mfpt: 0.01237304615324716
+random try: 300 mfpt: 0.008615420410111818
+random try: 400 mfpt: 0.00935127947902805
+random try: 500 mfpt: 0.010178841821174891
+random try: 600 mfpt: 0.008947083829827696
+random try: 700 mfpt: 0.011173837944682045
+random try: 800 mfpt: 0.011048537712771261
+random try: 900 mfpt: 0.011650911587932584
+random try: 1000 mfpt: 0.009227061927796675
+random try: 1100 mfpt: 0.00922015872328752
+random try: 1200 mfpt: 0.00885582984555652
+random try: 1300 mfpt: 0.015405602186250707
+random try: 1400 mfpt: 0.012515299273396521
+random try: 1500 mfpt: 0.012095201497494145
+random try: 1600 mfpt: 0.011753837491502958
+random try: 1700 mfpt: 0.008594310981788134
+random try: 1800 mfpt: 0.013140888668819016
+random try: 1900 mfpt: 0.011509837308095119
+best mfpt: 0.0056934089415325686
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  11
+cycle 0 Propagation 11:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 11:  10%|█         | 500/5000 [00:05<00:46, 96.81it/s]cycle 0 Propagation 11:  20%|██        | 1000/5000 [00:10<00:42, 95.20it/s]cycle 0 Propagation 11:  30%|███       | 1500/5000 [00:15<00:37, 94.37it/s]cycle 0 Propagation 11:  40%|████      | 2000/5000 [00:21<00:31, 93.79it/s]cycle 0 Propagation 11:  50%|█████     | 2500/5000 [00:26<00:26, 93.69it/s]cycle 0 Propagation 11:  60%|██████    | 3000/5000 [00:31<00:21, 93.45it/s]cycle 0 Propagation 11:  70%|███████   | 3500/5000 [00:37<00:16, 93.06it/s]cycle 0 Propagation 11:  80%|████████  | 4000/5000 [00:42<00:10, 92.80it/s]cycle 0 Propagation 11:  90%|█████████ | 4500/5000 [00:48<00:05, 92.83it/s]cycle 0 Propagation 11:  90%|█████████ | 4500/5000 [00:53<00:05, 83.84it/s]
+combined dist to be fed into DHAM in shape:  (12, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 12 starting
+optimizing to get g_param from start state: 2 to end state: 7 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.5938675748469741
+random try: 100 mfpt: 0.5177428660306567
+random try: 200 mfpt: 0.5916326334603998
+random try: 300 mfpt: 0.39171810897235293
+random try: 400 mfpt: 0.4850874361112169
+random try: 500 mfpt: 0.3787496353217248
+random try: 600 mfpt: 0.3701169662451444
+random try: 700 mfpt: 0.3316862334814202
+random try: 800 mfpt: 0.5913189676626638
+random try: 900 mfpt: 0.3654882574939293
+random try: 1000 mfpt: 0.6502095236198984
+random try: 1100 mfpt: 0.41700108253903045
+random try: 1200 mfpt: 0.415455291525937
+random try: 1300 mfpt: 0.782536424666184
+random try: 1400 mfpt: 0.35367134523130267
+random try: 1500 mfpt: 0.4870308367802848
+random try: 1600 mfpt: 0.6552581690723269
+random try: 1700 mfpt: 0.7015605034076061
+random try: 1800 mfpt: 0.8050858770199854
+random try: 1900 mfpt: 0.5258907661119406
+best mfpt: 0.20472163890634704
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  12
+cycle 0 Propagation 12:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 12:  10%|█         | 500/5000 [00:05<00:45, 98.17it/s]cycle 0 Propagation 12:  20%|██        | 1000/5000 [00:10<00:42, 95.00it/s]cycle 0 Propagation 12:  30%|███       | 1500/5000 [00:15<00:37, 93.75it/s]cycle 0 Propagation 12:  40%|████      | 2000/5000 [00:21<00:32, 93.03it/s]cycle 0 Propagation 12:  50%|█████     | 2500/5000 [00:26<00:26, 92.61it/s]cycle 0 Propagation 12:  60%|██████    | 3000/5000 [00:32<00:21, 93.25it/s]cycle 0 Propagation 12:  70%|███████   | 3500/5000 [00:37<00:16, 92.77it/s]cycle 0 Propagation 12:  80%|████████  | 4000/5000 [00:42<00:10, 92.45it/s]cycle 0 Propagation 12:  90%|█████████ | 4500/5000 [00:48<00:05, 92.51it/s]cycle 0 Propagation 12:  90%|█████████ | 4500/5000 [00:53<00:05, 83.50it/s]
+combined dist to be fed into DHAM in shape:  (13, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 13 starting
+optimizing to get g_param from start state: 2 to end state: 7 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.7952605882739323
+random try: 100 mfpt: 0.5389515312038722
+random try: 200 mfpt: 0.5073853795796514
+random try: 300 mfpt: 0.5588178557159039
+random try: 400 mfpt: 0.46786519520759207
+random try: 500 mfpt: 0.4028434966624118
+random try: 600 mfpt: 0.5429995822436714
+random try: 700 mfpt: 0.7633907775376977
+random try: 800 mfpt: 0.6135576375471871
+random try: 900 mfpt: 0.43645043016376306
+random try: 1000 mfpt: 0.8088742417333651
+random try: 1100 mfpt: 0.6810156180501774
+random try: 1200 mfpt: 0.2254449600236421
+random try: 1300 mfpt: 0.5432513360240199
+random try: 1400 mfpt: 0.39805090283353467
+random try: 1500 mfpt: 0.36417413648033636
+random try: 1600 mfpt: 0.2591697923176501
+random try: 1700 mfpt: 0.4616813906256201
+random try: 1800 mfpt: 0.4216062802333243
+random try: 1900 mfpt: 0.3948591830250765
+best mfpt: 0.2061473507948346
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  13
+cycle 0 Propagation 13:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 13:  10%|█         | 500/5000 [00:04<00:42, 105.74it/s]cycle 0 Propagation 13:  20%|██        | 1000/5000 [00:09<00:40, 99.83it/s]cycle 0 Propagation 13:  30%|███       | 1500/5000 [00:15<00:36, 95.49it/s]cycle 0 Propagation 13:  40%|████      | 2000/5000 [00:21<00:32, 93.07it/s]cycle 0 Propagation 13:  50%|█████     | 2500/5000 [00:26<00:27, 92.53it/s]cycle 0 Propagation 13:  60%|██████    | 3000/5000 [00:32<00:21, 91.69it/s]cycle 0 Propagation 13:  70%|███████   | 3500/5000 [00:37<00:16, 91.28it/s]cycle 0 Propagation 13:  80%|████████  | 4000/5000 [00:43<00:10, 91.37it/s]cycle 0 Propagation 13:  90%|█████████ | 4500/5000 [00:48<00:05, 91.09it/s]cycle 0 Propagation 13:  90%|█████████ | 4500/5000 [00:54<00:06, 83.14it/s]
+combined dist to be fed into DHAM in shape:  (14, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 14 starting
+optimizing to get g_param from start state: 1 to end state: 7 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.7332545823776665
+random try: 100 mfpt: 0.4904242229816231
+random try: 200 mfpt: 0.5646072728679151
+random try: 300 mfpt: 0.6823894519171044
+random try: 400 mfpt: 0.29542747699615024
+random try: 500 mfpt: 0.545903984811567
+random try: 600 mfpt: 0.5585427431223187
+random try: 700 mfpt: 0.6414801671007524
+random try: 800 mfpt: 0.5002524836007514
+random try: 900 mfpt: 0.5115831806616578
+random try: 1000 mfpt: 0.7881314622513577
+random try: 1100 mfpt: 0.6153546459928714
+random try: 1200 mfpt: 0.6334204939889634
+random try: 1300 mfpt: 0.36823791112689686
+random try: 1400 mfpt: 0.6374984923045117
+random try: 1500 mfpt: 0.9758150271448066
+random try: 1600 mfpt: 1.000414478881833
+random try: 1700 mfpt: 0.6303754907499329
+random try: 1800 mfpt: 0.5158081911256779
+random try: 1900 mfpt: 0.3696587387708319
+best mfpt: 0.1755881061922667
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  14
+cycle 0 Propagation 14:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 14:  10%|█         | 500/5000 [00:05<00:45, 97.99it/s]cycle 0 Propagation 14:  20%|██        | 1000/5000 [00:10<00:42, 94.15it/s]cycle 0 Propagation 14:  30%|███       | 1500/5000 [00:15<00:37, 93.36it/s]cycle 0 Propagation 14:  40%|████      | 2000/5000 [00:21<00:32, 93.42it/s]cycle 0 Propagation 14:  50%|█████     | 2500/5000 [00:26<00:26, 93.12it/s]cycle 0 Propagation 14:  60%|██████    | 3000/5000 [00:32<00:21, 93.07it/s]cycle 0 Propagation 14:  70%|███████   | 3500/5000 [00:37<00:16, 93.04it/s]cycle 0 Propagation 14:  80%|████████  | 4000/5000 [00:42<00:10, 93.05it/s]cycle 0 Propagation 14:  90%|█████████ | 4500/5000 [00:48<00:05, 92.99it/s]cycle 0 Propagation 14:  90%|█████████ | 4500/5000 [00:53<00:05, 83.55it/s]
+combined dist to be fed into DHAM in shape:  (15, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999998
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 15 starting
+optimizing to get g_param from start state: 1 to end state: 7 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.6193944783777352
+random try: 100 mfpt: 0.33053154313626837
+random try: 200 mfpt: 0.5617228217880066
+random try: 300 mfpt: 0.7687448684821611
+random try: 400 mfpt: 0.6054469118142144
+random try: 500 mfpt: 0.5396456902034941
+random try: 600 mfpt: 0.6664965825319714
+random try: 700 mfpt: 0.7103123790989558
+random try: 800 mfpt: 0.5115495198779344
+random try: 900 mfpt: 0.5078487070764968
+random try: 1000 mfpt: 0.3487031676338898
+random try: 1100 mfpt: 0.748800210880559
+random try: 1200 mfpt: 0.715731334896083
+random try: 1300 mfpt: 0.47011110618314744
+random try: 1400 mfpt: 0.7965612890311766
+random try: 1500 mfpt: 0.5739408200531129
+random try: 1600 mfpt: 0.5835321954224723
+random try: 1700 mfpt: 1.014507425852009
+random try: 1800 mfpt: 0.5790926398696393
+random try: 1900 mfpt: 0.626727647782219
+best mfpt: 0.2271029446953683
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  15
+cycle 0 Propagation 15:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 15:  10%|█         | 500/5000 [00:05<00:45, 98.59it/s]cycle 0 Propagation 15:  20%|██        | 1000/5000 [00:10<00:41, 95.51it/s]cycle 0 Propagation 15:  30%|███       | 1500/5000 [00:15<00:37, 94.42it/s]cycle 0 Propagation 15:  40%|████      | 2000/5000 [00:21<00:31, 94.05it/s]cycle 0 Propagation 15:  50%|█████     | 2500/5000 [00:26<00:26, 93.85it/s]cycle 0 Propagation 15:  60%|██████    | 3000/5000 [00:31<00:21, 93.72it/s]cycle 0 Propagation 15:  70%|███████   | 3500/5000 [00:37<00:16, 93.19it/s]cycle 0 Propagation 15:  80%|████████  | 4000/5000 [00:42<00:10, 92.81it/s]cycle 0 Propagation 15:  90%|█████████ | 4500/5000 [00:48<00:05, 92.49it/s]cycle 0 Propagation 15:  90%|█████████ | 4500/5000 [00:53<00:05, 83.85it/s]
+combined dist to be fed into DHAM in shape:  (16, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 16 starting
+optimizing to get g_param from start state: 2 to end state: 7 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.880203433911295
+random try: 100 mfpt: 0.6117281376386104
+random try: 200 mfpt: 1.6183654017660225
+random try: 300 mfpt: 0.5466380451470398
+random try: 400 mfpt: 0.7232440248588835
+random try: 500 mfpt: 0.3875956683468502
+random try: 600 mfpt: 0.6618080439662083
+random try: 700 mfpt: 0.5928538918420088
+random try: 800 mfpt: 0.6269900817941776
+random try: 900 mfpt: 0.7511541891278515
+random try: 1000 mfpt: 0.6130008225913621
+random try: 1100 mfpt: 0.43820874477276334
+random try: 1200 mfpt: 0.4778447062163257
+random try: 1300 mfpt: 0.294459687871247
+random try: 1400 mfpt: 0.6610184931272933
+random try: 1500 mfpt: 0.6182388189490402
+random try: 1600 mfpt: 0.8544663159617707
+random try: 1700 mfpt: 0.4053069115153845
+random try: 1800 mfpt: 0.33337422339534106
+random try: 1900 mfpt: 0.45964033581375696
+best mfpt: 0.20298832027886252
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  16
+cycle 0 Propagation 16:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 16:  10%|█         | 500/5000 [00:04<00:43, 102.63it/s]cycle 0 Propagation 16:  20%|██        | 1000/5000 [00:10<00:41, 97.11it/s]cycle 0 Propagation 16:  30%|███       | 1500/5000 [00:15<00:36, 95.84it/s]cycle 0 Propagation 16:  40%|████      | 2000/5000 [00:20<00:31, 94.54it/s]cycle 0 Propagation 16:  50%|█████     | 2500/5000 [00:26<00:26, 94.14it/s]cycle 0 Propagation 16:  60%|██████    | 3000/5000 [00:31<00:21, 94.16it/s]cycle 0 Propagation 16:  70%|███████   | 3500/5000 [00:36<00:15, 94.06it/s]cycle 0 Propagation 16:  80%|████████  | 4000/5000 [00:42<00:10, 94.29it/s]cycle 0 Propagation 16:  90%|█████████ | 4500/5000 [00:47<00:05, 94.46it/s]cycle 0 Propagation 16:  90%|█████████ | 4500/5000 [00:52<00:05, 84.96it/s]
+combined dist to be fed into DHAM in shape:  (17, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 17 starting
+optimizing to get g_param from start state: 1 to end state: 7 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.4276028443954207
+random try: 100 mfpt: 0.5491763450265396
+random try: 200 mfpt: 0.4000668711983936
+random try: 300 mfpt: 0.8555558774729166
+random try: 400 mfpt: 0.2803436184866785
+random try: 500 mfpt: 0.3188271045760412
+random try: 600 mfpt: 0.6024023955309142
+random try: 700 mfpt: 0.601379128464602
+random try: 800 mfpt: 0.5144430172900518
+random try: 900 mfpt: 0.3961212518857141
+random try: 1000 mfpt: 0.3474010736593374
+random try: 1100 mfpt: 0.5045270221340822
+random try: 1200 mfpt: 0.4482300530288466
+random try: 1300 mfpt: 0.4007413125783594
+random try: 1400 mfpt: 0.3287320729898083
+random try: 1500 mfpt: 0.4486018383627865
+random try: 1600 mfpt: 0.41545000458093173
+random try: 1700 mfpt: 0.6601138013723573
+random try: 1800 mfpt: 0.7420118206965032
+random try: 1900 mfpt: 0.3265478100327641
+best mfpt: 0.12563577407043058
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  17
+cycle 0 Propagation 17:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 17:  10%|█         | 500/5000 [00:05<00:45, 98.69it/s]cycle 0 Propagation 17:  20%|██        | 1000/5000 [00:10<00:42, 94.91it/s]cycle 0 Propagation 17:  30%|███       | 1500/5000 [00:15<00:37, 94.55it/s]cycle 0 Propagation 17:  40%|████      | 2000/5000 [00:21<00:31, 94.09it/s]cycle 0 Propagation 17:  50%|█████     | 2500/5000 [00:26<00:26, 93.96it/s]cycle 0 Propagation 17:  60%|██████    | 3000/5000 [00:31<00:21, 94.04it/s]cycle 0 Propagation 17:  70%|███████   | 3500/5000 [00:37<00:15, 94.00it/s]cycle 0 Propagation 17:  80%|████████  | 4000/5000 [00:42<00:10, 93.78it/s]cycle 0 Propagation 17:  90%|█████████ | 4500/5000 [00:47<00:05, 93.51it/s]cycle 0 Propagation 17:  90%|█████████ | 4500/5000 [00:53<00:05, 84.22it/s]
+combined dist to be fed into DHAM in shape:  (18, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999998
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 18 starting
+optimizing to get g_param from start state: 2 to end state: 8 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.49081825509186
+random try: 100 mfpt: 0.6647152762133096
+random try: 200 mfpt: 0.42732779993814224
+random try: 300 mfpt: 0.41384388121324156
+random try: 400 mfpt: 0.5956701532373008
+random try: 500 mfpt: 1.1096670873645844
+random try: 600 mfpt: 0.3340840811752583
+random try: 700 mfpt: 0.1936435090249973
+random try: 800 mfpt: 0.3983597591604986
+random try: 900 mfpt: 0.30467219260426254
+random try: 1000 mfpt: 1.2576052078450755
+random try: 1100 mfpt: 0.6967455676156378
+random try: 1200 mfpt: 0.686785553638001
+random try: 1300 mfpt: 1.4469689254334923
+random try: 1400 mfpt: 0.48477719031796335
+random try: 1500 mfpt: 0.6665613963604183
+random try: 1600 mfpt: 0.47477055651699784
+random try: 1700 mfpt: 0.8369986137552409
+random try: 1800 mfpt: 0.6259710910342516
+random try: 1900 mfpt: 0.44535876552422965
+best mfpt: 0.1378746126946791
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  18
+cycle 0 Propagation 18:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 18:  10%|█         | 500/5000 [00:05<00:45, 99.22it/s]cycle 0 Propagation 18:  20%|██        | 1000/5000 [00:10<00:41, 96.10it/s]cycle 0 Propagation 18:  30%|███       | 1500/5000 [00:15<00:36, 95.51it/s]cycle 0 Propagation 18:  40%|████      | 2000/5000 [00:20<00:31, 94.75it/s]cycle 0 Propagation 18:  50%|█████     | 2500/5000 [00:26<00:26, 93.93it/s]cycle 0 Propagation 18:  60%|██████    | 3000/5000 [00:31<00:21, 93.75it/s]cycle 0 Propagation 18:  70%|███████   | 3500/5000 [00:37<00:15, 94.04it/s]cycle 0 Propagation 18:  80%|████████  | 4000/5000 [00:42<00:10, 94.07it/s]cycle 0 Propagation 18:  90%|█████████ | 4500/5000 [00:47<00:05, 94.41it/s]cycle 0 Propagation 18:  90%|█████████ | 4500/5000 [00:53<00:05, 84.90it/s]
+combined dist to be fed into DHAM in shape:  (19, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.4545454545454546
+cycle 0 propagation number 19 starting
+optimizing to get g_param from start state: 3 to end state: 8 in working indices.
+converted to xspace that's from: 3.4545454545454546 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.5547145216386913
+random try: 100 mfpt: 0.7325817182328664
+random try: 200 mfpt: 0.6475248115361595
+random try: 300 mfpt: 0.5092200352275071
+random try: 400 mfpt: 0.6727556997402011
+random try: 500 mfpt: 0.6236426123605914
+random try: 600 mfpt: 0.7468178106455958
+random try: 700 mfpt: 0.41206235322518814
+random try: 800 mfpt: 0.35437619998687836
+random try: 900 mfpt: 0.7312030713264739
+random try: 1000 mfpt: 0.34830192017529754
+random try: 1100 mfpt: 0.7984278971856492
+random try: 1200 mfpt: 1.267347307513347
+random try: 1300 mfpt: 0.7972105337290837
+random try: 1400 mfpt: 0.4517874218343046
+random try: 1500 mfpt: 0.377488235959986
+random try: 1600 mfpt: 0.41154323341848864
+random try: 1700 mfpt: 0.4058129489082053
+random try: 1800 mfpt: 0.5544685543796174
+random try: 1900 mfpt: 0.4177447022807424
+best mfpt: 0.1697689007885636
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  19
+cycle 0 Propagation 19:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 19:  10%|█         | 500/5000 [00:05<00:45, 99.00it/s]cycle 0 Propagation 19:  20%|██        | 1000/5000 [00:10<00:41, 95.85it/s]cycle 0 Propagation 19:  30%|███       | 1500/5000 [00:15<00:36, 94.78it/s]cycle 0 Propagation 19:  40%|████      | 2000/5000 [00:21<00:31, 94.18it/s]cycle 0 Propagation 19:  50%|█████     | 2500/5000 [00:26<00:26, 93.70it/s]cycle 0 Propagation 19:  60%|██████    | 3000/5000 [00:31<00:21, 93.73it/s]cycle 0 Propagation 19:  70%|███████   | 3500/5000 [00:37<00:15, 93.84it/s]cycle 0 Propagation 19:  80%|████████  | 4000/5000 [00:42<00:10, 93.84it/s]cycle 0 Propagation 19:  90%|█████████ | 4500/5000 [00:47<00:05, 93.86it/s]cycle 0 Propagation 19:  90%|█████████ | 4500/5000 [00:53<00:05, 84.47it/s]
+combined dist to be fed into DHAM in shape:  (20, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 20 starting
+optimizing to get g_param from start state: 2 to end state: 8 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.6782482029330199
+random try: 100 mfpt: 0.5942374105888188
+random try: 200 mfpt: 0.317285603572354
+random try: 300 mfpt: 1.101456604747593
+random try: 400 mfpt: 0.6950860563178285
+random try: 500 mfpt: 0.7103356094054841
+random try: 600 mfpt: 0.8289095587506994
+random try: 700 mfpt: 0.5678435549202014
+random try: 800 mfpt: 0.7531330299667988
+random try: 900 mfpt: 0.6253830508938298
+random try: 1000 mfpt: 0.43017016975574357
+random try: 1100 mfpt: 0.6749541132379916
+random try: 1200 mfpt: 0.53169184651767
+random try: 1300 mfpt: 0.3380926000868772
+random try: 1400 mfpt: 0.5187574716068585
+random try: 1500 mfpt: 0.8532618511188833
+random try: 1600 mfpt: 0.48559297592028
+random try: 1700 mfpt: 0.2438320169952387
+random try: 1800 mfpt: 0.8166703501784707
+random try: 1900 mfpt: 0.7264616780599467
+best mfpt: 0.18485733836592583
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  20
+cycle 0 Propagation 20:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 20:  10%|█         | 500/5000 [00:04<00:44, 100.08it/s]cycle 0 Propagation 20:  20%|██        | 1000/5000 [00:10<00:41, 95.60it/s]cycle 0 Propagation 20:  30%|███       | 1500/5000 [00:15<00:36, 94.99it/s]cycle 0 Propagation 20:  40%|████      | 2000/5000 [00:21<00:31, 94.38it/s]cycle 0 Propagation 20:  50%|█████     | 2500/5000 [00:26<00:26, 94.48it/s]cycle 0 Propagation 20:  60%|██████    | 3000/5000 [00:31<00:21, 94.72it/s]cycle 0 Propagation 20:  70%|███████   | 3500/5000 [00:36<00:15, 94.49it/s]cycle 0 Propagation 20:  80%|████████  | 4000/5000 [00:42<00:10, 94.32it/s]cycle 0 Propagation 20:  90%|█████████ | 4500/5000 [00:47<00:05, 94.01it/s]cycle 0 Propagation 20:  90%|█████████ | 4500/5000 [00:53<00:05, 84.80it/s]
+combined dist to be fed into DHAM in shape:  (21, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 21 starting
+optimizing to get g_param from start state: 2 to end state: 8 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 1.117241174510042
+random try: 100 mfpt: 0.36202047492399314
+random try: 200 mfpt: 0.5324640876613709
+random try: 300 mfpt: 0.49511669692985544
+random try: 400 mfpt: 0.475931555812418
+random try: 500 mfpt: 0.6051536982674495
+random try: 600 mfpt: 0.6172422174372449
+random try: 700 mfpt: 0.5713060689428046
+random try: 800 mfpt: 0.5499767672843167
+random try: 900 mfpt: 0.45831832026441094
+random try: 1000 mfpt: 0.5149576861946331
+random try: 1100 mfpt: 0.38426771413653804
+random try: 1200 mfpt: 1.1787434881882652
+random try: 1300 mfpt: 0.5279660220061753
+random try: 1400 mfpt: 0.60761368672251
+random try: 1500 mfpt: 0.8481058115672264
+random try: 1600 mfpt: 0.4628955033265832
+random try: 1700 mfpt: 1.7386669462431779
+random try: 1800 mfpt: 0.3599250736915904
+random try: 1900 mfpt: 1.0995416458050928
+best mfpt: 0.19946488359363082
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  21
+cycle 0 Propagation 21:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 21:  10%|█         | 500/5000 [00:05<00:45, 99.31it/s]cycle 0 Propagation 21:  20%|██        | 1000/5000 [00:10<00:42, 94.51it/s]cycle 0 Propagation 21:  30%|███       | 1500/5000 [00:15<00:37, 93.58it/s]cycle 0 Propagation 21:  40%|████      | 2000/5000 [00:21<00:31, 93.96it/s]cycle 0 Propagation 21:  50%|█████     | 2500/5000 [00:26<00:26, 93.88it/s]cycle 0 Propagation 21:  60%|██████    | 3000/5000 [00:31<00:21, 93.69it/s]cycle 0 Propagation 21:  70%|███████   | 3500/5000 [00:37<00:16, 93.51it/s]cycle 0 Propagation 21:  80%|████████  | 4000/5000 [00:42<00:10, 93.36it/s]cycle 0 Propagation 21:  90%|█████████ | 4500/5000 [00:48<00:05, 93.08it/s]cycle 0 Propagation 21:  90%|█████████ | 4500/5000 [00:53<00:05, 83.92it/s]
+combined dist to be fed into DHAM in shape:  (22, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 22 starting
+optimizing to get g_param from start state: 2 to end state: 8 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.5390393850681767
+random try: 100 mfpt: 0.9160875100323165
+random try: 200 mfpt: 0.5437086992757785
+random try: 300 mfpt: 0.6056962014943894
+random try: 400 mfpt: 0.6486485454709259
+random try: 500 mfpt: 0.5207702525357173
+random try: 600 mfpt: 0.6623452538279666
+random try: 700 mfpt: 0.5480890850533439
+random try: 800 mfpt: 0.48386710808604727
+random try: 900 mfpt: 0.7178999538755965
+random try: 1000 mfpt: 0.31784408131257663
+random try: 1100 mfpt: 0.5067682408654999
+random try: 1200 mfpt: 0.5812823804410311
+random try: 1300 mfpt: 0.4230116278949355
+random try: 1400 mfpt: 0.49889870711237316
+random try: 1500 mfpt: 0.2365752616329377
+random try: 1600 mfpt: 0.5257593474845058
+random try: 1700 mfpt: 0.6439028704867018
+random try: 1800 mfpt: 0.783174143846533
+random try: 1900 mfpt: 0.41988500032574483
+best mfpt: 0.1686699437172631
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  22
+cycle 0 Propagation 22:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 22:  10%|█         | 500/5000 [00:04<00:42, 105.46it/s]cycle 0 Propagation 22:  20%|██        | 1000/5000 [00:10<00:40, 98.50it/s]cycle 0 Propagation 22:  30%|███       | 1500/5000 [00:15<00:36, 96.43it/s]cycle 0 Propagation 22:  40%|████      | 2000/5000 [00:20<00:31, 95.90it/s]cycle 0 Propagation 22:  50%|█████     | 2500/5000 [00:25<00:26, 95.53it/s]cycle 0 Propagation 22:  60%|██████    | 3000/5000 [00:31<00:20, 95.51it/s]cycle 0 Propagation 22:  70%|███████   | 3500/5000 [00:36<00:15, 95.46it/s]cycle 0 Propagation 22:  80%|████████  | 4000/5000 [00:41<00:10, 94.94it/s]cycle 0 Propagation 22:  90%|█████████ | 4500/5000 [00:46<00:05, 94.78it/s]cycle 0 Propagation 22:  90%|█████████ | 4500/5000 [00:52<00:05, 85.81it/s]
+combined dist to be fed into DHAM in shape:  (23, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 23 starting
+optimizing to get g_param from start state: 1 to end state: 8 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 1.4161964347775455
+random try: 100 mfpt: 0.5638767331095856
+random try: 200 mfpt: 0.35019261645227767
+random try: 300 mfpt: 0.7220753432993515
+random try: 400 mfpt: 0.7332941962652116
+random try: 500 mfpt: 0.5300058217477718
+random try: 600 mfpt: 0.8024403883606706
+random try: 700 mfpt: 0.5179484780033283
+random try: 800 mfpt: 0.4431339781622863
+random try: 900 mfpt: 0.5946744967964935
+random try: 1000 mfpt: 1.157506234528416
+random try: 1100 mfpt: 0.7077529098427302
+random try: 1200 mfpt: 0.32896633895486693
+random try: 1300 mfpt: 0.3903669759721273
+random try: 1400 mfpt: 0.8312113297416709
+random try: 1500 mfpt: 0.967809394821949
+random try: 1600 mfpt: 1.0764582962211633
+random try: 1700 mfpt: 1.0243527918438837
+random try: 1800 mfpt: 0.3390029412995928
+random try: 1900 mfpt: 0.4808532398473517
+best mfpt: 0.20029194343015283
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  23
+cycle 0 Propagation 23:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 23:  10%|█         | 500/5000 [00:05<00:46, 96.96it/s]cycle 0 Propagation 23:  20%|██        | 1000/5000 [00:10<00:42, 93.87it/s]cycle 0 Propagation 23:  30%|███       | 1500/5000 [00:16<00:37, 93.24it/s]cycle 0 Propagation 23:  40%|████      | 2000/5000 [00:21<00:32, 93.02it/s]cycle 0 Propagation 23:  50%|█████     | 2500/5000 [00:26<00:26, 93.49it/s]cycle 0 Propagation 23:  60%|██████    | 3000/5000 [00:32<00:21, 93.44it/s]cycle 0 Propagation 23:  70%|███████   | 3500/5000 [00:37<00:16, 92.98it/s]cycle 0 Propagation 23:  80%|████████  | 4000/5000 [00:42<00:10, 93.13it/s]cycle 0 Propagation 23:  90%|█████████ | 4500/5000 [00:48<00:05, 92.88it/s]cycle 0 Propagation 23:  90%|█████████ | 4500/5000 [00:53<00:05, 83.55it/s]
+combined dist to be fed into DHAM in shape:  (24, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.3636363636363638
+cycle 0 propagation number 24 starting
+optimizing to get g_param from start state: 2 to end state: 8 in working indices.
+converted to xspace that's from: 3.3636363636363638 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.458334083416289
+random try: 100 mfpt: 0.839035122774957
+random try: 200 mfpt: 0.8348119405600476
+random try: 300 mfpt: 0.5103043594441689
+random try: 400 mfpt: 0.9941893732327052
+random try: 500 mfpt: 0.4439907096614719
+random try: 600 mfpt: 1.055598032986319
+random try: 700 mfpt: 1.836527008037721
+random try: 800 mfpt: 0.6193100665618251
+random try: 900 mfpt: 0.3766076663220329
+random try: 1000 mfpt: 0.5222395702767332
+random try: 1100 mfpt: 1.0408586984442636
+random try: 1200 mfpt: 0.4522041078449227
+random try: 1300 mfpt: 0.7093250401946457
+random try: 1400 mfpt: 0.41251318232645084
+random try: 1500 mfpt: 0.3671561251596245
+random try: 1600 mfpt: 0.6436168646177526
+random try: 1700 mfpt: 0.4170202186287908
+random try: 1800 mfpt: 0.8182243626454263
+random try: 1900 mfpt: 1.0138999890004086
+best mfpt: 0.19544941638998553
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  24
+cycle 0 Propagation 24:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 24:  10%|█         | 500/5000 [00:05<00:45, 99.21it/s]cycle 0 Propagation 24:  20%|██        | 1000/5000 [00:10<00:41, 95.82it/s]cycle 0 Propagation 24:  30%|███       | 1500/5000 [00:15<00:36, 95.07it/s]cycle 0 Propagation 24:  40%|████      | 2000/5000 [00:21<00:31, 94.28it/s]cycle 0 Propagation 24:  50%|█████     | 2500/5000 [00:26<00:26, 93.97it/s]cycle 0 Propagation 24:  60%|██████    | 3000/5000 [00:31<00:21, 93.80it/s]cycle 0 Propagation 24:  70%|███████   | 3500/5000 [00:37<00:16, 93.72it/s]cycle 0 Propagation 24:  80%|████████  | 4000/5000 [00:42<00:10, 93.61it/s]cycle 0 Propagation 24:  90%|█████████ | 4500/5000 [00:47<00:05, 93.57it/s]cycle 0 Propagation 24:  90%|█████████ | 4500/5000 [00:53<00:05, 84.32it/s]
+combined dist to be fed into DHAM in shape:  (25, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 25 starting
+optimizing to get g_param from start state: 1 to end state: 8 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.1818181818181817
+random try: 0 mfpt: 0.8435875841110169
+random try: 100 mfpt: 0.4036392399741963
+random try: 200 mfpt: 0.6727608681372002
+random try: 300 mfpt: 0.5941564248882402
+random try: 400 mfpt: 0.29098099088212015
+random try: 500 mfpt: 0.3669162067140053
+random try: 600 mfpt: 1.2725273061026305
+random try: 700 mfpt: 0.7554375521520308
+random try: 800 mfpt: 0.5550122890512086
+random try: 900 mfpt: 0.40178986923604904
+random try: 1000 mfpt: 0.4089201740777368
+random try: 1100 mfpt: 0.39930859842991345
+random try: 1200 mfpt: 1.005434257507361
+random try: 1300 mfpt: 0.72817367328058
+random try: 1400 mfpt: 0.4833557573035105
+random try: 1500 mfpt: 0.6812008601054629
+random try: 1600 mfpt: 1.776553201448727
+random try: 1700 mfpt: 1.115750220428299
+random try: 1800 mfpt: 0.8154583579231808
+random try: 1900 mfpt: 0.4982650075773469
+best mfpt: 0.13666869830643275
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  25
+cycle 0 Propagation 25:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 25:  10%|█         | 500/5000 [00:04<00:44, 100.54it/s]cycle 0 Propagation 25:  20%|██        | 1000/5000 [00:10<00:41, 96.02it/s]cycle 0 Propagation 25:  30%|███       | 1500/5000 [00:15<00:36, 94.76it/s]cycle 0 Propagation 25:  40%|████      | 2000/5000 [00:20<00:31, 94.66it/s]cycle 0 Propagation 25:  50%|█████     | 2500/5000 [00:26<00:26, 94.00it/s]cycle 0 Propagation 25:  60%|██████    | 3000/5000 [00:31<00:21, 93.58it/s]cycle 0 Propagation 25:  70%|███████   | 3500/5000 [00:37<00:16, 93.48it/s]cycle 0 Propagation 25:  80%|████████  | 4000/5000 [00:42<00:10, 93.31it/s]cycle 0 Propagation 25:  90%|█████████ | 4500/5000 [00:47<00:05, 93.13it/s]cycle 0 Propagation 25:  90%|█████████ | 4500/5000 [00:53<00:05, 83.92it/s]
+combined dist to be fed into DHAM in shape:  (26, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  5.363636363636363
+last visited state (local start) updated. converted to x space that's:  5.0
+cycle 0 propagation number 26 starting
+optimizing to get g_param from start state: 20 to end state: 24 in working indices.
+converted to xspace that's from: 5.0 to 5.363636363636363
+upper bound: 5.363636363636363 lower bound: 3.1818181818181817
+random try: 0 mfpt: 10.927524452307503
+random try: 100 mfpt: 38.488751135261474
+random try: 200 mfpt: 79.52317943373049
+random try: 300 mfpt: 392.6023951550419
+random try: 400 mfpt: 60.869556535339925
+random try: 500 mfpt: 14.824140035683927
+random try: 600 mfpt: 46.90229362930994
+random try: 700 mfpt: 28.599168105813476
+random try: 800 mfpt: 12.381207330660486
+random try: 900 mfpt: 27.960157932946746
+random try: 1000 mfpt: 149.04527859793907
+random try: 1100 mfpt: 95.95948729827205
+random try: 1200 mfpt: 83.83302076369003
+random try: 1300 mfpt: 1.8316631557252065
+random try: 1400 mfpt: 201.10603973342165
+random try: 1500 mfpt: 111.08094323640522
+random try: 1600 mfpt: 12.500256743499316
+random try: 1700 mfpt: 171.19517376475093
+random try: 1800 mfpt: 250.03854830926994
+random try: 1900 mfpt: 444.1260163202581
+best mfpt: 0.5172569081907897
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  26
+cycle 0 Propagation 26:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 26:  10%|█         | 500/5000 [00:05<00:49, 91.75it/s]cycle 0 Propagation 26:  20%|██        | 1000/5000 [00:10<00:43, 92.79it/s]cycle 0 Propagation 26:  30%|███       | 1500/5000 [00:16<00:37, 93.47it/s]cycle 0 Propagation 26:  40%|████      | 2000/5000 [00:21<00:32, 93.47it/s]cycle 0 Propagation 26:  50%|█████     | 2500/5000 [00:26<00:26, 93.73it/s]cycle 0 Propagation 26:  60%|██████    | 3000/5000 [00:32<00:21, 93.44it/s]cycle 0 Propagation 26:  70%|███████   | 3500/5000 [00:37<00:16, 93.50it/s]cycle 0 Propagation 26:  80%|████████  | 4000/5000 [00:42<00:10, 93.58it/s]cycle 0 Propagation 26:  90%|█████████ | 4500/5000 [00:48<00:05, 93.76it/s]cycle 0 Propagation 26:  90%|█████████ | 4500/5000 [00:53<00:05, 83.49it/s]
+combined dist to be fed into DHAM in shape:  (27, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  5.7272727272727275
+last visited state (local start) updated. converted to x space that's:  5.181818181818182
+cycle 0 propagation number 27 starting
+optimizing to get g_param from start state: 22 to end state: 28 in working indices.
+converted to xspace that's from: 5.181818181818182 to 5.7272727272727275
+upper bound: 5.7272727272727275 lower bound: 3.1818181818181817
+random try: 0 mfpt: 709.9717822725042
+random try: 100 mfpt: 206.63696200186868
+random try: 200 mfpt: 612.3029888449506
+random try: 300 mfpt: 7619.654824003739
+random try: 400 mfpt: 2985.2040307292505
+random try: 500 mfpt: 4429.910964937591
+random try: 600 mfpt: 2014.8407242283201
+random try: 700 mfpt: 237.26553414423597
+random try: 800 mfpt: 482.08646441862186
+random try: 900 mfpt: 6005.380149636157
+random try: 1000 mfpt: 13097.373939617832
+random try: 1100 mfpt: 1345.787394146312
+random try: 1200 mfpt: 1362.9636695824022
+random try: 1300 mfpt: 767.0472051989291
+random try: 1400 mfpt: 23333.418659552448
+random try: 1500 mfpt: 1108.9094986616012
+random try: 1600 mfpt: 1734.9167687444049
+random try: 1700 mfpt: 1196.0571410997934
+random try: 1800 mfpt: 789.2942561734385
+random try: 1900 mfpt: 3105.555148189862
+best mfpt: 6.353656765136477
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  27
+cycle 0 Propagation 27:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 27:  10%|█         | 500/5000 [00:05<00:47, 94.39it/s]cycle 0 Propagation 27:  20%|██        | 1000/5000 [00:10<00:42, 94.87it/s]cycle 0 Propagation 27:  30%|███       | 1500/5000 [00:15<00:36, 94.68it/s]cycle 0 Propagation 27:  40%|████      | 2000/5000 [00:21<00:31, 94.47it/s]cycle 0 Propagation 27:  50%|█████     | 2500/5000 [00:26<00:26, 93.76it/s]cycle 0 Propagation 27:  60%|██████    | 3000/5000 [00:31<00:21, 94.04it/s]cycle 0 Propagation 27:  70%|███████   | 3500/5000 [00:37<00:15, 94.60it/s]cycle 0 Propagation 27:  80%|████████  | 4000/5000 [00:42<00:10, 94.73it/s]cycle 0 Propagation 27:  90%|█████████ | 4500/5000 [00:47<00:05, 94.51it/s]cycle 0 Propagation 27:  90%|█████████ | 4500/5000 [00:53<00:05, 84.33it/s]
+combined dist to be fed into DHAM in shape:  (28, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  5.7272727272727275
+last visited state (local start) updated. converted to x space that's:  5.2727272727272725
+cycle 0 propagation number 28 starting
+optimizing to get g_param from start state: 23 to end state: 28 in working indices.
+converted to xspace that's from: 5.2727272727272725 to 5.7272727272727275
+upper bound: 5.7272727272727275 lower bound: 3.1818181818181817
+random try: 0 mfpt: 2407.1532266395225
+random try: 100 mfpt: 3633.8362713863003
+random try: 200 mfpt: 971.7637641459759
+random try: 300 mfpt: 3862.6531204768316
+random try: 400 mfpt: 3235.262484700058
+random try: 500 mfpt: 944.681723021941
+random try: 600 mfpt: 21.797330125330507
+random try: 700 mfpt: 597.4522068251308
+random try: 800 mfpt: 12608.393018785322
+random try: 900 mfpt: 1723.3523533396783
+random try: 1000 mfpt: 3739.559328715381
+random try: 1100 mfpt: 963.2461369956875
+random try: 1200 mfpt: 393.71775859091457
+random try: 1300 mfpt: 561.5796438556338
+random try: 1400 mfpt: 797.1815672310402
+random try: 1500 mfpt: 1202.2278914084832
+random try: 1600 mfpt: 67.51607381230066
+random try: 1700 mfpt: 73.17293266062283
+random try: 1800 mfpt: 570.7692820441018
+random try: 1900 mfpt: 601.477427245711
+best mfpt: 2.603213556637806
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  28
+cycle 0 Propagation 28:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 28:  10%|█         | 500/5000 [00:04<00:42, 105.64it/s]cycle 0 Propagation 28:  20%|██        | 1000/5000 [00:10<00:40, 98.67it/s]cycle 0 Propagation 28:  30%|███       | 1500/5000 [00:15<00:36, 97.05it/s]cycle 0 Propagation 28:  40%|████      | 2000/5000 [00:20<00:31, 95.95it/s]cycle 0 Propagation 28:  50%|█████     | 2500/5000 [00:25<00:26, 95.10it/s]cycle 0 Propagation 28:  60%|██████    | 3000/5000 [00:31<00:21, 94.76it/s]cycle 0 Propagation 28:  70%|███████   | 3500/5000 [00:36<00:15, 94.40it/s]cycle 0 Propagation 28:  80%|████████  | 4000/5000 [00:41<00:10, 94.44it/s]cycle 0 Propagation 28:  90%|█████████ | 4500/5000 [00:47<00:05, 94.52it/s]cycle 0 Propagation 28:  90%|█████████ | 4500/5000 [00:52<00:05, 85.06it/s]
+combined dist to be fed into DHAM in shape:  (29, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.090909090909091
+cycle 0 propagation number 29 starting
+optimizing to get g_param from start state: 21 to end state: 31 in working indices.
+converted to xspace that's from: 5.090909090909091 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 350.8131118207971
+random try: 100 mfpt: 1548.2441881244692
+random try: 200 mfpt: 13373.199569371003
+random try: 300 mfpt: 34321.359423289316
+random try: 400 mfpt: 1158.5494087916857
+random try: 500 mfpt: 1100.229926999425
+random try: 600 mfpt: 12808.23898791473
+random try: 700 mfpt: 1761.055184664652
+random try: 800 mfpt: 2155.4386237294916
+random try: 900 mfpt: 1215.2339628287693
+random try: 1000 mfpt: 747.4862563677556
+random try: 1100 mfpt: 1185.4320016382942
+random try: 1200 mfpt: 8995.428452125463
+random try: 1300 mfpt: 1329.1307009759405
+random try: 1400 mfpt: 98767.12032803141
+random try: 1500 mfpt: 613.4630256944664
+random try: 1600 mfpt: 2496.8610285868626
+random try: 1700 mfpt: 3310.70224804959
+random try: 1800 mfpt: 2809.1577683777755
+random try: 1900 mfpt: 4647.953715844069
+best mfpt: 4.205868186873437
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  29
+cycle 0 Propagation 29:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 29:  10%|█         | 500/5000 [00:04<00:44, 100.09it/s]cycle 0 Propagation 29:  20%|██        | 1000/5000 [00:10<00:41, 96.70it/s]cycle 0 Propagation 29:  30%|███       | 1500/5000 [00:15<00:36, 95.83it/s]cycle 0 Propagation 29:  40%|████      | 2000/5000 [00:20<00:31, 95.72it/s]cycle 0 Propagation 29:  50%|█████     | 2500/5000 [00:26<00:26, 95.27it/s]cycle 0 Propagation 29:  60%|██████    | 3000/5000 [00:31<00:21, 94.93it/s]cycle 0 Propagation 29:  70%|███████   | 3500/5000 [00:36<00:15, 95.03it/s]cycle 0 Propagation 29:  80%|████████  | 4000/5000 [00:41<00:10, 95.24it/s]cycle 0 Propagation 29:  90%|█████████ | 4500/5000 [00:47<00:05, 95.21it/s]cycle 0 Propagation 29:  90%|█████████ | 4500/5000 [00:52<00:05, 85.24it/s]
+combined dist to be fed into DHAM in shape:  (30, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.363636363636363
+cycle 0 propagation number 30 starting
+optimizing to get g_param from start state: 24 to end state: 31 in working indices.
+converted to xspace that's from: 5.363636363636363 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 705.6620687265244
+random try: 100 mfpt: 1494.0101333328175
+random try: 200 mfpt: 2114.8142204940236
+random try: 300 mfpt: 7351.723416613676
+random try: 400 mfpt: 3622.7582223798695
+random try: 500 mfpt: 593.0772461525032
+random try: 600 mfpt: 536.412979229524
+random try: 700 mfpt: 730.074222724421
+random try: 800 mfpt: 19527.463057962523
+random try: 900 mfpt: 207.48679778307329
+random try: 1000 mfpt: 337108.9403742419
+random try: 1100 mfpt: 491.4361169789561
+random try: 1200 mfpt: 30885.598561110008
+random try: 1300 mfpt: 948.1767582968098
+random try: 1400 mfpt: 616.8998949195419
+random try: 1500 mfpt: 26009.718462880766
+random try: 1600 mfpt: 14435.483041048903
+random try: 1700 mfpt: 945.834957764624
+random try: 1800 mfpt: 2545.91644245161
+random try: 1900 mfpt: 25289.00830686374
+best mfpt: 8.004138909893758
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  30
+cycle 0 Propagation 30:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 30:  10%|█         | 500/5000 [00:05<00:48, 93.69it/s]cycle 0 Propagation 30:  20%|██        | 1000/5000 [00:10<00:43, 92.87it/s]cycle 0 Propagation 30:  30%|███       | 1500/5000 [00:16<00:37, 92.76it/s]cycle 0 Propagation 30:  40%|████      | 2000/5000 [00:21<00:32, 92.82it/s]cycle 0 Propagation 30:  50%|█████     | 2500/5000 [00:26<00:26, 92.79it/s]cycle 0 Propagation 30:  60%|██████    | 3000/5000 [00:32<00:21, 92.80it/s]cycle 0 Propagation 30:  70%|███████   | 3500/5000 [00:37<00:16, 93.31it/s]cycle 0 Propagation 30:  80%|████████  | 4000/5000 [00:42<00:10, 93.43it/s]cycle 0 Propagation 30:  90%|█████████ | 4500/5000 [00:48<00:05, 93.42it/s]cycle 0 Propagation 30:  90%|█████████ | 4500/5000 [00:54<00:06, 83.20it/s]
+combined dist to be fed into DHAM in shape:  (31, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.454545454545455
+cycle 0 propagation number 31 starting
+optimizing to get g_param from start state: 25 to end state: 31 in working indices.
+converted to xspace that's from: 5.454545454545455 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 4660.767056416177
+random try: 100 mfpt: 472.789139746609
+random try: 200 mfpt: 270.37326515781547
+random try: 300 mfpt: 13038.76394649192
+random try: 400 mfpt: 5388.375651077379
+random try: 500 mfpt: 567.6051907039302
+random try: 600 mfpt: 939.4202244593746
+random try: 700 mfpt: 4550.44356384697
+random try: 800 mfpt: 3665.5862067974444
+random try: 900 mfpt: 27572.818706488863
+random try: 1000 mfpt: 243.2999205621694
+random try: 1100 mfpt: 24.968805416628353
+random try: 1200 mfpt: 581.6091387186134
+random try: 1300 mfpt: 160.32748257790723
+random try: 1400 mfpt: 190.85823410799435
+random try: 1500 mfpt: 1243.318391062881
+random try: 1600 mfpt: 207.99543272922864
+random try: 1700 mfpt: 243.27603621413854
+random try: 1800 mfpt: 291.1463527483487
+random try: 1900 mfpt: 3405.518370636151
+best mfpt: 12.801811160327766
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  31
+cycle 0 Propagation 31:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 31:  10%|█         | 500/5000 [00:05<00:45, 99.42it/s]cycle 0 Propagation 31:  20%|██        | 1000/5000 [00:10<00:41, 96.26it/s]cycle 0 Propagation 31:  30%|███       | 1500/5000 [00:15<00:36, 95.31it/s]cycle 0 Propagation 31:  40%|████      | 2000/5000 [00:20<00:31, 94.71it/s]cycle 0 Propagation 31:  50%|█████     | 2500/5000 [00:26<00:26, 94.37it/s]cycle 0 Propagation 31:  60%|██████    | 3000/5000 [00:31<00:21, 94.24it/s]cycle 0 Propagation 31:  70%|███████   | 3500/5000 [00:36<00:15, 94.21it/s]cycle 0 Propagation 31:  80%|████████  | 4000/5000 [00:42<00:10, 93.99it/s]cycle 0 Propagation 31:  90%|█████████ | 4500/5000 [00:47<00:05, 94.09it/s]cycle 0 Propagation 31:  90%|█████████ | 4500/5000 [00:53<00:05, 84.30it/s]
+combined dist to be fed into DHAM in shape:  (32, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.2727272727272725
+cycle 0 propagation number 32 starting
+optimizing to get g_param from start state: 23 to end state: 31 in working indices.
+converted to xspace that's from: 5.2727272727272725 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 924.3694941732152
+random try: 100 mfpt: 257.20594607139157
+random try: 200 mfpt: 1288.3286014120722
+random try: 300 mfpt: 6117.690669858746
+random try: 400 mfpt: 98.6519605098872
+random try: 500 mfpt: 7145.418471071028
+random try: 600 mfpt: 48.1868913128825
+random try: 700 mfpt: 227.78535261494142
+random try: 800 mfpt: 129.2004650447521
+random try: 900 mfpt: 826.2011598998668
+random try: 1000 mfpt: 48.83316262660614
+random try: 1100 mfpt: 501.2242862588755
+random try: 1200 mfpt: 3872.283825375035
+random try: 1300 mfpt: 474.6372365711748
+random try: 1400 mfpt: 7573.079129087654
+random try: 1500 mfpt: 12.411654921069365
+random try: 1600 mfpt: 9.32940722363781
+random try: 1700 mfpt: 2179.708213416164
+random try: 1800 mfpt: 8264.62598497108
+random try: 1900 mfpt: 8657.37129041211
+best mfpt: 7.097364175506058
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  32
+cycle 0 Propagation 32:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 32:  10%|█         | 500/5000 [00:05<00:48, 92.77it/s]cycle 0 Propagation 32:  20%|██        | 1000/5000 [00:10<00:43, 92.68it/s]cycle 0 Propagation 32:  30%|███       | 1500/5000 [00:16<00:37, 92.74it/s]cycle 0 Propagation 32:  40%|████      | 2000/5000 [00:21<00:32, 93.26it/s]cycle 0 Propagation 32:  50%|█████     | 2500/5000 [00:26<00:26, 93.54it/s]cycle 0 Propagation 32:  60%|██████    | 3000/5000 [00:32<00:21, 93.55it/s]cycle 0 Propagation 32:  70%|███████   | 3500/5000 [00:37<00:15, 94.08it/s]cycle 0 Propagation 32:  80%|████████  | 4000/5000 [00:42<00:10, 93.72it/s]cycle 0 Propagation 32:  90%|█████████ | 4500/5000 [00:48<00:05, 93.38it/s]cycle 0 Propagation 32:  90%|█████████ | 4500/5000 [00:54<00:06, 83.28it/s]
+combined dist to be fed into DHAM in shape:  (33, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.454545454545455
+cycle 0 propagation number 33 starting
+optimizing to get g_param from start state: 25 to end state: 31 in working indices.
+converted to xspace that's from: 5.454545454545455 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 47.03428993466833
+random try: 100 mfpt: 27.351260308414574
+random try: 200 mfpt: 1515.8587472540012
+random try: 300 mfpt: 1610.5549701241378
+random try: 400 mfpt: 190.50380180724497
+random try: 500 mfpt: 245.2712811804389
+random try: 600 mfpt: 1665.1632841902742
+random try: 700 mfpt: 1306.2180696473088
+random try: 800 mfpt: 91.16670065778881
+random try: 900 mfpt: 2945.8721259431063
+random try: 1000 mfpt: 263.9769361182246
+random try: 1100 mfpt: 2704.4615990436732
+random try: 1200 mfpt: 561.6087119374561
+random try: 1300 mfpt: 1504.3920401362798
+random try: 1400 mfpt: 234.47366248591928
+random try: 1500 mfpt: 15.85918731021354
+random try: 1600 mfpt: 1652.6710287548763
+random try: 1700 mfpt: 6440.40612782864
+random try: 1800 mfpt: 28.70768763542331
+random try: 1900 mfpt: 1011.4045280881847
+best mfpt: 2.385059544364314
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  33
+cycle 0 Propagation 33:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 33:  10%|█         | 500/5000 [00:04<00:44, 100.16it/s]cycle 0 Propagation 33:  20%|██        | 1000/5000 [00:10<00:41, 96.09it/s]cycle 0 Propagation 33:  30%|███       | 1500/5000 [00:15<00:36, 95.27it/s]cycle 0 Propagation 33:  40%|████      | 2000/5000 [00:20<00:31, 95.29it/s]cycle 0 Propagation 33:  50%|█████     | 2500/5000 [00:26<00:26, 95.16it/s]cycle 0 Propagation 33:  60%|██████    | 3000/5000 [00:31<00:21, 94.82it/s]cycle 0 Propagation 33:  70%|███████   | 3500/5000 [00:36<00:15, 95.35it/s]cycle 0 Propagation 33:  80%|████████  | 4000/5000 [00:41<00:10, 95.21it/s]cycle 0 Propagation 33:  90%|█████████ | 4500/5000 [00:47<00:05, 95.33it/s]cycle 0 Propagation 33:  90%|█████████ | 4500/5000 [00:52<00:05, 85.03it/s]
+combined dist to be fed into DHAM in shape:  (34, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999994
+closest_index (local target) updated. converted to x space that's:  6.0
+last visited state (local start) updated. converted to x space that's:  5.363636363636363
+cycle 0 propagation number 34 starting
+optimizing to get g_param from start state: 24 to end state: 31 in working indices.
+converted to xspace that's from: 5.363636363636363 to 6.0
+upper bound: 6.0 lower bound: 3.1818181818181817
+random try: 0 mfpt: 264.43879823459923
+random try: 100 mfpt: 28.24142569888431
+random try: 200 mfpt: 428.7882947534979
+random try: 300 mfpt: 40.55221731030437
+random try: 400 mfpt: 160.47958165701797
+random try: 500 mfpt: 2250.1095936603806
+random try: 600 mfpt: 1579.1766577417234
+random try: 700 mfpt: 1331.352049315833
+random try: 800 mfpt: 37.07476428487789
+random try: 900 mfpt: 98.09267350061322
+random try: 1000 mfpt: 591.1037802861797
+random try: 1100 mfpt: 76.44721955525502
+random try: 1200 mfpt: 377.9898175043539
+random try: 1300 mfpt: 772.4519338686844
+random try: 1400 mfpt: 812.9461242875949
+random try: 1500 mfpt: 218.47496740977743
+random try: 1600 mfpt: 69.67695317953492
+random try: 1700 mfpt: 669.9435094817183
+random try: 1800 mfpt: 111.26734736421807
+random try: 1900 mfpt: 676.6621026260054
+best mfpt: 0.4100767594416763
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  34
+cycle 0 Propagation 34:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 34:  10%|█         | 500/5000 [00:05<00:47, 94.34it/s]cycle 0 Propagation 34:  20%|██        | 1000/5000 [00:10<00:42, 93.70it/s]cycle 0 Propagation 34:  30%|███       | 1500/5000 [00:15<00:37, 93.91it/s]cycle 0 Propagation 34:  40%|████      | 2000/5000 [00:21<00:32, 93.66it/s]cycle 0 Propagation 34:  50%|█████     | 2500/5000 [00:26<00:26, 93.55it/s]cycle 0 Propagation 34:  60%|██████    | 3000/5000 [00:32<00:21, 93.53it/s]cycle 0 Propagation 34:  70%|███████   | 3500/5000 [00:37<00:16, 93.61it/s]cycle 0 Propagation 34:  80%|████████  | 4000/5000 [00:42<00:10, 93.37it/s]cycle 0 Propagation 34:  90%|█████████ | 4500/5000 [00:48<00:05, 93.73it/s]cycle 0 Propagation 34:  90%|█████████ | 4500/5000 [00:53<00:05, 83.35it/s]
+combined dist to be fed into DHAM in shape:  (35, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.454545454545455
+cycle 0 propagation number 35 starting
+optimizing to get g_param from start state: 25 to end state: 33 in working indices.
+converted to xspace that's from: 5.454545454545455 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 6653.460156059116
+random try: 100 mfpt: 2226.791083436485
+random try: 200 mfpt: 18702.17387430679
+random try: 300 mfpt: 206.72005919189849
+random try: 400 mfpt: 698.6750083856904
+random try: 500 mfpt: 2937.6250397070316
+random try: 600 mfpt: 283.84418220960254
+random try: 700 mfpt: 503.79289697481624
+random try: 800 mfpt: 4574.918709179733
+random try: 900 mfpt: 1580.8185118166987
+random try: 1000 mfpt: 283.25066335173443
+random try: 1100 mfpt: 177.31456709362837
+random try: 1200 mfpt: 495.2697226648986
+random try: 1300 mfpt: 9887.662643155101
+random try: 1400 mfpt: 572.4288093433804
+random try: 1500 mfpt: 5982.147916181617
+random try: 1600 mfpt: 9771.635347407488
+random try: 1700 mfpt: 15328.534437991822
+random try: 1800 mfpt: 1571.3092958790098
+random try: 1900 mfpt: 755.2117554954048
+best mfpt: 6.0210081345947115
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  35
+cycle 0 Propagation 35:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 35:  10%|█         | 500/5000 [00:05<00:47, 93.92it/s]cycle 0 Propagation 35:  20%|██        | 1000/5000 [00:10<00:42, 94.81it/s]cycle 0 Propagation 35:  30%|███       | 1500/5000 [00:15<00:37, 94.52it/s]cycle 0 Propagation 35:  40%|████      | 2000/5000 [00:21<00:31, 94.78it/s]cycle 0 Propagation 35:  50%|█████     | 2500/5000 [00:26<00:26, 95.06it/s]cycle 0 Propagation 35:  60%|██████    | 3000/5000 [00:31<00:21, 94.47it/s]cycle 0 Propagation 35:  70%|███████   | 3500/5000 [00:37<00:15, 94.02it/s]cycle 0 Propagation 35:  80%|████████  | 4000/5000 [00:42<00:10, 93.93it/s]cycle 0 Propagation 35:  90%|█████████ | 4500/5000 [00:47<00:05, 94.12it/s]cycle 0 Propagation 35:  90%|█████████ | 4500/5000 [00:53<00:05, 83.94it/s]
+combined dist to be fed into DHAM in shape:  (36, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.636363636363637
+cycle 0 propagation number 36 starting
+optimizing to get g_param from start state: 27 to end state: 33 in working indices.
+converted to xspace that's from: 5.636363636363637 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 2891.6871024539787
+random try: 100 mfpt: 6272.775399145695
+random try: 200 mfpt: 94.75775546039321
+random try: 300 mfpt: 288.26449774679014
+random try: 400 mfpt: 230.610011907518
+random try: 500 mfpt: 1882.5295020348192
+random try: 600 mfpt: 44.83858906131622
+random try: 700 mfpt: 2502.084328943554
+random try: 800 mfpt: 153.13336932256624
+random try: 900 mfpt: 2139.6182677450493
+random try: 1000 mfpt: 83.67287853383496
+random try: 1100 mfpt: 8593.865571862478
+random try: 1200 mfpt: 3100.6363086338442
+random try: 1300 mfpt: 2086.113428007811
+random try: 1400 mfpt: 2526.576362216794
+random try: 1500 mfpt: 684.6422587956384
+random try: 1600 mfpt: 425.1685945209565
+random try: 1700 mfpt: 294.34173611050994
+random try: 1800 mfpt: 43.026098257999365
+random try: 1900 mfpt: 837.1404375183727
+best mfpt: 2.74905132775084
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  36
+cycle 0 Propagation 36:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 36:  10%|█         | 500/5000 [00:05<00:48, 93.64it/s]cycle 0 Propagation 36:  20%|██        | 1000/5000 [00:10<00:42, 93.61it/s]cycle 0 Propagation 36:  30%|███       | 1500/5000 [00:16<00:37, 93.73it/s]cycle 0 Propagation 36:  40%|████      | 2000/5000 [00:21<00:31, 94.31it/s]cycle 0 Propagation 36:  50%|█████     | 2500/5000 [00:26<00:26, 93.93it/s]cycle 0 Propagation 36:  60%|██████    | 3000/5000 [00:31<00:21, 94.11it/s]cycle 0 Propagation 36:  70%|███████   | 3500/5000 [00:37<00:15, 93.85it/s]cycle 0 Propagation 36:  80%|████████  | 4000/5000 [00:42<00:10, 93.64it/s]cycle 0 Propagation 36:  90%|█████████ | 4500/5000 [00:47<00:05, 93.94it/s]cycle 0 Propagation 36:  90%|█████████ | 4500/5000 [00:53<00:05, 83.60it/s]
+combined dist to be fed into DHAM in shape:  (37, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.363636363636363
+cycle 0 propagation number 37 starting
+optimizing to get g_param from start state: 24 to end state: 33 in working indices.
+converted to xspace that's from: 5.363636363636363 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 2662.814995680883
+random try: 100 mfpt: 28028.487023604695
+random try: 200 mfpt: 10604.051880364914
+random try: 300 mfpt: 1326.0763718807057
+random try: 400 mfpt: 74.41938793307537
+random try: 500 mfpt: 819.0234448838536
+random try: 600 mfpt: 106.90794163400946
+random try: 700 mfpt: 91.07186127028389
+random try: 800 mfpt: 19750.292273473155
+random try: 900 mfpt: 834.2124019415664
+random try: 1000 mfpt: 24780.366282281542
+random try: 1100 mfpt: 7395.957396769501
+random try: 1200 mfpt: 905.6248793249957
+random try: 1300 mfpt: 3163.8875727110844
+random try: 1400 mfpt: 95.51540984436132
+random try: 1500 mfpt: 2076.827169731684
+random try: 1600 mfpt: 35022.95284465799
+random try: 1700 mfpt: 1928.561795497043
+random try: 1800 mfpt: 184.137597583491
+random try: 1900 mfpt: 246.55305035506032
+best mfpt: 1.1337186663527568
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  37
+cycle 0 Propagation 37:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 37:  10%|█         | 500/5000 [00:05<00:45, 98.98it/s]cycle 0 Propagation 37:  20%|██        | 1000/5000 [00:10<00:41, 95.94it/s]cycle 0 Propagation 37:  30%|███       | 1500/5000 [00:15<00:36, 94.74it/s]cycle 0 Propagation 37:  40%|████      | 2000/5000 [00:21<00:31, 94.37it/s]cycle 0 Propagation 37:  50%|█████     | 2500/5000 [00:26<00:26, 94.16it/s]cycle 0 Propagation 37:  60%|██████    | 3000/5000 [00:31<00:21, 94.01it/s]cycle 0 Propagation 37:  70%|███████   | 3500/5000 [00:36<00:15, 94.47it/s]cycle 0 Propagation 37:  80%|████████  | 4000/5000 [00:42<00:10, 94.51it/s]cycle 0 Propagation 37:  90%|█████████ | 4500/5000 [00:47<00:05, 94.44it/s]cycle 0 Propagation 37:  90%|█████████ | 4500/5000 [00:53<00:05, 84.04it/s]
+combined dist to be fed into DHAM in shape:  (38, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.454545454545455
+cycle 0 propagation number 38 starting
+optimizing to get g_param from start state: 25 to end state: 33 in working indices.
+converted to xspace that's from: 5.454545454545455 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 102.80400674652384
+random try: 100 mfpt: 87.07275247552462
+random try: 200 mfpt: 788.5109369604723
+random try: 300 mfpt: 2567.050962453018
+random try: 400 mfpt: 16.932820295486664
+random try: 500 mfpt: 1144.6461167164368
+random try: 600 mfpt: 6249.2678024325905
+random try: 700 mfpt: 2947.8192863684353
+random try: 800 mfpt: 391.1371198462935
+random try: 900 mfpt: 6598.19053441271
+random try: 1000 mfpt: 5198.200941760966
+random try: 1100 mfpt: 5795.859265994952
+random try: 1200 mfpt: 138.94432539774078
+random try: 1300 mfpt: 422.3096220839753
+random try: 1400 mfpt: 53.47443205287318
+random try: 1500 mfpt: 8.590512969987225
+random try: 1600 mfpt: 651.1737654281397
+random try: 1700 mfpt: 939.0006632953349
+random try: 1800 mfpt: 199.4654587019374
+random try: 1900 mfpt: 62.76837131928581
+best mfpt: 1.3957806008292606
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  38
+cycle 0 Propagation 38:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 38:  10%|█         | 500/5000 [00:04<00:43, 103.83it/s]cycle 0 Propagation 38:  20%|██        | 1000/5000 [00:10<00:40, 97.80it/s]cycle 0 Propagation 38:  30%|███       | 1500/5000 [00:15<00:36, 96.33it/s]cycle 0 Propagation 38:  40%|████      | 2000/5000 [00:20<00:31, 95.05it/s]cycle 0 Propagation 38:  50%|█████     | 2500/5000 [00:26<00:26, 94.65it/s]cycle 0 Propagation 38:  60%|██████    | 3000/5000 [00:31<00:21, 94.25it/s]cycle 0 Propagation 38:  70%|███████   | 3500/5000 [00:36<00:15, 93.86it/s]cycle 0 Propagation 38:  80%|████████  | 4000/5000 [00:42<00:10, 93.11it/s]cycle 0 Propagation 38:  90%|█████████ | 4500/5000 [00:47<00:05, 93.23it/s]cycle 0 Propagation 38:  90%|█████████ | 4500/5000 [00:53<00:05, 83.84it/s]
+combined dist to be fed into DHAM in shape:  (39, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.363636363636363
+cycle 0 propagation number 39 starting
+optimizing to get g_param from start state: 24 to end state: 33 in working indices.
+converted to xspace that's from: 5.363636363636363 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 1294.4999964148406
+random try: 100 mfpt: 653.0131784900298
+random try: 200 mfpt: 14.054386705262113
+random try: 300 mfpt: 171.7707167471045
+random try: 400 mfpt: 1377.990831097428
+random try: 500 mfpt: 940.4484602808756
+random try: 600 mfpt: 1020.1222053429422
+random try: 700 mfpt: 170.72132946748985
+random try: 800 mfpt: 126.08126017939351
+random try: 900 mfpt: 554.9265460018585
+random try: 1000 mfpt: 807.3934979743175
+random try: 1100 mfpt: 1317.0705358982461
+random try: 1200 mfpt: 3808.5253904961955
+random try: 1300 mfpt: 75.32195691858482
+random try: 1400 mfpt: 158.19348828275514
+random try: 1500 mfpt: 1971.8019968430783
+random try: 1600 mfpt: 6779.590662420797
+random try: 1700 mfpt: 167.7192625932383
+random try: 1800 mfpt: 9839.084535185408
+random try: 1900 mfpt: 91.36438317523374
+best mfpt: 1.2282738436599492
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  39
+cycle 0 Propagation 39:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 39:  10%|█         | 500/5000 [00:05<00:47, 94.21it/s]cycle 0 Propagation 39:  20%|██        | 1000/5000 [00:10<00:42, 94.37it/s]cycle 0 Propagation 39:  30%|███       | 1500/5000 [00:15<00:37, 93.60it/s]cycle 0 Propagation 39:  40%|████      | 2000/5000 [00:21<00:32, 92.71it/s]cycle 0 Propagation 39:  50%|█████     | 2500/5000 [00:26<00:27, 92.55it/s]cycle 0 Propagation 39:  60%|██████    | 3000/5000 [00:32<00:21, 92.80it/s]cycle 0 Propagation 39:  70%|███████   | 3500/5000 [00:37<00:16, 92.91it/s]cycle 0 Propagation 39:  80%|████████  | 4000/5000 [00:42<00:10, 92.95it/s]cycle 0 Propagation 39:  90%|█████████ | 4500/5000 [00:48<00:05, 93.22it/s]cycle 0 Propagation 39:  90%|█████████ | 4500/5000 [00:54<00:06, 82.82it/s]
+combined dist to be fed into DHAM in shape:  (40, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.2727272727272725
+cycle 0 propagation number 40 starting
+optimizing to get g_param from start state: 23 to end state: 33 in working indices.
+converted to xspace that's from: 5.2727272727272725 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 107.65618455230201
+random try: 100 mfpt: 11.77388509291661
+random try: 200 mfpt: 303.0486537333681
+random try: 300 mfpt: 846.9249869978449
+random try: 400 mfpt: 84.13677759355193
+random try: 500 mfpt: 78.9091235172123
+random try: 600 mfpt: 2236.237755250332
+random try: 700 mfpt: 229.47958531467194
+random try: 800 mfpt: 383.5467071783685
+random try: 900 mfpt: 129.83956722643777
+random try: 1000 mfpt: 34.15252186946867
+random try: 1100 mfpt: 268.771077459374
+random try: 1200 mfpt: 785.6792132097459
+random try: 1300 mfpt: 1920.5323199402226
+random try: 1400 mfpt: 797.3358270854291
+random try: 1500 mfpt: 6709.782853240715
+random try: 1600 mfpt: 885.5805786286575
+random try: 1700 mfpt: 100.84475781231568
+random try: 1800 mfpt: 5.658862566735769
+random try: 1900 mfpt: 159.05419778962406
+best mfpt: 1.7120786527152112
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  40
+cycle 0 Propagation 40:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 40:  10%|█         | 500/5000 [00:05<00:48, 92.98it/s]cycle 0 Propagation 40:  20%|██        | 1000/5000 [00:10<00:42, 93.33it/s]cycle 0 Propagation 40:  30%|███       | 1500/5000 [00:16<00:37, 93.55it/s]cycle 0 Propagation 40:  40%|████      | 2000/5000 [00:21<00:32, 93.23it/s]cycle 0 Propagation 40:  50%|█████     | 2500/5000 [00:26<00:26, 92.88it/s]cycle 0 Propagation 40:  60%|██████    | 3000/5000 [00:32<00:21, 92.65it/s]cycle 0 Propagation 40:  70%|███████   | 3500/5000 [00:37<00:16, 92.77it/s]cycle 0 Propagation 40:  80%|████████  | 4000/5000 [00:43<00:10, 92.99it/s]cycle 0 Propagation 40:  90%|█████████ | 4500/5000 [00:48<00:05, 93.05it/s]cycle 0 Propagation 40:  90%|█████████ | 4500/5000 [00:54<00:06, 82.81it/s]
+combined dist to be fed into DHAM in shape:  (41, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  6.181818181818182
+last visited state (local start) updated. converted to x space that's:  5.636363636363637
+cycle 0 propagation number 41 starting
+optimizing to get g_param from start state: 27 to end state: 33 in working indices.
+converted to xspace that's from: 5.636363636363637 to 6.181818181818182
+upper bound: 6.181818181818182 lower bound: 3.1818181818181817
+random try: 0 mfpt: 1718.6248306941907
+random try: 100 mfpt: 16022.481581206755
+random try: 200 mfpt: 329.78460803567185
+random try: 300 mfpt: 1043.4761801752918
+random try: 400 mfpt: 260.08641278921084
+random try: 500 mfpt: 618.5167259095668
+random try: 600 mfpt: 1327.5640259008571
+random try: 700 mfpt: 28.09134942595618
+random try: 800 mfpt: 6.221558380067935
+random try: 900 mfpt: 3784.7883578796764
+random try: 1000 mfpt: 11.222946217305006
+random try: 1100 mfpt: 556.9733864034165
+random try: 1200 mfpt: 2419.6987968162493
+random try: 1300 mfpt: 4980.365292458127
+random try: 1400 mfpt: 29.514513110544186
+random try: 1500 mfpt: 88.48607264303618
+random try: 1600 mfpt: 124.38343069342923
+random try: 1700 mfpt: 37.17296310929338
+random try: 1800 mfpt: 146.83916690164298
+random try: 1900 mfpt: 116.80186648921685
+best mfpt: 1.3381149747712275
+K is not avaliable, we build it from M via logm
+Traceback (most recent call last):
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/explore_sim_PMg.py", line 355, in <module>
+    gaussian_params = try_and_optim_M(working_MM,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/util.py", line 122, in try_and_optim_M
+    res = minimize(mfpt_helper, #minimize comes from scipy.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_minimize.py", line 710, in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_lbfgsb_py.py", line 365, in _minimize_lbfgsb
+    f, g = func_and_grad(x)
+           ^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 286, in fun_and_grad
+    self._update_grad()
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 256, in _update_grad
+    self._update_grad_impl()
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 173, in update_grad
+    self.g = approx_derivative(fun_wrapped, self.x, f0=self.f,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 505, in approx_derivative
+    return _dense_difference(fun_wrapped, x0, f0, h,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 576, in _dense_difference
+    df = fun(x) - f0
+         ^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 456, in fun_wrapped
+    f = np.atleast_1d(fun(x, *args, **kwargs))
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 137, in fun_wrapped
+    fx = fun(np.copy(x), *args)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/util.py", line 116, in mfpt_helper
+    msm._build_mfpt_matrix_M()
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py", line 227, in _build_mfpt_matrix_M
+    Qinv = inv(A + I - self.M.T)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/linalg/_basic.py", line 972, in inv
+    raise LinAlgError("singular matrix")
+numpy.linalg.LinAlgError: singular matrix

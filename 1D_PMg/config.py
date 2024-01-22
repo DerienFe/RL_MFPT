@@ -6,31 +6,44 @@ import openmm
 
 from openmm.unit import Quantity
 from openmm import Vec3
+import numpy as np
 
-NUMBER_OF_PROCESSES = 4 #must be lesser than num_sim.
-num_sim = 8
-sim_steps = int(1e5) #change to run for a whole day.
-pbc = False #True is not implemented, we got problem fitting periodic function to 2D fes.
+#simulation settings
+num_sim = 15
+sim_steps = int(5e6)
+pbc = False 
 time_tag = time.strftime("%Y%m%d-%H%M%S")
-amp = 6 #10 #for amp applied on fes. note the gaussian parameters for fes is normalized.
-
-propagation_step = 5000
-stepsize = 0.002 * unit.picoseconds #equivalent to 2 * unit.femtoseconds 4fs.
-stepsize_unbias = 0.002 * unit.picoseconds #100 times.
-num_bins = 20 #used to discretize the traj, and used in the DHAM.
-dcdfreq = 1000
-dcdfreq_mfpt = 1
-
+amp = 6 
 platform = openmm.Platform.getPlatformByName('CUDA')
-#platform = openmm.Platform.getPlatformByName('CPU')
+start_state = Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
+end_state = Quantity(value = [Vec3(5.2,0.0,0.0)], unit = unit.nanometers)
+fes_mode = 'multiwell'                      #['gaussian', 'multiwell', 'funnel']
+load_global_gaussian_params_from_txt = False
 
-num_gaussian = 20 #number of gaussians used to placing the bias.
+#MD settings
+T = 300 #unit in kelvin
+propagation_step = 5000
+stepsize = 0.002 * unit.picoseconds 
+stepsize_unbias = 0.002 * unit.picoseconds 
+dcdfreq = 100
+dcdfreq_mfpt = 1
+backbone_constraint_strength = 1000 #unit in kJ/mol/nm^2
+fricCoef = 1/unit.picoseconds   # friction coefficient in 1/ps
 
-#starting state (as in coordinate space, from 0 to 2pi.)
-start_state = Quantity(value = [Vec3(5, 4 ,0.0)], unit = unit.nanometers)
-end_state = Quantity(value = [Vec3(1.0,1.5,0.0)], unit = unit.nanometers) #need to change.
+#digitization & DHAM settings
+qspace_num_bins = 100                       #used for plotting
+qspace_low = 1
+qspace_high = 8
+
+use_dynamic_bins = False
+DHAM_num_bins = 100                         #used in the DHAM to discretize the traj
+
+qspace = np.linspace(qspace_low, qspace_high, qspace_num_bins)
+
+#biasing settings
+num_gaussian = 10 
 
 
-#here we have 3 pre-defined 2D fes, stored as different functions.
-fes_mode = 'multiwell' #chose from ['gaussian', 'multiwell', 'funnel']
-#fes_param_path = ['./params/gaussian_fes_param.txt', './params/multi_well_fes_param.txt', './params/funnel_fes_param.txt']
+#back n forth settings
+max_cycle = 20                              #we will run max_iteration times of back n forth.
+num_propagation = 400                       #max number of propagations 

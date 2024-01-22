@@ -1,0 +1,440 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7fa73084e8d0>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7fa73084e8d0>, origin='/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7fa731179b30>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'np': <module 'numpy' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/numpy/__init__.py'>, 'num_sim': 15, 'sim_steps': 5000000, 'pbc': False, 'time_tag': '20240119-134857', 'amp': 6, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7fa730a2e160> >, 'start_state': 2, 'end_state': 8, 'fes_mode': 'multiwell', 'load_global_gaussian_params_from_txt': False, 'T': 300, 'propagation_step': 50000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.002, unit=picosecond), 'dcdfreq': 100, 'dcdfreq_mfpt': 1, 'backbone_constraint_strength': 1000, 'fricCoef': Quantity(value=1, unit=/picosecond), 'qspace_num_bins': 100, 'qspace_low': 1, 'qspace_high': 10, 'use_dynamic_bins': False, 'DHAM_num_bins': 100, 'qspace': array([ 1.        ,  1.09090909,  1.18181818,  1.27272727,  1.36363636,
+        1.45454545,  1.54545455,  1.63636364,  1.72727273,  1.81818182,
+        1.90909091,  2.        ,  2.09090909,  2.18181818,  2.27272727,
+        2.36363636,  2.45454545,  2.54545455,  2.63636364,  2.72727273,
+        2.81818182,  2.90909091,  3.        ,  3.09090909,  3.18181818,
+        3.27272727,  3.36363636,  3.45454545,  3.54545455,  3.63636364,
+        3.72727273,  3.81818182,  3.90909091,  4.        ,  4.09090909,
+        4.18181818,  4.27272727,  4.36363636,  4.45454545,  4.54545455,
+        4.63636364,  4.72727273,  4.81818182,  4.90909091,  5.        ,
+        5.09090909,  5.18181818,  5.27272727,  5.36363636,  5.45454545,
+        5.54545455,  5.63636364,  5.72727273,  5.81818182,  5.90909091,
+        6.        ,  6.09090909,  6.18181818,  6.27272727,  6.36363636,
+        6.45454545,  6.54545455,  6.63636364,  6.72727273,  6.81818182,
+        6.90909091,  7.        ,  7.09090909,  7.18181818,  7.27272727,
+        7.36363636,  7.45454545,  7.54545455,  7.63636364,  7.72727273,
+        7.81818182,  7.90909091,  8.        ,  8.09090909,  8.18181818,
+        8.27272727,  8.36363636,  8.45454545,  8.54545455,  8.63636364,
+        8.72727273,  8.81818182,  8.90909091,  9.        ,  9.09090909,
+        9.18181818,  9.27272727,  9.36363636,  9.45454545,  9.54545455,
+        9.63636364,  9.72727273,  9.81818182,  9.90909091, 10.        ]), 'num_gaussian': 10, 'max_cycle': 20, 'num_propagation': 400}
+time_tag:  20240119-134908
+propagation number 0 STARTING.
+propagating
+current target state:  8
+cycle count:  0
+prop index:  0
+cycle 0 Propagation 0:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 0 Propagation 0:  10%|█         | 5000/50000 [00:55<08:22, 89.57it/s]cycle 0 Propagation 0:  10%|█         | 5000/50000 [01:10<08:22, 89.57it/s]cycle 0 Propagation 0:  20%|██        | 10000/50000 [01:51<07:26, 89.61it/s]cycle 0 Propagation 0:  20%|██        | 10000/50000 [02:10<07:26, 89.61it/s]cycle 0 Propagation 0:  30%|███       | 15000/50000 [02:47<06:30, 89.56it/s]cycle 0 Propagation 0:  30%|███       | 15000/50000 [03:00<06:30, 89.56it/s]cycle 0 Propagation 0:  40%|████      | 20000/50000 [03:43<05:34, 89.65it/s]cycle 0 Propagation 0:  40%|████      | 20000/50000 [04:00<05:34, 89.65it/s]cycle 0 Propagation 0:  50%|█████     | 25000/50000 [04:38<04:38, 89.70it/s]cycle 0 Propagation 0:  50%|█████     | 25000/50000 [04:50<04:38, 89.70it/s]cycle 0 Propagation 0:  60%|██████    | 30000/50000 [05:33<03:41, 90.12it/s]cycle 0 Propagation 0:  60%|██████    | 30000/50000 [05:50<03:41, 90.12it/s]cycle 0 Propagation 0:  70%|███████   | 35000/50000 [06:29<02:46, 89.92it/s]cycle 0 Propagation 0:  70%|███████   | 35000/50000 [06:40<02:46, 89.92it/s]cycle 0 Propagation 0:  80%|████████  | 40000/50000 [07:24<01:50, 90.49it/s]cycle 0 Propagation 0:  80%|████████  | 40000/50000 [07:40<01:50, 90.49it/s]cycle 0 Propagation 0:  90%|█████████ | 45000/50000 [08:19<00:55, 90.23it/s]cycle 0 Propagation 0:  90%|█████████ | 45000/50000 [08:30<00:55, 90.23it/s]/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: divide by zero encountered in log
+  self.free_energy = -self.kBT * np.log(self.peq)
+cycle 0 Propagation 0:  90%|█████████ | 45000/50000 [09:15<01:01, 80.98it/s]
+combined dist to be fed into DHAM in shape:  (1, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.5454545454545454
+last visited state (local start) updated. converted to x space that's:  3.272727272727273
+cycle 0 propagation number 1 starting
+optimizing to get g_param from start state: 2 to end state: 5 in working indices.
+converted to xspace that's from: 3.272727272727273 to 3.5454545454545454
+upper bound: 3.5454545454545454 lower bound: 3.090909090909091
+random try: 0 mfpt: 0.02572870824158981
+random try: 100 mfpt: 0.019751784685232848
+random try: 200 mfpt: 0.01902532173072889
+random try: 300 mfpt: 0.01349014484111988
+random try: 400 mfpt: 0.013876969936779083
+random try: 500 mfpt: 0.024606458668116532
+random try: 600 mfpt: 0.01866425648970881
+random try: 700 mfpt: 0.020198495252260338
+random try: 800 mfpt: 0.029321917252917436
+random try: 900 mfpt: 0.019536068095034012
+random try: 1000 mfpt: 0.02937553749327786
+random try: 1100 mfpt: 0.030690734724567705
+random try: 1200 mfpt: 0.011334929534114937
+random try: 1300 mfpt: 0.022883601289868674
+random try: 1400 mfpt: 0.020532497693357545
+random try: 1500 mfpt: 0.028000351291159086
+random try: 1600 mfpt: 0.015057151567561588
+random try: 1700 mfpt: 0.01149769113688029
+random try: 1800 mfpt: 0.01573403274902715
+random try: 1900 mfpt: 0.014349154172221046
+best mfpt: 0.007238071086013558
+propagating
+current target state:  8
+cycle count:  0
+prop index:  1
+cycle 0 Propagation 1:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 0 Propagation 1:  10%|█         | 5000/50000 [00:54<08:10, 91.77it/s]cycle 0 Propagation 1:  10%|█         | 5000/50000 [01:12<08:10, 91.77it/s]cycle 0 Propagation 1:  20%|██        | 10000/50000 [01:50<07:21, 90.64it/s]cycle 0 Propagation 1:  20%|██        | 10000/50000 [02:02<07:21, 90.64it/s]cycle 0 Propagation 1:  30%|███       | 15000/50000 [02:44<06:22, 91.46it/s]cycle 0 Propagation 1:  30%|███       | 15000/50000 [03:02<06:22, 91.46it/s]cycle 0 Propagation 1:  40%|████      | 20000/50000 [03:39<05:29, 90.92it/s]cycle 0 Propagation 1:  40%|████      | 20000/50000 [03:52<05:29, 90.92it/s]cycle 0 Propagation 1:  50%|█████     | 25000/50000 [04:35<04:36, 90.39it/s]cycle 0 Propagation 1:  50%|█████     | 25000/50000 [04:52<04:36, 90.39it/s]cycle 0 Propagation 1:  60%|██████    | 30000/50000 [05:41<03:55, 85.08it/s]cycle 0 Propagation 1:  60%|██████    | 30000/50000 [05:52<03:55, 85.08it/s]cycle 0 Propagation 1:  70%|███████   | 35000/50000 [06:46<03:03, 81.87it/s]cycle 0 Propagation 1:  70%|███████   | 35000/50000 [07:02<03:03, 81.87it/s]cycle 0 Propagation 1:  80%|████████  | 40000/50000 [07:43<01:59, 83.89it/s]cycle 0 Propagation 1:  80%|████████  | 40000/50000 [08:02<01:59, 83.89it/s]cycle 0 Propagation 1:  90%|█████████ | 45000/50000 [08:41<00:59, 84.45it/s]cycle 0 Propagation 1:  90%|█████████ | 45000/50000 [08:52<00:59, 84.45it/s]cycle 0 Propagation 1:  90%|█████████ | 45000/50000 [09:50<01:05, 76.19it/s]
+combined dist to be fed into DHAM in shape:  (2, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  5.181818181818182
+last visited state (local start) updated. converted to x space that's:  4.636363636363637
+cycle 0 propagation number 2 starting
+optimizing to get g_param from start state: 17 to end state: 23 in working indices.
+converted to xspace that's from: 4.636363636363637 to 5.181818181818182
+upper bound: 5.181818181818182 lower bound: 3.090909090909091
+random try: 0 mfpt: 80.44703937046967
+random try: 100 mfpt: 1.011851876724542
+random try: 200 mfpt: 0.3590896318146745
+random try: 300 mfpt: 21.151138104998914
+random try: 400 mfpt: 1.7507243873514384
+random try: 500 mfpt: 46.746708017824425
+random try: 600 mfpt: 0.26902825887475323
+random try: 700 mfpt: 0.4270473827280128
+random try: 800 mfpt: 7.061296159301463
+random try: 900 mfpt: 15.518922456157107
+random try: 1000 mfpt: 17.341844960279644
+random try: 1100 mfpt: 0.1763927940605337
+random try: 1200 mfpt: 0.1034853773228035
+random try: 1300 mfpt: 3.0627648136086494
+random try: 1400 mfpt: 111.84883435376929
+random try: 1500 mfpt: 0.4169012207364285
+random try: 1600 mfpt: 4.566481437167993
+random try: 1700 mfpt: 0.4121790372152319
+random try: 1800 mfpt: 5.229011912965477
+random try: 1900 mfpt: 63.06185049074926
+best mfpt: 0.0498412139094874
+propagating
+current target state:  8
+cycle count:  0
+prop index:  2
+cycle 0 Propagation 2:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 0 Propagation 2:  10%|█         | 5000/50000 [00:55<08:19, 90.01it/s]cycle 0 Propagation 2:  10%|█         | 5000/50000 [01:10<08:19, 90.01it/s]cycle 0 Propagation 2:  20%|██        | 10000/50000 [01:51<07:24, 89.92it/s]cycle 0 Propagation 2:  20%|██        | 10000/50000 [02:10<07:24, 89.92it/s]cycle 0 Propagation 2:  30%|███       | 15000/50000 [02:58<07:06, 82.11it/s]cycle 0 Propagation 2:  30%|███       | 15000/50000 [03:10<07:06, 82.11it/s]cycle 0 Propagation 2:  40%|████      | 20000/50000 [04:07<06:23, 78.13it/s]cycle 0 Propagation 2:  40%|████      | 20000/50000 [04:20<06:23, 78.13it/s]cycle 0 Propagation 2:  50%|█████     | 25000/50000 [05:13<05:24, 77.13it/s]cycle 0 Propagation 2:  50%|█████     | 25000/50000 [05:30<05:24, 77.13it/s]cycle 0 Propagation 2:  60%|██████    | 30000/50000 [06:09<04:07, 80.83it/s]cycle 0 Propagation 2:  60%|██████    | 30000/50000 [06:20<04:07, 80.83it/s]cycle 0 Propagation 2:  70%|███████   | 35000/50000 [07:07<03:01, 82.60it/s]cycle 0 Propagation 2:  70%|███████   | 35000/50000 [07:20<03:01, 82.60it/s]cycle 0 Propagation 2:  80%|████████  | 40000/50000 [08:15<02:05, 79.53it/s]cycle 0 Propagation 2:  80%|████████  | 40000/50000 [08:30<02:05, 79.53it/s]cycle 0 Propagation 2:  90%|█████████ | 45000/50000 [09:17<01:02, 79.87it/s]cycle 0 Propagation 2:  90%|█████████ | 45000/50000 [09:30<01:02, 79.87it/s]cycle 0 Propagation 2:  90%|█████████ | 45000/50000 [10:13<01:08, 73.30it/s]
+combined dist to be fed into DHAM in shape:  (3, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  6.363636363636364
+last visited state (local start) updated. converted to x space that's:  5.7272727272727275
+cycle 0 propagation number 3 starting
+optimizing to get g_param from start state: 29 to end state: 36 in working indices.
+converted to xspace that's from: 5.7272727272727275 to 6.363636363636364
+upper bound: 6.363636363636364 lower bound: 3.090909090909091
+random try: 0 mfpt: 2.8256603824021758
+random try: 100 mfpt: 17.23362718034666
+random try: 200 mfpt: 52424.75407214776
+random try: 300 mfpt: 283.815571920158
+random try: 400 mfpt: 12.116319837785289
+random try: 500 mfpt: 97.86713647339
+random try: 600 mfpt: 40.80071753886633
+random try: 700 mfpt: 178.24853361014613
+random try: 800 mfpt: 312.95656205855903
+random try: 900 mfpt: 33.30387430821463
+random try: 1000 mfpt: 140241.1181402435
+random try: 1100 mfpt: 25.852052397390594
+random try: 1200 mfpt: 423.9023596373474
+random try: 1300 mfpt: 3924.440127589216
+random try: 1400 mfpt: 341.48690845780584
+random try: 1500 mfpt: 421.5314006491022
+random try: 1600 mfpt: 249.1263239871918
+random try: 1700 mfpt: 40.967526712228164
+random try: 1800 mfpt: 1879.184421672746
+random try: 1900 mfpt: 175.30935233627733
+best mfpt: 0.24697780840728267
+propagating
+current target state:  8
+cycle count:  0
+prop index:  3
+cycle 0 Propagation 3:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 0 Propagation 3:  10%|█         | 5000/50000 [01:06<10:01, 74.78it/s]cycle 0 Propagation 3:  10%|█         | 5000/50000 [01:17<10:01, 74.78it/s]cycle 0 Propagation 3:  20%|██        | 10000/50000 [02:16<09:06, 73.16it/s]cycle 0 Propagation 3:  20%|██        | 10000/50000 [02:27<09:06, 73.16it/s]cycle 0 Propagation 3:  30%|███       | 15000/50000 [03:25<08:00, 72.78it/s]cycle 0 Propagation 3:  30%|███       | 15000/50000 [03:38<08:00, 72.78it/s]cycle 0 Propagation 3:  40%|████      | 20000/50000 [04:21<06:23, 78.31it/s]cycle 0 Propagation 3:  40%|████      | 20000/50000 [04:38<06:23, 78.31it/s]cycle 0 Propagation 3:  50%|█████     | 25000/50000 [05:17<05:05, 81.86it/s]cycle 0 Propagation 3:  50%|█████     | 25000/50000 [05:28<05:05, 81.86it/s]cycle 0 Propagation 3:  60%|██████    | 30000/50000 [06:31<04:21, 76.49it/s]cycle 0 Propagation 3:  60%|██████    | 30000/50000 [06:48<04:21, 76.49it/s]cycle 0 Propagation 3:  70%|███████   | 35000/50000 [07:41<03:20, 74.92it/s]cycle 0 Propagation 3:  70%|███████   | 35000/50000 [07:58<03:20, 74.92it/s]cycle 0 Propagation 3:  80%|████████  | 40000/50000 [08:45<02:11, 75.84it/s]cycle 0 Propagation 3:  80%|████████  | 40000/50000 [08:58<02:11, 75.84it/s]cycle 0 Propagation 3:  90%|█████████ | 45000/50000 [09:41<01:02, 79.48it/s]cycle 0 Propagation 3:  90%|█████████ | 45000/50000 [09:58<01:02, 79.48it/s]cycle 0 Propagation 3:  90%|█████████ | 45000/50000 [10:42<01:11, 69.99it/s]
+combined dist to be fed into DHAM in shape:  (4, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+at step:  27562 we reach 8A
+at step:  27563 we reach 8A
+at step:  27564 we reach 8A
+at step:  27565 we reach 8A
+at step:  27566 we reach 8A
+at step:  27567 we reach 8A
+at step:  27568 we reach 8A
+at step:  27569 we reach 8A
+at step:  27570 we reach 8A
+at step:  27571 we reach 8A
+at step:  27572 we reach 8A
+at step:  27573 we reach 8A
+at step:  27574 we reach 8A
+at step:  27575 we reach 8A
+at step:  27576 we reach 8A
+at step:  27577 we reach 8A
+at step:  27578 we reach 8A
+at step:  27579 we reach 8A
+at step:  27580 we reach 8A
+at step:  27581 we reach 8A
+at step:  27582 we reach 8A
+at step:  27583 we reach 8A
+at step:  27584 we reach 8A
+at step:  27585 we reach 8A
+at step:  27586 we reach 8A
+at step:  27587 we reach 8A
+at step:  27588 we reach 8A
+at step:  27589 we reach 8A
+at step:  27590 we reach 8A
+at step:  27591 we reach 8A
+at step:  27592 we reach 8A
+at step:  27593 we reach 8A
+at step:  27594 we reach 8A
+at step:  27595 we reach 8A
+at step:  45100 we reach 8A
+at step:  45101 we reach 8A
+at step:  45102 we reach 8A
+at step:  45257 we reach 8A
+at step:  45258 we reach 8A
+at step:  45259 we reach 8A
+at step:  45260 we reach 8A
+at step:  45261 we reach 8A
+at step:  48651 we reach 8A
+at step:  48652 we reach 8A
+at step:  48653 we reach 8A
+at step:  48654 we reach 8A
+at step:  48655 we reach 8A
+at step:  48656 we reach 8A
+at step:  48657 we reach 8A
+at step:  48658 we reach 8A
+at step:  48681 we reach 8A
+at step:  48682 we reach 8A
+at step:  48683 we reach 8A
+closest_index (local target) updated. converted to x space that's:  7.636363636363637
+last visited state (local start) updated. converted to x space that's:  6.818181818181818
+cycle number completed:  1
+closest_index (local target) updated. converted to x space that's:  3.090909090909091
+last visited state (local start) updated. converted to x space that's:  6.818181818181818
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+cycle 1 propagation number 4 starting
+optimizing to get g_param from start state: 41 to end state: 0 in working indices.
+converted to xspace that's from: 6.818181818181818 to 3.090909090909091
+upper bound: 7.636363636363637 lower bound: 3.090909090909091
+random try: 0 mfpt: 0.3045042239656828
+random try: 100 mfpt: 0.31688351792568226
+random try: 200 mfpt: 0.2770073433451793
+random try: 300 mfpt: 0.6211416669317341
+random try: 400 mfpt: 0.8068224430379688
+random try: 500 mfpt: 2.2676486902027757
+random try: 600 mfpt: 6.9127456105782885
+random try: 700 mfpt: 0.08381470484925456
+random try: 800 mfpt: 3.6938522100894207
+random try: 900 mfpt: 1.0494753596218402
+random try: 1000 mfpt: 0.41969781705638975
+random try: 1100 mfpt: 0.5416160478014544
+random try: 1200 mfpt: 0.12918080909216237
+random try: 1300 mfpt: 0.5042721222941516
+random try: 1400 mfpt: 0.9422527574589965
+random try: 1500 mfpt: 5.289763303618596
+random try: 1600 mfpt: 0.5229631719317891
+random try: 1700 mfpt: 0.13224071379152785
+random try: 1800 mfpt: 0.21344741576839527
+random try: 1900 mfpt: 0.6272996933062224
+best mfpt: 0.07245205547110638
+propagating
+current target state:  2
+cycle count:  1
+prop index:  4
+cycle 1 Propagation 4:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 1 Propagation 4:  10%|█         | 5000/50000 [00:56<08:25, 88.98it/s]cycle 1 Propagation 4:  10%|█         | 5000/50000 [01:08<08:25, 88.98it/s]cycle 1 Propagation 4:  20%|██        | 10000/50000 [01:53<07:36, 87.70it/s]cycle 1 Propagation 4:  20%|██        | 10000/50000 [02:08<07:36, 87.70it/s]cycle 1 Propagation 4:  30%|███       | 15000/50000 [03:01<07:12, 80.84it/s]cycle 1 Propagation 4:  30%|███       | 15000/50000 [03:18<07:12, 80.84it/s]cycle 1 Propagation 4:  40%|████      | 20000/50000 [04:10<06:27, 77.35it/s]cycle 1 Propagation 4:  40%|████      | 20000/50000 [04:28<06:27, 77.35it/s]cycle 1 Propagation 4:  50%|█████     | 25000/50000 [05:14<05:22, 77.55it/s]cycle 1 Propagation 4:  50%|█████     | 25000/50000 [05:28<05:22, 77.55it/s]cycle 1 Propagation 4:  60%|██████    | 30000/50000 [06:10<04:07, 80.97it/s]cycle 1 Propagation 4:  60%|██████    | 30000/50000 [06:28<04:07, 80.97it/s]cycle 1 Propagation 4:  70%|███████   | 35000/50000 [07:10<03:03, 81.87it/s]cycle 1 Propagation 4:  70%|███████   | 35000/50000 [07:28<03:03, 81.87it/s]cycle 1 Propagation 4:  80%|████████  | 40000/50000 [08:19<02:06, 78.86it/s]cycle 1 Propagation 4:  80%|████████  | 40000/50000 [08:38<02:06, 78.86it/s]cycle 1 Propagation 4:  90%|█████████ | 45000/50000 [09:27<01:05, 76.78it/s]cycle 1 Propagation 4:  90%|█████████ | 45000/50000 [09:38<01:05, 76.78it/s]cycle 1 Propagation 4:  90%|█████████ | 45000/50000 [10:29<01:09, 71.50it/s]
+combined dist to be fed into DHAM in shape:  (5, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  3.0
+last visited state (local start) updated. converted to x space that's:  3.1818181818181817
+cycle 1 propagation number 5 starting
+optimizing to get g_param from start state: 2 to end state: 0 in working indices.
+converted to xspace that's from: 3.1818181818181817 to 3.0
+upper bound: 7.636363636363637 lower bound: 3.0
+random try: 0 mfpt: 0.0757909837682528
+random try: 100 mfpt: 0.05982842021380697
+random try: 200 mfpt: 0.07240591294000698
+random try: 300 mfpt: 0.1022243680953101
+random try: 400 mfpt: 0.054750677069550016
+random try: 500 mfpt: 0.04102783456252732
+random try: 600 mfpt: 0.06581444509445535
+random try: 700 mfpt: 0.11194326064906147
+random try: 800 mfpt: 0.34923988801344674
+random try: 900 mfpt: 0.06393158192335602
+random try: 1000 mfpt: 0.043676366039738845
+random try: 1100 mfpt: 0.09266540980999047
+random try: 1200 mfpt: 0.04621420890927954
+random try: 1300 mfpt: 0.1815751783355625
+random try: 1400 mfpt: 0.09770749791765716
+random try: 1500 mfpt: 0.05262209207395001
+random try: 1600 mfpt: 0.06844133763490796
+random try: 1700 mfpt: 0.03617560356903319
+random try: 1800 mfpt: 0.06378528495009676
+random try: 1900 mfpt: 0.09443875417539238
+best mfpt: 0.02002341174053841
+propagating
+current target state:  2
+cycle count:  1
+prop index:  5
+cycle 1 Propagation 5:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 1 Propagation 5:  10%|█         | 5000/50000 [01:01<09:09, 81.87it/s]cycle 1 Propagation 5:  10%|█         | 5000/50000 [01:13<09:09, 81.87it/s]cycle 1 Propagation 5:  20%|██        | 10000/50000 [02:09<08:43, 76.44it/s]cycle 1 Propagation 5:  20%|██        | 10000/50000 [02:23<08:43, 76.44it/s]cycle 1 Propagation 5:  30%|███       | 15000/50000 [03:18<07:49, 74.63it/s]cycle 1 Propagation 5:  30%|███       | 15000/50000 [03:33<07:49, 74.63it/s]cycle 1 Propagation 5:  40%|████      | 20000/50000 [04:18<06:26, 77.66it/s]cycle 1 Propagation 5:  40%|████      | 20000/50000 [04:33<06:26, 77.66it/s]cycle 1 Propagation 5:  50%|█████     | 25000/50000 [05:14<05:06, 81.50it/s]cycle 1 Propagation 5:  50%|█████     | 25000/50000 [05:33<05:06, 81.50it/s]cycle 1 Propagation 5:  60%|██████    | 30000/50000 [06:17<04:07, 80.97it/s]cycle 1 Propagation 5:  60%|██████    | 30000/50000 [06:33<04:07, 80.97it/s]cycle 1 Propagation 5:  70%|███████   | 35000/50000 [07:25<03:11, 78.25it/s]cycle 1 Propagation 5:  70%|███████   | 35000/50000 [07:43<03:11, 78.25it/s]cycle 1 Propagation 5:  80%|████████  | 40000/50000 [08:34<02:10, 76.44it/s]cycle 1 Propagation 5:  80%|████████  | 40000/50000 [08:53<02:10, 76.44it/s]cycle 1 Propagation 5:  90%|█████████ | 45000/50000 [09:31<01:02, 79.73it/s]cycle 1 Propagation 5:  90%|█████████ | 45000/50000 [09:43<01:02, 79.73it/s]cycle 1 Propagation 5:  90%|█████████ | 45000/50000 [10:27<01:09, 71.67it/s]
+combined dist to be fed into DHAM in shape:  (6, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999999
+closest_index (local target) updated. converted to x space that's:  2.7272727272727275
+last visited state (local start) updated. converted to x space that's:  2.8181818181818183
+cycle 1 propagation number 6 starting
+optimizing to get g_param from start state: 1 to end state: 0 in working indices.
+converted to xspace that's from: 2.8181818181818183 to 2.7272727272727275
+upper bound: 7.636363636363637 lower bound: 2.7272727272727275
+random try: 0 mfpt: 0.05578561628633715
+random try: 100 mfpt: 0.009465171507220555
+random try: 200 mfpt: 0.007442078593326459
+random try: 300 mfpt: 0.02265451145775466
+random try: 400 mfpt: 0.23405973097657573
+random try: 500 mfpt: 0.007833554224947286
+random try: 600 mfpt: 0.022474005601222074
+random try: 700 mfpt: 0.024694420404542658
+random try: 800 mfpt: 0.00803234584037854
+random try: 900 mfpt: 0.015491378552679682
+random try: 1000 mfpt: 0.009401773392153435
+random try: 1100 mfpt: 0.01959779628670473
+random try: 1200 mfpt: 0.012172519542866671
+random try: 1300 mfpt: 0.015518926240547294
+random try: 1400 mfpt: 0.013884958278059238
+random try: 1500 mfpt: 0.026783297131655552
+random try: 1600 mfpt: 0.04360174860694118
+random try: 1700 mfpt: 0.009863669813994108
+random try: 1800 mfpt: 0.012972123851666146
+random try: 1900 mfpt: 0.011431863306827543
+best mfpt: 0.003830040293393857
+propagating
+current target state:  2
+cycle count:  1
+prop index:  6
+cycle 1 Propagation 6:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 1 Propagation 6:  10%|█         | 5000/50000 [00:57<08:35, 87.33it/s]cycle 1 Propagation 6:  10%|█         | 5000/50000 [01:11<08:35, 87.33it/s]cycle 1 Propagation 6:  20%|██        | 10000/50000 [01:53<07:33, 88.29it/s]cycle 1 Propagation 6:  20%|██        | 10000/50000 [02:11<07:33, 88.29it/s]cycle 1 Propagation 6:  30%|███       | 15000/50000 [02:59<07:07, 81.91it/s]cycle 1 Propagation 6:  30%|███       | 15000/50000 [03:11<07:07, 81.91it/s]cycle 1 Propagation 6:  40%|████      | 20000/50000 [04:03<06:11, 80.74it/s]cycle 1 Propagation 6:  40%|████      | 20000/50000 [04:21<06:11, 80.74it/s]cycle 1 Propagation 6:  50%|█████     | 25000/50000 [04:59<04:59, 83.53it/s]cycle 1 Propagation 6:  50%|█████     | 25000/50000 [05:11<04:59, 83.53it/s]cycle 1 Propagation 6:  60%|██████    | 30000/50000 [05:59<04:00, 83.12it/s]cycle 1 Propagation 6:  60%|██████    | 30000/50000 [06:11<04:00, 83.12it/s]cycle 1 Propagation 6:  70%|███████   | 35000/50000 [07:07<03:08, 79.73it/s]cycle 1 Propagation 6:  70%|███████   | 35000/50000 [07:21<03:08, 79.73it/s]cycle 1 Propagation 6:  80%|████████  | 40000/50000 [08:16<02:09, 77.26it/s]cycle 1 Propagation 6:  80%|████████  | 40000/50000 [08:31<02:09, 77.26it/s]cycle 1 Propagation 6:  90%|█████████ | 45000/50000 [09:13<01:02, 80.50it/s]cycle 1 Propagation 6:  90%|█████████ | 45000/50000 [09:32<01:02, 80.50it/s]cycle 1 Propagation 6:  90%|█████████ | 45000/50000 [10:10<01:07, 73.73it/s]
+combined dist to be fed into DHAM in shape:  (7, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  2.5454545454545454
+last visited state (local start) updated. converted to x space that's:  2.6363636363636367
+cycle 1 propagation number 7 starting
+optimizing to get g_param from start state: 1 to end state: 0 in working indices.
+converted to xspace that's from: 2.6363636363636367 to 2.5454545454545454
+upper bound: 7.636363636363637 lower bound: 2.5454545454545454
+random try: 0 mfpt: 0.8919436242214756
+random try: 100 mfpt: 0.4468608774409996
+random try: 200 mfpt: 0.2158601742668657
+random try: 300 mfpt: 1.2395920194252787
+random try: 400 mfpt: 0.4793126219344192
+random try: 500 mfpt: 0.45138905413598385
+random try: 600 mfpt: 0.578249841093084
+random try: 700 mfpt: 0.4753462437752965
+random try: 800 mfpt: 2.1840674895564614
+random try: 900 mfpt: 0.22737309886546475
+random try: 1000 mfpt: 0.14129166343427005
+random try: 1100 mfpt: 0.45045693176425683
+random try: 1200 mfpt: 0.4279838036283567
+random try: 1300 mfpt: 1.7341632810677803
+random try: 1400 mfpt: 1.4186966955850413
+random try: 1500 mfpt: 0.19019840081885747
+random try: 1600 mfpt: 0.5212514407119703
+random try: 1700 mfpt: 2.8817177443583244
+random try: 1800 mfpt: 0.3464146312484204
+random try: 1900 mfpt: 0.332339974923794
+best mfpt: 0.09100050782342527
+propagating
+current target state:  2
+cycle count:  1
+prop index:  7
+cycle 1 Propagation 7:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 1 Propagation 7:  10%|█         | 5000/50000 [01:09<10:21, 72.44it/s]cycle 1 Propagation 7:  10%|█         | 5000/50000 [01:20<10:21, 72.44it/s]cycle 1 Propagation 7:  20%|██        | 10000/50000 [02:18<09:12, 72.46it/s]cycle 1 Propagation 7:  20%|██        | 10000/50000 [02:30<09:12, 72.46it/s]cycle 1 Propagation 7:  30%|███       | 15000/50000 [03:15<07:26, 78.42it/s]cycle 1 Propagation 7:  30%|███       | 15000/50000 [03:30<07:26, 78.42it/s]cycle 1 Propagation 7:  40%|████      | 20000/50000 [04:11<06:04, 82.20it/s]cycle 1 Propagation 7:  40%|████      | 20000/50000 [04:30<06:04, 82.20it/s]cycle 1 Propagation 7:  50%|█████     | 25000/50000 [05:18<05:14, 79.60it/s]cycle 1 Propagation 7:  50%|█████     | 25000/50000 [05:30<05:14, 79.60it/s]cycle 1 Propagation 7:  60%|██████    | 30000/50000 [06:27<04:19, 77.04it/s]cycle 1 Propagation 7:  60%|██████    | 30000/50000 [06:40<04:19, 77.04it/s]cycle 1 Propagation 7:  70%|███████   | 35000/50000 [07:33<03:16, 76.51it/s]cycle 1 Propagation 7:  70%|███████   | 35000/50000 [07:50<03:16, 76.51it/s]cycle 1 Propagation 7:  80%|████████  | 40000/50000 [08:30<02:05, 79.92it/s]cycle 1 Propagation 7:  80%|████████  | 40000/50000 [08:40<02:05, 79.92it/s]cycle 1 Propagation 7:  90%|█████████ | 45000/50000 [09:28<01:01, 81.59it/s]cycle 1 Propagation 7:  90%|█████████ | 45000/50000 [09:40<01:01, 81.59it/s]cycle 1 Propagation 7:  90%|█████████ | 45000/50000 [10:37<01:10, 70.55it/s]
+combined dist to be fed into DHAM in shape:  (8, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0000000000000002
+closest_index (local target) updated. converted to x space that's:  2.5454545454545454
+last visited state (local start) updated. converted to x space that's:  2.7272727272727275
+cycle 1 propagation number 8 starting
+optimizing to get g_param from start state: 2 to end state: 0 in working indices.
+converted to xspace that's from: 2.7272727272727275 to 2.5454545454545454
+upper bound: 7.636363636363637 lower bound: 2.5454545454545454
+random try: 0 mfpt: 0.16862832500855318
+random try: 100 mfpt: 0.9398710688047697
+random try: 200 mfpt: 0.3304984362785233
+random try: 300 mfpt: 0.08428097500288709
+random try: 400 mfpt: 0.131348968860792
+random try: 500 mfpt: 0.32437988943829854
+random try: 600 mfpt: 0.2831934160776319
+random try: 700 mfpt: 1.664898425084121
+random try: 800 mfpt: 0.13705949632259304
+random try: 900 mfpt: 0.21174366296674302
+random try: 1000 mfpt: 0.1455853662173113
+random try: 1100 mfpt: 1.2792131128079496
+random try: 1200 mfpt: 0.44923151149004387
+random try: 1300 mfpt: 10.279297046840654
+random try: 1400 mfpt: 0.06306807596296896
+random try: 1500 mfpt: 0.12120315852454412
+random try: 1600 mfpt: 0.23268437775168713
+random try: 1700 mfpt: 0.38654193451444147
+random try: 1800 mfpt: 0.46576840464638763
+random try: 1900 mfpt: 0.10129645700753809
+best mfpt: 0.0394119561859697
+propagating
+current target state:  2
+cycle count:  1
+prop index:  8
+cycle 1 Propagation 8:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 1 Propagation 8:  10%|█         | 5000/50000 [00:56<08:29, 88.40it/s]cycle 1 Propagation 8:  10%|█         | 5000/50000 [01:10<08:29, 88.40it/s]cycle 1 Propagation 8:  20%|██        | 10000/50000 [02:00<08:06, 82.21it/s]cycle 1 Propagation 8:  20%|██        | 10000/50000 [02:20<08:06, 82.21it/s]cycle 1 Propagation 8:  30%|███       | 15000/50000 [03:09<07:31, 77.50it/s]cycle 1 Propagation 8:  30%|███       | 15000/50000 [03:20<07:31, 77.50it/s]cycle 1 Propagation 8:  40%|████      | 20000/50000 [04:13<06:26, 77.60it/s]cycle 1 Propagation 8:  40%|████      | 20000/50000 [04:30<06:26, 77.60it/s]cycle 1 Propagation 8:  50%|█████     | 25000/50000 [05:10<05:08, 81.05it/s]cycle 1 Propagation 8:  50%|█████     | 25000/50000 [05:20<05:08, 81.05it/s]cycle 1 Propagation 8:  60%|██████    | 30000/50000 [06:11<04:05, 81.38it/s]cycle 1 Propagation 8:  60%|██████    | 30000/50000 [06:30<04:05, 81.38it/s]cycle 1 Propagation 8:  70%|███████   | 35000/50000 [07:19<03:11, 78.44it/s]cycle 1 Propagation 8:  70%|███████   | 35000/50000 [07:30<03:11, 78.44it/s]cycle 1 Propagation 8:  80%|████████  | 40000/50000 [08:20<02:05, 79.52it/s]cycle 1 Propagation 8:  80%|████████  | 40000/50000 [08:40<02:05, 79.52it/s]cycle 1 Propagation 8:  90%|█████████ | 45000/50000 [09:17<01:00, 81.98it/s]cycle 1 Propagation 8:  90%|█████████ | 45000/50000 [09:30<01:00, 81.98it/s]cycle 1 Propagation 8:  90%|█████████ | 45000/50000 [10:22<01:09, 72.29it/s]
+combined dist to be fed into DHAM in shape:  (9, 50000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999997
+at step:  14732 we reach 8A
+at step:  14733 we reach 8A
+at step:  14734 we reach 8A
+at step:  33849 we reach 8A
+at step:  33850 we reach 8A
+at step:  33851 we reach 8A
+at step:  49261 we reach 8A
+at step:  49262 we reach 8A
+at step:  49263 we reach 8A
+at step:  49264 we reach 8A
+closest_index (local target) updated. converted to x space that's:  2.5454545454545454
+last visited state (local start) updated. converted to x space that's:  2.6363636363636367
+cycle number completed:  2
+closest_index (local target) updated. converted to x space that's:  7.636363636363637
+last visited state (local start) updated. converted to x space that's:  2.6363636363636367
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999997
+cycle 2 propagation number 9 starting
+optimizing to get g_param from start state: 1 to end state: 56 in working indices.
+converted to xspace that's from: 2.6363636363636367 to 7.636363636363637
+upper bound: 7.636363636363637 lower bound: 2.5454545454545454
+random try: 0 mfpt: 875762.5552192056
+random try: 100 mfpt: 24895.662407505846
+random try: 200 mfpt: 279.96639745655494
+random try: 300 mfpt: 29024.299175645647
+random try: 400 mfpt: 7525.88007352316
+random try: 500 mfpt: 130.29676279042596
+random try: 600 mfpt: 2501.9036488360493
+random try: 700 mfpt: 586.3514879152303
+random try: 800 mfpt: 11342.702145553783
+random try: 900 mfpt: 5173.893445223286
+random try: 1000 mfpt: 62920.02176336619
+random try: 1100 mfpt: 34223.95611208899
+random try: 1200 mfpt: 26072.981777230878
+random try: 1300 mfpt: 31783.675358499004
+random try: 1400 mfpt: 167742.3937247518
+random try: 1500 mfpt: 120.3146724748482
+random try: 1600 mfpt: 2050.561314209539
+random try: 1700 mfpt: 15480.175970449813
+random try: 1800 mfpt: 9551.119829484049
+random try: 1900 mfpt: 14.001518735566174
+best mfpt: 3.437533817545413
+propagating
+current target state:  8
+cycle count:  2
+prop index:  9
+cycle 2 Propagation 9:   0%|          | 0/50000 [00:00<?, ?it/s]cycle 2 Propagation 9:  10%|█         | 5000/50000 [01:04<09:41, 77.37it/s]cycle 2 Propagation 9:  10%|█         | 5000/50000 [01:19<09:41, 77.37it/s]cycle 2 Propagation 9:  20%|██        | 10000/50000 [02:01<07:59, 83.47it/s]cycle 2 Propagation 9:  20%|██        | 10000/50000 [02:20<07:59, 83.47it/s]cycle 2 Propagation 9:  30%|███       | 15000/50000 [03:00<06:57, 83.76it/s]cycle 2 Propagation 9:  30%|███       | 15000/50000 [03:20<06:57, 83.76it/s]cycle 2 Propagation 9:  40%|████      | 20000/50000 [04:09<06:19, 79.01it/s]cycle 2 Propagation 9:  40%|████      | 20000/50000 [04:20<06:19, 79.01it/s]cycle 2 Propagation 9:  50%|█████     | 25000/50000 [05:18<05:27, 76.38it/s]cycle 2 Propagation 9:  50%|█████     | 25000/50000 [05:30<05:27, 76.38it/s]cycle 2 Propagation 9:  60%|██████    | 30000/50000 [06:21<04:18, 77.49it/s]cycle 2 Propagation 9:  60%|██████    | 30000/50000 [06:40<04:18, 77.49it/s]cycle 2 Propagation 9:  70%|███████   | 35000/50000 [07:18<03:06, 80.61it/s]cycle 2 Propagation 9:  70%|███████   | 35000/50000 [07:30<03:06, 80.61it/s]cycle 2 Propagation 9:  80%|████████  | 40000/50000 [08:20<02:04, 80.51it/s]

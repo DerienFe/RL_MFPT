@@ -157,14 +157,14 @@ if __name__ == "__main__":
         print("minimizing energy done, time: %.2f" % (time.time()-s))
 
 
-        pos_traj = np.zeros([int(config.sim_steps/config.dcdfreq), 3])
+        #pos_traj = np.zeros([int(config.sim_steps/config.dcdfreq), 3])
 
         #store fes in 2D way
         #fes = np.zeros([int(sim_steps/dcdfreq), 50, 50])
         potential_energy = []
 
-        file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
-        dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
+        #file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
+        #dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
 
         progress_bar = tqdm(total = config.sim_steps/config.dcdfreq)
 
@@ -179,17 +179,20 @@ if __name__ == "__main__":
 
             #record the trajectory, distance, and bias applied
             state = simulation.context.getState(getPositions=True, getEnergy=True, enforcePeriodicBox=pbc)
-            pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
+            #pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
             
             #fes[i,:,:] = metaD.getFreeEnergy()
             energy = state.getPotentialEnergy()
             potential_energy.append(energy)
-            dcd_file.writeModel(state.getPositions(asNumpy=True))
-        file_handle.close()
+            #dcd_file.writeModel(state.getPositions(asNumpy=True))
+            #we will record dcd using reporter.
+            simulation.reporters.append(openmm.app.DCDReporter(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', config.dcdfreq))
+
+        #file_handle.close()
 
 
         #zip traj, biasand save.
-        np.save(f"./visited_states/{time_tag}_metaD_pos_traj_.npy", np.array(pos_traj))
+        #np.save(f"./visited_states/{time_tag}_metaD_pos_traj_.npy", np.array(pos_traj))
         np.save(f"./visited_states/{time_tag}_metaD_potential_energy.npy", np.array(potential_energy))
 
         #this is for plain MD.
@@ -201,10 +204,10 @@ if __name__ == "__main__":
             pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
         """
 
-        pos_traj = np.array(pos_traj)
-        end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
+        #pos_traj = np.array(pos_traj)
+        #end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
 
-        for index_d, d in enumerate(pos_traj):
+        """for index_d, d in enumerate(pos_traj):
             if np.linalg.norm(d - end_state_xyz) < 0.1:
                 steps_to_endstate = index_d*config.dcdfreq
                 break
@@ -214,7 +217,7 @@ if __name__ == "__main__":
         with open("total_steps_metaD.csv", 'a') as f:
             writer = csv.writer(f)
             writer.writerow([steps_to_endstate])
-
+"""
 
         ### VISUALIZATION ###
 

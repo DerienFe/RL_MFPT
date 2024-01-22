@@ -1,0 +1,236 @@
+system initializing
+config:  {'__name__': 'config', '__doc__': None, '__package__': '', '__loader__': <_frozen_importlib_external.SourceFileLoader object at 0x7f5ab512d850>, '__spec__': ModuleSpec(name='config', loader=<_frozen_importlib_external.SourceFileLoader object at 0x7f5ab512d850>, origin='/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py'), '__file__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/config.py', '__cached__': '/home/tj/WORK/RL_MFPT/1D_PMg_backforth/__pycache__/config.cpython-311.pyc', '__builtins__': {'__name__': 'builtins', '__doc__': "Built-in functions, types, exceptions, and other objects.\n\nThis module provides direct access to all 'built-in'\nidentifiers of Python; for example, builtins.len is\nthe full name for the built-in function len().\n\nThis module is not normally accessed explicitly by most\napplications, but can be useful in modules that provide\nobjects with the same name as a built-in value, but in\nwhich the built-in of that name is also needed.", '__package__': '', '__loader__': <class '_frozen_importlib.BuiltinImporter'>, '__spec__': ModuleSpec(name='builtins', loader=<class '_frozen_importlib.BuiltinImporter'>, origin='built-in'), '__build_class__': <built-in function __build_class__>, '__import__': <built-in function __import__>, 'abs': <built-in function abs>, 'all': <built-in function all>, 'any': <built-in function any>, 'ascii': <built-in function ascii>, 'bin': <built-in function bin>, 'breakpoint': <built-in function breakpoint>, 'callable': <built-in function callable>, 'chr': <built-in function chr>, 'compile': <built-in function compile>, 'delattr': <built-in function delattr>, 'dir': <built-in function dir>, 'divmod': <built-in function divmod>, 'eval': <built-in function eval>, 'exec': <built-in function exec>, 'format': <built-in function format>, 'getattr': <built-in function getattr>, 'globals': <built-in function globals>, 'hasattr': <built-in function hasattr>, 'hash': <built-in function hash>, 'hex': <built-in function hex>, 'id': <built-in function id>, 'input': <built-in function input>, 'isinstance': <built-in function isinstance>, 'issubclass': <built-in function issubclass>, 'iter': <built-in function iter>, 'aiter': <built-in function aiter>, 'len': <built-in function len>, 'locals': <built-in function locals>, 'max': <built-in function max>, 'min': <built-in function min>, 'next': <built-in function next>, 'anext': <built-in function anext>, 'oct': <built-in function oct>, 'ord': <built-in function ord>, 'pow': <built-in function pow>, 'print': <built-in function print>, 'repr': <built-in function repr>, 'round': <built-in function round>, 'setattr': <built-in function setattr>, 'sorted': <built-in function sorted>, 'sum': <built-in function sum>, 'vars': <built-in function vars>, 'None': None, 'Ellipsis': Ellipsis, 'NotImplemented': NotImplemented, 'False': False, 'True': True, 'bool': <class 'bool'>, 'memoryview': <class 'memoryview'>, 'bytearray': <class 'bytearray'>, 'bytes': <class 'bytes'>, 'classmethod': <class 'classmethod'>, 'complex': <class 'complex'>, 'dict': <class 'dict'>, 'enumerate': <class 'enumerate'>, 'filter': <class 'filter'>, 'float': <class 'float'>, 'frozenset': <class 'frozenset'>, 'property': <class 'property'>, 'int': <class 'int'>, 'list': <class 'list'>, 'map': <class 'map'>, 'object': <class 'object'>, 'range': <class 'range'>, 'reversed': <class 'reversed'>, 'set': <class 'set'>, 'slice': <class 'slice'>, 'staticmethod': <class 'staticmethod'>, 'str': <class 'str'>, 'super': <class 'super'>, 'tuple': <class 'tuple'>, 'type': <class 'type'>, 'zip': <class 'zip'>, '__debug__': True, 'BaseException': <class 'BaseException'>, 'BaseExceptionGroup': <class 'BaseExceptionGroup'>, 'Exception': <class 'Exception'>, 'GeneratorExit': <class 'GeneratorExit'>, 'KeyboardInterrupt': <class 'KeyboardInterrupt'>, 'SystemExit': <class 'SystemExit'>, 'ArithmeticError': <class 'ArithmeticError'>, 'AssertionError': <class 'AssertionError'>, 'AttributeError': <class 'AttributeError'>, 'BufferError': <class 'BufferError'>, 'EOFError': <class 'EOFError'>, 'ImportError': <class 'ImportError'>, 'LookupError': <class 'LookupError'>, 'MemoryError': <class 'MemoryError'>, 'NameError': <class 'NameError'>, 'OSError': <class 'OSError'>, 'ReferenceError': <class 'ReferenceError'>, 'RuntimeError': <class 'RuntimeError'>, 'StopAsyncIteration': <class 'StopAsyncIteration'>, 'StopIteration': <class 'StopIteration'>, 'SyntaxError': <class 'SyntaxError'>, 'SystemError': <class 'SystemError'>, 'TypeError': <class 'TypeError'>, 'ValueError': <class 'ValueError'>, 'Warning': <class 'Warning'>, 'FloatingPointError': <class 'FloatingPointError'>, 'OverflowError': <class 'OverflowError'>, 'ZeroDivisionError': <class 'ZeroDivisionError'>, 'BytesWarning': <class 'BytesWarning'>, 'DeprecationWarning': <class 'DeprecationWarning'>, 'EncodingWarning': <class 'EncodingWarning'>, 'FutureWarning': <class 'FutureWarning'>, 'ImportWarning': <class 'ImportWarning'>, 'PendingDeprecationWarning': <class 'PendingDeprecationWarning'>, 'ResourceWarning': <class 'ResourceWarning'>, 'RuntimeWarning': <class 'RuntimeWarning'>, 'SyntaxWarning': <class 'SyntaxWarning'>, 'UnicodeWarning': <class 'UnicodeWarning'>, 'UserWarning': <class 'UserWarning'>, 'BlockingIOError': <class 'BlockingIOError'>, 'ChildProcessError': <class 'ChildProcessError'>, 'ConnectionError': <class 'ConnectionError'>, 'FileExistsError': <class 'FileExistsError'>, 'FileNotFoundError': <class 'FileNotFoundError'>, 'InterruptedError': <class 'InterruptedError'>, 'IsADirectoryError': <class 'IsADirectoryError'>, 'NotADirectoryError': <class 'NotADirectoryError'>, 'PermissionError': <class 'PermissionError'>, 'ProcessLookupError': <class 'ProcessLookupError'>, 'TimeoutError': <class 'TimeoutError'>, 'IndentationError': <class 'IndentationError'>, 'IndexError': <class 'IndexError'>, 'KeyError': <class 'KeyError'>, 'ModuleNotFoundError': <class 'ModuleNotFoundError'>, 'NotImplementedError': <class 'NotImplementedError'>, 'RecursionError': <class 'RecursionError'>, 'UnboundLocalError': <class 'UnboundLocalError'>, 'UnicodeError': <class 'UnicodeError'>, 'BrokenPipeError': <class 'BrokenPipeError'>, 'ConnectionAbortedError': <class 'ConnectionAbortedError'>, 'ConnectionRefusedError': <class 'ConnectionRefusedError'>, 'ConnectionResetError': <class 'ConnectionResetError'>, 'TabError': <class 'TabError'>, 'UnicodeDecodeError': <class 'UnicodeDecodeError'>, 'UnicodeEncodeError': <class 'UnicodeEncodeError'>, 'UnicodeTranslateError': <class 'UnicodeTranslateError'>, 'ExceptionGroup': <class 'ExceptionGroup'>, 'EnvironmentError': <class 'OSError'>, 'IOError': <class 'OSError'>, 'open': <built-in function open>, 'quit': Use quit() or Ctrl-D (i.e. EOF) to exit, 'exit': Use exit() or Ctrl-D (i.e. EOF) to exit, 'copyright': Copyright (c) 2001-2023 Python Software Foundation.
+All Rights Reserved.
+
+Copyright (c) 2000 BeOpen.com.
+All Rights Reserved.
+
+Copyright (c) 1995-2001 Corporation for National Research Initiatives.
+All Rights Reserved.
+
+Copyright (c) 1991-1995 Stichting Mathematisch Centrum, Amsterdam.
+All Rights Reserved., 'credits':     Thanks to CWI, CNRI, BeOpen.com, Zope Corporation and a cast of thousands
+    for supporting Python development.  See www.python.org for more information., 'license': Type license() to see the full license text, 'help': Type help() for interactive help, or help(object) for help about object., '__pybind11_internals_v4_gcc_libstdcpp_cxxabi1017__': <capsule object NULL at 0x7f5ab5ac9d70>}, 'time': <module 'time' (built-in)>, 'unit': <module 'openmm.unit' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/unit/__init__.py'>, 'openmm': <module 'openmm' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/openmm/__init__.py'>, 'Quantity': <class 'openmm.unit.quantity.Quantity'>, 'Vec3': <class 'openmm.vec3.Vec3'>, 'np': <module 'numpy' from '/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/numpy/__init__.py'>, 'num_sim': 15, 'sim_steps': 5000000, 'pbc': False, 'time_tag': '20240118-171453', 'amp': 6, 'platform': <openmm.openmm.Platform; proxy of <Swig Object of type 'OpenMM::Platform *' at 0x7f5ab51325b0> >, 'start_state': 2, 'end_state': 8, 'fes_mode': 'multiwell', 'load_global_gaussian_params_from_txt': False, 'T': 300, 'propagation_step': 5000, 'stepsize': Quantity(value=0.002, unit=picosecond), 'stepsize_unbias': Quantity(value=0.002, unit=picosecond), 'dcdfreq': 100, 'dcdfreq_mfpt': 1, 'backbone_constraint_strength': 1000, 'fricCoef': Quantity(value=1, unit=/picosecond), 'qspace_num_bins': 100, 'qspace_low': 1, 'qspace_high': 10, 'use_dynamic_bins': False, 'DHAM_num_bins': 100, 'qspace': array([ 1.        ,  1.09090909,  1.18181818,  1.27272727,  1.36363636,
+        1.45454545,  1.54545455,  1.63636364,  1.72727273,  1.81818182,
+        1.90909091,  2.        ,  2.09090909,  2.18181818,  2.27272727,
+        2.36363636,  2.45454545,  2.54545455,  2.63636364,  2.72727273,
+        2.81818182,  2.90909091,  3.        ,  3.09090909,  3.18181818,
+        3.27272727,  3.36363636,  3.45454545,  3.54545455,  3.63636364,
+        3.72727273,  3.81818182,  3.90909091,  4.        ,  4.09090909,
+        4.18181818,  4.27272727,  4.36363636,  4.45454545,  4.54545455,
+        4.63636364,  4.72727273,  4.81818182,  4.90909091,  5.        ,
+        5.09090909,  5.18181818,  5.27272727,  5.36363636,  5.45454545,
+        5.54545455,  5.63636364,  5.72727273,  5.81818182,  5.90909091,
+        6.        ,  6.09090909,  6.18181818,  6.27272727,  6.36363636,
+        6.45454545,  6.54545455,  6.63636364,  6.72727273,  6.81818182,
+        6.90909091,  7.        ,  7.09090909,  7.18181818,  7.27272727,
+        7.36363636,  7.45454545,  7.54545455,  7.63636364,  7.72727273,
+        7.81818182,  7.90909091,  8.        ,  8.09090909,  8.18181818,
+        8.27272727,  8.36363636,  8.45454545,  8.54545455,  8.63636364,
+        8.72727273,  8.81818182,  8.90909091,  9.        ,  9.09090909,
+        9.18181818,  9.27272727,  9.36363636,  9.45454545,  9.54545455,
+        9.63636364,  9.72727273,  9.81818182,  9.90909091, 10.        ]), 'num_gaussian': 10, 'max_cycle': 20, 'num_propagation': 400}
+time_tag:  20240118-171503
+propagation number 0 STARTING.
+propagating
+current target state:  8
+cycle count:  0
+prop index:  0
+cycle 0 Propagation 0:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 0:  10%|█         | 500/5000 [00:05<00:49, 90.13it/s]cycle 0 Propagation 0:  20%|██        | 1000/5000 [00:10<00:43, 91.71it/s]cycle 0 Propagation 0:  30%|███       | 1500/5000 [00:16<00:38, 91.22it/s]cycle 0 Propagation 0:  40%|████      | 2000/5000 [00:21<00:32, 91.99it/s]cycle 0 Propagation 0:  50%|█████     | 2500/5000 [00:27<00:27, 91.40it/s]cycle 0 Propagation 0:  60%|██████    | 3000/5000 [00:32<00:21, 92.34it/s]cycle 0 Propagation 0:  70%|███████   | 3500/5000 [00:38<00:16, 91.65it/s]cycle 0 Propagation 0:  80%|████████  | 4000/5000 [00:43<00:10, 92.93it/s]cycle 0 Propagation 0:  90%|█████████ | 4500/5000 [00:48<00:05, 92.44it/s]/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: divide by zero encountered in log
+  self.free_energy = -self.kBT * np.log(self.peq)
+cycle 0 Propagation 0:  90%|█████████ | 4500/5000 [00:54<00:06, 82.71it/s]
+combined dist to be fed into DHAM in shape:  (1, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.4545454545454546
+last visited state (local start) updated. converted to x space that's:  3.1818181818181817
+cycle 0 propagation number 1 starting
+optimizing to get g_param from start state: 1 to end state: 4 in working indices.
+converted to xspace that's from: 3.1818181818181817 to 3.4545454545454546
+upper bound: 3.4545454545454546 lower bound: 3.090909090909091
+random try: 0 mfpt: 0.0006306538133148852
+random try: 100 mfpt: 0.0006089693684697682
+random try: 200 mfpt: 0.0006762403756749364
+random try: 300 mfpt: 0.0005099911428575405
+random try: 400 mfpt: 0.0006345695698302494
+random try: 500 mfpt: 0.0004863280469385079
+random try: 600 mfpt: 0.0005369938994306554
+random try: 700 mfpt: 0.00042228136495308505
+random try: 800 mfpt: 0.0006239969490938134
+random try: 900 mfpt: 0.0006408333370323846
+random try: 1000 mfpt: 0.0006080249499162597
+random try: 1100 mfpt: 0.0007183604336143674
+random try: 1200 mfpt: 0.0007157683128365109
+random try: 1300 mfpt: 0.0005168146070168177
+random try: 1400 mfpt: 0.0005394221012174662
+random try: 1500 mfpt: 0.0006071073693707378
+random try: 1600 mfpt: 0.0006417515056670868
+random try: 1700 mfpt: 0.0007225371913970502
+random try: 1800 mfpt: 0.0005131771568314174
+random try: 1900 mfpt: 0.0006504026785374613
+best mfpt: 0.0003844526015476237
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  1
+cycle 0 Propagation 1:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 1:  10%|█         | 500/5000 [00:05<00:47, 94.24it/s]cycle 0 Propagation 1:  20%|██        | 1000/5000 [00:10<00:44, 90.87it/s]cycle 0 Propagation 1:  30%|███       | 1500/5000 [00:16<00:38, 91.60it/s]cycle 0 Propagation 1:  40%|████      | 2000/5000 [00:21<00:32, 92.60it/s]cycle 0 Propagation 1:  50%|█████     | 2500/5000 [00:26<00:26, 93.24it/s]cycle 0 Propagation 1:  60%|██████    | 3000/5000 [00:32<00:21, 93.06it/s]cycle 0 Propagation 1:  70%|███████   | 3500/5000 [00:37<00:16, 92.85it/s]cycle 0 Propagation 1:  80%|████████  | 4000/5000 [00:42<00:10, 93.66it/s]cycle 0 Propagation 1:  90%|█████████ | 4500/5000 [00:48<00:05, 93.53it/s]cycle 0 Propagation 1:  90%|█████████ | 4500/5000 [00:53<00:05, 83.56it/s]
+/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: invalid value encountered in log
+  self.free_energy = -self.kBT * np.log(self.peq)
+/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:235: ComplexWarning: Casting complex values to real discards the imaginary part
+  mfpts[i, j] = 1 / self.peq[j] * term1
+combined dist to be fed into DHAM in shape:  (2, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  3.8181818181818183
+last visited state (local start) updated. converted to x space that's:  3.4545454545454546
+cycle 0 propagation number 2 starting
+optimizing to get g_param from start state: 4 to end state: 8 in working indices.
+converted to xspace that's from: 3.4545454545454546 to 3.8181818181818183
+upper bound: 3.8181818181818183 lower bound: 3.090909090909091
+random try: 0 mfpt: 0.32325720297606414
+random try: 100 mfpt: 0.19058548976749434
+random try: 200 mfpt: 0.12410929258085919
+random try: 300 mfpt: 0.1200295535077429
+random try: 400 mfpt: 0.5040009551557421
+random try: 500 mfpt: 0.3368218258026834
+random try: 600 mfpt: 0.07399745227572138
+random try: 700 mfpt: 0.21538363044240064
+random try: 800 mfpt: 0.09865289081035579
+random try: 900 mfpt: 0.08919393050954925
+random try: 1000 mfpt: 0.15245257777905666
+random try: 1100 mfpt: 0.04871032608596153
+random try: 1200 mfpt: 0.09411810334374633
+random try: 1300 mfpt: 0.03864410043949343
+random try: 1400 mfpt: 0.16805699076611172
+random try: 1500 mfpt: 0.1743057825713039
+random try: 1600 mfpt: 0.1508191812935125
+random try: 1700 mfpt: 0.2954295042223425
+random try: 1800 mfpt: 0.05461860277735237
+random try: 1900 mfpt: 0.0773731958473658
+best mfpt: 0.021991110561454568
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  2
+cycle 0 Propagation 2:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 2:  10%|█         | 500/5000 [00:05<00:45, 97.99it/s]cycle 0 Propagation 2:  20%|██        | 1000/5000 [00:10<00:42, 95.03it/s]cycle 0 Propagation 2:  30%|███       | 1500/5000 [00:15<00:37, 93.66it/s]cycle 0 Propagation 2:  40%|████      | 2000/5000 [00:21<00:32, 93.53it/s]cycle 0 Propagation 2:  50%|█████     | 2500/5000 [00:26<00:26, 93.55it/s]cycle 0 Propagation 2:  60%|██████    | 3000/5000 [00:32<00:21, 92.91it/s]cycle 0 Propagation 2:  70%|███████   | 3500/5000 [00:37<00:16, 92.71it/s]cycle 0 Propagation 2:  80%|████████  | 4000/5000 [00:42<00:10, 92.77it/s]cycle 0 Propagation 2:  90%|█████████ | 4500/5000 [00:48<00:05, 92.39it/s]cycle 0 Propagation 2:  90%|█████████ | 4500/5000 [00:53<00:05, 84.23it/s]
+combined dist to be fed into DHAM in shape:  (3, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  0.9999999999999997
+closest_index (local target) updated. converted to x space that's:  3.909090909090909
+last visited state (local start) updated. converted to x space that's:  3.4545454545454546
+cycle 0 propagation number 3 starting
+optimizing to get g_param from start state: 4 to end state: 9 in working indices.
+converted to xspace that's from: 3.4545454545454546 to 3.909090909090909
+upper bound: 3.909090909090909 lower bound: 3.090909090909091
+random try: 0 mfpt: 0.08142513358251988
+random try: 100 mfpt: 0.274945109464233
+random try: 200 mfpt: 0.05178975648325586
+random try: 300 mfpt: 0.12483166271644923
+random try: 400 mfpt: 0.07610814709676936
+random try: 500 mfpt: 0.065225423560633
+random try: 600 mfpt: 0.1256890745302842
+random try: 700 mfpt: 0.060431716839245676
+random try: 800 mfpt: 0.059836505633163166
+random try: 900 mfpt: 0.07066080345571195
+random try: 1000 mfpt: 0.15359696071437232
+random try: 1100 mfpt: 0.0803933159984729
+random try: 1200 mfpt: 0.16287802483984745
+random try: 1300 mfpt: 0.12553843235976664
+random try: 1400 mfpt: 0.11438019205135723
+random try: 1500 mfpt: 0.1420988914179429
+random try: 1600 mfpt: 0.15308983990220015
+random try: 1700 mfpt: 0.0994865940021021
+random try: 1800 mfpt: 0.7292053559248753
+random try: 1900 mfpt: 0.17290743129154054
+best mfpt: 0.013360588997933982
+K is not avaliable, we build it from M via logm
+propagating
+current target state:  8
+cycle count:  0
+prop index:  3
+cycle 0 Propagation 3:   0%|          | 0/5000 [00:00<?, ?it/s]cycle 0 Propagation 3:  10%|█         | 500/5000 [00:05<00:48, 92.77it/s]cycle 0 Propagation 3:  20%|██        | 1000/5000 [00:10<00:43, 92.12it/s]cycle 0 Propagation 3:  30%|███       | 1500/5000 [00:16<00:37, 92.37it/s]cycle 0 Propagation 3:  40%|████      | 2000/5000 [00:21<00:32, 92.80it/s]cycle 0 Propagation 3:  50%|█████     | 2500/5000 [00:26<00:26, 93.98it/s]cycle 0 Propagation 3:  60%|██████    | 3000/5000 [00:32<00:21, 93.16it/s]cycle 0 Propagation 3:  70%|███████   | 3500/5000 [00:37<00:16, 92.01it/s]cycle 0 Propagation 3:  80%|████████  | 4000/5000 [00:43<00:10, 91.65it/s]cycle 0 Propagation 3:  90%|█████████ | 4500/5000 [00:48<00:05, 92.43it/s]cycle 0 Propagation 3:  90%|█████████ | 4500/5000 [00:54<00:06, 83.02it/s]
+/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py:78: RuntimeWarning: invalid value encountered in multiply
+  self.free_energy = -self.kBT * np.log(self.peq)
+combined dist to be fed into DHAM in shape:  (4, 5000)
+using static Binning with 100 bins
+Using symmetry in DHAM
+sum of peq in dham reconstruction:  1.0
+closest_index (local target) updated. converted to x space that's:  5.545454545454546
+last visited state (local start) updated. converted to x space that's:  5.090909090909091
+cycle 0 propagation number 4 starting
+optimizing to get g_param from start state: 22 to end state: 27 in working indices.
+converted to xspace that's from: 5.090909090909091 to 5.545454545454546
+upper bound: 5.545454545454546 lower bound: 3.090909090909091
+random try: 0 mfpt: 56.005945075365744
+random try: 100 mfpt: 2852.414480066418
+random try: 200 mfpt: 26.08377235018919
+random try: 300 mfpt: 1030.24592845648
+random try: 400 mfpt: 351.3458953742189
+random try: 500 mfpt: 7098.327614898679
+random try: 600 mfpt: 297.5441163517688
+random try: 700 mfpt: 8359.737997748864
+random try: 800 mfpt: 2280.3624211818014
+random try: 900 mfpt: 104.89275453346826
+random try: 1000 mfpt: 28106.50300000114
+random try: 1100 mfpt: 16.0760290033194
+random try: 1200 mfpt: 1077.6965327964854
+random try: 1300 mfpt: 1734.9576896177653
+random try: 1400 mfpt: 37.4626467768783
+random try: 1500 mfpt: 6774.893002525638
+random try: 1600 mfpt: 3334.187445172219
+random try: 1700 mfpt: 4818.962616711439
+random try: 1800 mfpt: 32218.952554517
+random try: 1900 mfpt: 6368.901447072344
+best mfpt: 0.6725203450623705
+K is not avaliable, we build it from M via logm
+Traceback (most recent call last):
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/explore_sim_PMg.py", line 355, in <module>
+    gaussian_params = try_and_optim_M(working_MM,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/util.py", line 122, in try_and_optim_M
+    res = minimize(mfpt_helper, #minimize comes from scipy.
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_minimize.py", line 710, in minimize
+    res = _minimize_lbfgsb(fun, x0, args, jac, bounds,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_lbfgsb_py.py", line 365, in _minimize_lbfgsb
+    f, g = func_and_grad(x)
+           ^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 286, in fun_and_grad
+    self._update_grad()
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 256, in _update_grad
+    self._update_grad_impl()
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 173, in update_grad
+    self.g = approx_derivative(fun_wrapped, self.x, f0=self.f,
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 505, in approx_derivative
+    return _dense_difference(fun_wrapped, x0, f0, h,
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 576, in _dense_difference
+    df = fun(x) - f0
+         ^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_numdiff.py", line 456, in fun_wrapped
+    f = np.atleast_1d(fun(x, *args, **kwargs))
+                      ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/optimize/_differentiable_functions.py", line 137, in fun_wrapped
+    fx = fun(np.copy(x), *args)
+         ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/util.py", line 115, in mfpt_helper
+    msm._compute_peq_fes_M()
+  File "/home/tj/WORK/RL_MFPT/1D_PMg_backforth/MSM.py", line 74, in _compute_peq_fes_M
+    evalues, evectors = eig(self.M)
+                        ^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/linalg/_decomp.py", line 213, in eig
+    a1 = _asarray_validated(a, check_finite=check_finite)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/scipy/_lib/_util.py", line 240, in _asarray_validated
+    a = toarray(a)
+        ^^^^^^^^^^
+  File "/home/tj/miniconda3/envs/biophys_env/lib/python3.11/site-packages/numpy/lib/function_base.py", line 630, in asarray_chkfinite
+    raise ValueError(
+ValueError: array must not contain infs or NaNs

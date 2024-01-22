@@ -15,6 +15,9 @@ from tqdm import tqdm
 import openmm
 import config
 
+plt.rcParams.update({'font.size': 18})
+
+
 """
 
 def gaussian_2d(x, y, ax, bx, by, cx, cy): #deprecated
@@ -447,6 +450,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 system.addForce(force)
             
             if plot:
+                plot_3d = True
                 #plot the fes.
                 x = np.linspace(0, 2*np.pi, 100)
                 y = np.linspace(0, 2*np.pi, 100)
@@ -465,17 +469,38 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - (-offset)))))
                 total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - (2 * pi + offset)))))
                 Z += total_energy_barrier
+                Z = Z - Z.min()
 
-                plt.figure()
-                plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp* 12/7 * 4.184, origin="lower")
-                plt.xlabel("x")
-                plt.xlim([-1, 1+2*np.pi])
-                plt.ylim([-1, 1+2*np.pi])
-                plt.ylabel("y")
-                plt.title("FES mode = multiwell, pbc=False")
-                plt.colorbar()
-                plt.savefig(plot_path)
-                plt.close()
+                if plot_3d:
+                    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+                    #tight layout.
+                    plt.tight_layout(pad=2.0)
+                    plt.subplots_adjust(bottom=0.2)
+                    surf = ax.plot_surface(X, Y, Z, cmap="coolwarm", linewidth=0.2, rstride=5, cstride=5, alpha=0.8)
+                    ax.contourf(X, Y, Z, zdir='z', offset=0, cmap="coolwarm")
+
+                    ax.set_xlabel("x (nm)")
+                    ax.set_ylabel("y (nm)")
+                    #ax.set_zlabel("U (kcal/mol)")
+                    #ax.set_zlim([0, amp * 12/7])
+                    #ax.set_title("FES mode = multiwell, pbc=False")
+                    cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+                    cbar.set_label("U (kcal/mol)")
+                    plt.savefig(plot_path, dpi=800)
+                else:
+                    plt.figure()
+                    plt.tight_layout(pad=2.0)
+                    plt.subplots_adjust(bottom=0.2)
+                    plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], origin="lower")
+                    plt.xlabel("x (nm)")
+                    plt.xlim([0, 2*np.pi])
+                    plt.ylim([0, 2*np.pi])
+                    plt.ylabel("y (nm)")
+                    #plt.title("FES mode = multiwell, pbc=False")
+                    cbar=plt.colorbar()
+                    cbar.set_label("U (kcal/mol)")
+                    plt.savefig(plot_path, dpi=800)
+                    plt.close()
                 fes = Z
             
     if mode == "funnel":

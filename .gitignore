@@ -1,4 +1,5 @@
 *.pyc
+**/*.dcd
 __pycache__/
 RL_CLEANRL/cleanrl
 /2D_model_potential_TW/__pycache__/*
@@ -56,3 +57,18 @@ RL_CLEANRL/cleanrl
 /1D_NaCl_TW_backforth/__pycache__/*
 /1D_NaCl_TW_backforth/figs/*
 /1D_NaCl_TW_backforth/distance/*
+
+/1D_PMg/trajectory/*
+/1D_PMg/figs/*
+/1D_PMg/gaussian_params/*
+/1D_PMg/params/*
+/1D_PMg/distance/*
+
+/1D_PMg_backforth/trajectory/*
+/1D_PMg_backforth/figs/*
+/1D_PMg_backforth/gaussian_params/*
+/1D_PMg_backforth/params/*
+/1D_PMg_backforth/distance/*
+
+./paper_publication/data/*
+./paper_publication/

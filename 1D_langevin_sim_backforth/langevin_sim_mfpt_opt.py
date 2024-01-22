@@ -57,8 +57,6 @@ def propagate(simulation,
         dcd_file.writeModel(state.getPositions(asNumpy=True))
     file_handle.close()
 
-
-
     #load traj and process it with mdtraj.
     with open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb", 'w') as f:
         openmm.app.PDBFile.writeFile(simulation.topology, state.getPositions(), f)
@@ -169,7 +167,7 @@ def random_initial_bias(initial_position, num_gaussians):
     initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm
     rng = np.random.default_rng()
     #a = np.ones(10)
-    a = np.ones(num_gaussians) * 0.01 
+    a = np.ones(num_gaussians) * 0.01 * 4.184 #unit in kJ/mol 
     b = rng.uniform(initial_position[0]-0.5, initial_position[0]+0.5, num_gaussians)
     c = rng.uniform(0, 2*np.pi, num_gaussians)
     return np.concatenate((a,b,c), axis=None)
@@ -183,8 +181,10 @@ if __name__ == "__main__":
     top = Topology()
     top.addChain()
     top.addResidue("xxx", top._chains[0])
-    top.addAtom("X", elem, top._chains[0]._residues[0])
-    mass = 12.0 * unit.amu
+    top.addAtom("X1", elem, top._chains[0]._residues[0])
+    top.addAtom("X2", elem, top._chains[0]._residues[0])
+    mass1 = 12.0 * unit.amu
+    mass2 = 1.0 * unit.amu 
     for i_sim in range(config.num_sim):
         time_tag = time.strftime("%Y%m%d-%H%M%S")
         print("system initializing")
@@ -193,9 +193,18 @@ if __name__ == "__main__":
 
         #initialize peseudo atom system.
         system = openmm.System()
-        system.addParticle(mass)
+        system.addParticle(mass1)
+        system.addParticle(mass2)
         system, fes = apply_fes(system = system, 
                                 particle_idx=0, 
+                                gaussian_param = None, 
+                                pbc = config.pbc, 
+                                amp = config.amp, 
+                                name = "FES",
+                                mode=config.fes_mode, 
+                                plot = True)
+        system, fes = apply_fes(system = system, 
+                                particle_idx=1, 
                                 gaussian_param = None, 
                                 pbc = config.pbc, 
                                 amp = config.amp, 
@@ -243,6 +252,11 @@ if __name__ == "__main__":
                     simulation.context.setPositions(config.start_state)
                     simulation.context.setVelocitiesToTemperature(300*unit.kelvin)
                     simulation.minimizeEnergy()
+
+                    #save the simulation into pdb
+                    with open(f"./trajectory/explore/{time_tag}_langevin_sim_explore_cyc_{cycle_count}_prop_{i_prop}.pdb", 'w') as f:
+                        openmm.app.PDBFile.writeFile(simulation.topology, simulation.context.getState(getPositions=True, enforcePeriodicBox=False).getPositions(), f)
+
                     if config.pbc:
                         simulation.context.setPeriodicBoxVectors(a,b,c)
 

@@ -145,8 +145,8 @@ if __name__ == "__main__":
         #fes = np.zeros([int(sim_steps/dcdfreq), 50, 50])
         potential_energy = []
 
-        file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
-        dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
+        #file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
+        #dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
 
         progress_bar = tqdm(total = config.sim_steps/config.dcdfreq)
 
@@ -166,8 +166,10 @@ if __name__ == "__main__":
             #fes[i,:,:] = metaD.getFreeEnergy()
             energy = state.getPotentialEnergy()
             potential_energy.append(energy)
-            dcd_file.writeModel(state.getPositions(asNumpy=True))
-        file_handle.close()
+            #dcd_file.writeModel(state.getPositions(asNumpy=True))
+            simulation.reporters.append(openmm.app.DCDReporter(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', config.dcdfreq))
+
+        #file_handle.close()
 
         energy_CV = metaD.getFreeEnergy()
         print("energy_CV: ", energy_CV)
