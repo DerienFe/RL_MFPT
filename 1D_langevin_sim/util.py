@@ -530,6 +530,108 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
 
     return system, fes #return the system and the fes (2D array for plotting.)
 
+def apply_fes_3D(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
+    """
+    this function apply the bias given by the gaussian_param to the system.
+    """
+    pi = np.pi #we need convert this into nm.
+    k = 5
+    max_barrier = '1e2'
+    offset = 0.5
+    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
+    right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
+    bottom_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * y - (-{offset}))))")
+    top_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (y - (2 * {pi} + {offset})))))")
+
+    left_pot.addParticle(particle_idx)
+    right_pot.addParticle(particle_idx)
+    bottom_pot.addParticle(particle_idx)
+    top_pot.addParticle(particle_idx)
+
+    system.addForce(left_pot)
+    system.addForce(right_pot)
+    system.addForce(bottom_pot)
+    system.addForce(top_pot)
+
+    if mode == "multiwell":
+        """
+        here we create a multiple well potential.
+         essentially we deduct multiple gaussians from a flat surface, 
+         with a positive gaussian acting as an additional barrier.
+         note we have to implement this into openmm CustomExternalForce.
+            the x,y is [0, 2pi]
+         eq:
+            U(x,y) = amp * (1                                                                   #flat surface
+                            - A_i*exp(-(x-x0i)^2/(2*sigma_xi^2) - (y-y0i)^2/(2*sigma_yi^2))) ...        #deduct gaussians
+                            + A_j * exp(-(x-x0j)^2/(2*sigma_xj^2) - (y-y0j)^2/(2*sigma_yj^2))       #add a sharp positive gaussian
+        """
+        if pbc:
+            raise NotImplementedError("pbc not implemented for multi-well potential.")
+        else:
+            num_hills = 9
+
+            #here's the well params
+            A_i = np.array([0.9, 0.3, 0.7, 1, 0.2, 0.4, 0.9, 0.9, 0.9]) * amp #this is in kcal/mol.
+            x0_i = [1.12, 1, 3, 4.15, 4, 5.27, 4.75, 6, 1] # this is in nm.
+            y0_i = [1.34, 2.25, 2.31, 3.62, 5, 4.14, 4.5, 1.52, 5]
+            z0_i = [1.12, 1, 3, 3.5, 3, 5.2, 4.34, 6, 4]
+
+            sigma_x_i = [0.6, 0.3, 0.4, 2, 0.9, 1, 0.3, 0.5, 0.5]
+            sigma_y_i = [0.7, 0.3, 0.4, 1, 0.9, 1, 0.3, 0.5, 0.5]
+            sigma_z_i = [0.8, 0.3, 0.2, 0.1, 0.3, 1, 0.3, 0.7, 0.5]
+
+
+            A_j = np.array([0.3])* amp
+            x0_j = [np.pi]
+            y0_j = [np.pi]
+            z0_j = [np.pi]
+            sigma_x_j = [3]
+            sigma_y_j = [0.3]
+            sigma_z_j = [0.1]
+
+            #now we add the force for all gaussians.
+            #note all energy is in Kj/mol unit.
+            energy = str(amp * 4.184) #flat surface
+            force = openmm.CustomExternalForce(energy)
+            force.addParticle(particle_idx)
+            system.addForce(force)
+            for i in range(num_hills):
+                energy = f"A{i}*exp(-(x-x0{i})^2/(2*sigma_x{i}^2))"
+                force = openmm.CustomExternalForce(energy)
+
+                #examine the current energy term within force.
+                print(force.getEnergyFunction())
+                force.addGlobalParameter(f"A{i}", A_i[i] * 4.184) #convert kcal to kj
+                force.addGlobalParameter(f"x0{i}", x0_i[i])
+                force.addGlobalParameter(f"sigma_x{i}", sigma_x_i[i])
+                force.addParticle(particle_idx)
+                #we append the force to the system.
+                system.addForce(force)
+            
+            if plot:
+                #plot the fes.
+                x = np.linspace(0, 2*np.pi, config.num_bins)
+                Z = np.zeros_like(x)
+                for i in range(num_hills):
+                    Z += A_i[i] * 4.184 * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
+
+                #add the x boundary barrier in plot
+                Z += float(max_barrier) * (1 / (1 + np.exp(k * (x - (-offset))))) #left
+                Z += float(max_barrier) * (1 / (1 + np.exp(-k * (x - (2 * pi + offset))))) #right
+
+                plt.figure()
+                plt.plot(x, Z, label="multiwell FES")
+                plt.xlabel("x")
+                plt.xlim([0, 2*np.pi])
+                plt.title("FES mode = 1D multiwell, pbc=False")
+                plt.savefig(plot_path)
+                plt.close()
+                fes = Z
+    else:
+        raise NotImplementedError("Only the muultiwell method has been implemented here.")
+    return system, fes #return the system and the fes (2D array for plotting.)
+
+
 def apply_bias(system, particle_idx, gaussian_param, pbc = False, name = "BIAS", num_gaussians = 20):
     """
     this applies a bias using customexternal force class. similar as apply_fes.
