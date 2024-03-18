@@ -375,7 +375,7 @@ def try_and_optim_sparse_M(M,working_indices, time_class,num_gaussian=10, start_
         #print(M_biased)
         #peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
         start = time.time()
-        peq, F = compute_fre_energy_sparse(M_biased.T, kT=0.5981)
+        peq, F = compute_free_energy_power_method_sparse(M_biased.T, kT=0.5981)
         duration = time.time() - start
         time_class.log_event(duration,2)
         
@@ -450,7 +450,7 @@ def try_and_optim_sparse_M(M,working_indices, time_class,num_gaussian=10, start_
         #print(M_biased)
         #peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
         #peq, F, _,_,_,_ = compute_free_energy(M_biased.T,kT = 0.5981)
-        peq, F = compute_fre_energy_sparse(M_biased, kT=0.5981)
+        peq, F = compute_free_energy_power_method_sparse(M_biased, kT=0.5981)
         #return peq, M_biased
         mfpts_biased = Markov_mfpt_calc_sparse(peq, M_biased)
         mfpt_biased = mfpts_biased[start_index, end_index]
