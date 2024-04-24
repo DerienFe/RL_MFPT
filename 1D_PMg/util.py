@@ -63,7 +63,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
         total_bias = np.zeros_like(msm.qspace)
         for j in range(num_gaussian):
             total_bias += gaussian(qspace, a[j], b[j], c[j])
-
+        #project the total_bias into the pca space.
         working_bias = total_bias[working_indices]
         msm._bias_M(working_bias, method = "direct_bias")
         msm._compute_peq_fes_M()

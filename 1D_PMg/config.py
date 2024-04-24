@@ -22,7 +22,7 @@ load_global_gaussian_params_from_txt = False
 
 #MD settings
 T = 300 #unit in kelvin
-propagation_step = 5000
+propagation_step = 50000 #5000
 stepsize = 0.002 * unit.picoseconds 
 stepsize_unbias = 0.002 * unit.picoseconds 
 dcdfreq = 100

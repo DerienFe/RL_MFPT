@@ -335,7 +335,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     k = 5
     max_barrier = '1e2'
     offset = 0.4
-    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
+    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * (x - (1-{offset})))))")
     right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
     left_pot.addParticle(particle_idx)
     right_pot.addParticle(particle_idx)
@@ -437,13 +437,13 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             
             if plot:
                 #plot the fes.
-                x = np.linspace(0, 2*np.pi, config.num_bins)
+                x = np.linspace(0, 2*np.pi+1, config.num_bins)
                 Z = np.zeros_like(x)
                 for i in range(num_hills):
                     Z += A_i[i] * 4.184 * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
 
                 #add the x boundary barrier in plot
-                Z += float(max_barrier) * (1 / (1 + np.exp(k * (x - (-offset))))) #left
+                Z += float(max_barrier) * (1 / (1 + np.exp(k * (x - (1-offset))))) #left
                 Z += float(max_barrier) * (1 / (1 + np.exp(-k * (x - (2 * pi + offset))))) #right
 
                 plt.figure()

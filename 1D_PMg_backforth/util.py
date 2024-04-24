@@ -128,7 +128,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                    #method='Nelder-Mead', 
                    method="L-BFGS-B",
                    bounds= [(0.1, 1.5)]*config.num_gaussian + [(config.qspace_low, config.qspace_high)]*config.num_gaussian + [(0.7, 2)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-4)
+                   tol=1e-6)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):

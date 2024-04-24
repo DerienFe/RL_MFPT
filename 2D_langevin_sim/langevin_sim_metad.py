@@ -45,6 +45,8 @@ if __name__ == "__main__":
     #starting point as [1.29,-1.29,0.0]
 
     for i_sim in range(config.num_sim):
+        #print the config.
+        print(f"config: {config.__dict__}")
         system = openmm.System()
         system.addParticle(mass)
 

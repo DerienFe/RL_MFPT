@@ -97,82 +97,155 @@ def bias_K_1D(K, total_bias, kT=0.5981):
     return K_biased
 
 
+
 #test plot the K fes.
 K = create_K_1D(N, kT)
 F = compute_free_energy(K, kT)[1]
 F -= F[88]
-
 #we truncate the F until 88.
 F = F[:89]
 
-#plt.plot(F)
-#plt.show()
 colormap = plt.cm.get_cmap('coolwarm', gaussian_params_pos.shape[0])
-#plot the FES. up until 88.
-plt.figure(figsize=(8,6))
-plt.plot(88, F[88], marker = 'x', color = 'red', markersize = 10)
-#plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
-plt.plot(F, color = 'black', linewidth = 2)
-F_biased_total=[]
-for pos_i in range(0, gaussian_params_pos.shape[0],3):
-    #unpack all the gaussian params. 20 center_gaussian and 20 std gaussian.
-    allparam = gaussian_params_pos[pos_i][0]
 
+
+
+if True:
+    #plot the FES. up until 88.
+    plt.figure(figsize=(8,6))
+    plt.plot(88, F[88], marker = 'x', color = 'red', markersize = 14)
+    #plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
+    plt.plot(F, color = 'black', linewidth = 2)
+    F_biased_total=[]
+    for pos_i in range(0, gaussian_params_pos.shape[0],3):
+        #unpack all the gaussian params. 20 center_gaussian and 20 std gaussian.
+        allparam = gaussian_params_pos[pos_i][0]
+
+        c_g = allparam[:20]
+        std_g = allparam[20:]
+
+        #get the total gaussian bias.
+        total_bias = get_total_bias_1d(qspace, c_g, std_g)
+
+        #now we apply this bias on K and calculate FES.
+        K_biased = bias_K_1D(K, total_bias, kT)
+        F_biased = compute_free_energy(K_biased, kT)[1]
+
+        #truncate the FES until 88.
+        F_biased = F_biased[:89]
+        #zero the F_biased on state 89.
+        F_biased -= F_biased[88]
+        F_biased_total.append(F_biased)
+
+        
+        #plot the current position on F.
+        
+        for i in range(len(F_biased_total)):
+            plt.plot(F_biased_total[i], color = colormap(i*3), alpha = 0.7)
+
+        #get the current color of biased FES.
+        color = colormap(pos_i)
+        #plot the position on F, F_biased, every 3rd position, not exceeding current pos_i.\
+    #the second index for F_biased_total plot.
+    j = 1
+    for i in range(1,pos_i,10):
+        #plot agin the current position on F.
+        plt.plot(i, F[i], marker = 'o', color = colormap(i), markersize = 10)
+        #plot the current position on lastest F_biased.
+        #plt.plot(i, F_biased_total[-1][pos_i], marker = 'o', color = 'red', markersize = 10, alpha = 0.5)
+        plt.plot(i, F_biased_total[j][i], marker = 'o', color = colormap(i), markersize = 10, alpha = 0.75)
+        j += 3
+    #position legend on the top right with alpha=0.7
+    handles, labels = [], []
+    handles.append(plt.Line2D([0], [0], color = 'black', alpha = 1))
+    labels.append(f'unbiased FES')
+    handles.append(plt.Line2D([0], [0], color = colormap(0), alpha = 0.7))
+    labels.append(f'biased FES')
+    #get a marker for the current position.
+    handles.append(plt.Line2D([0], [0], marker = 'o', color = colormap(0), alpha = 0.75, markersize = 10))
+    labels.append(f'current position')
+    #get a marker for target
+    handles.append(plt.Line2D([0], [0], marker = 'x', color = 'red', alpha = 1, markersize = 10))
+    labels.append(f'target position')
+
+    #then we create the legend.
+    plt.legend(handles, labels, loc = 'upper right', fontsize = 15)
+    plt.xlabel('state')
+    plt.ylabel('FES (kcal/mol)')
+    plt.tight_layout()
+    #plt.show()
+    plt.savefig(f'./figs/1D_gif/optim-{pos_i}_overlap.png')
+    plt.close()
+        
+    #import imageio
+    if False:
+        import os
+
+        path = './figs/1D_gif/'
+
+        # Get all file names sorted by their creation time
+        file_names = sorted(os.listdir(path), key=lambda x: int(x.split('-')[1].split('_')[0]) if '_overlap' in x and x.endswith('.png') else 999999)
+
+        # Create a writer object
+        writer = imageio.get_writer('./figs/1D_gif/animation_2.gif', fps=3)
+
+        # Add images to the writer object
+        for file_name in file_names:
+            if 'overlap' in file_name and file_name.endswith('.png'):
+                writer.append_data(imageio.imread(os.path.join(path, file_name)))
+
+        # Close the writer object
+        writer.close()
+
+        print('done')
+
+##################################################
+if True:
+    #here we take the state 8 as example, show the decomposition of the gaussian bias.
+    plt.figure(figsize=(8,6))
+    plt.plot(88, F[88], marker = 'x', color = 'red', markersize = 14)
+    #plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
+    plt.plot(F, color = 'black', linewidth = 2)
+
+    pos_i = 8
+    allparam = gaussian_params_pos[pos_i][0]
     c_g = allparam[:20]
     std_g = allparam[20:]
-
-    #get the total gaussian bias.
+    for i in range(20):
+        individual_bias = gaussian_1d(qspace, c_g[i], std_g[i])
+        #we cut until 88.
+        individual_bias = individual_bias[:89]
+        plt.plot(individual_bias, color = 'grey', alpha = 1, linewidth = 1.5, linestyle = '--')
     total_bias = get_total_bias_1d(qspace, c_g, std_g)
+    total_bias = total_bias[:89]
+    plt.plot(total_bias, color = colormap(pos_i), linewidth = 2, linestyle = '--')
+    plt.plot(pos_i, F[pos_i], marker = 'o', color = colormap(pos_i), markersize = 10)
+    F_biased = F + total_bias
+    plt.plot(F_biased, color = colormap(pos_i), linewidth = 2)
+    plt.plot(pos_i, F_biased[pos_i], marker = 'o', color = colormap(pos_i), alpha = 0.75, markersize = 10)
 
-    #now we apply this bias on K and calculate FES.
-    K_biased = bias_K_1D(K, total_bias, kT)
-    F_biased = compute_free_energy(K_biased, kT)[1]
+    handles, labels = [], []
+    handles.append(plt.Line2D([0], [0], color = 'black', alpha = 1))
+    labels.append(f'unbiased FES')
+    handles.append(plt.Line2D([0], [0], color = colormap(pos_i), alpha = 1, linewidth = 2))
+    labels.append(f'biased FES')
+    handles.append(plt.Line2D([0], [0], color = 'blue', alpha = 1, linewidth = 1.5, linestyle = '--'))
+    labels.append(f'total bias')
+    handles.append(plt.Line2D([0], [0], color = 'grey', alpha = 1, linestyle = '--'))
+    labels.append(f'individual bias')
+    handles.append(plt.Line2D([0], [0], marker = 'o', color = colormap(pos_i), alpha = 1, markersize = 10))
+    labels.append(f'current position')
+    handles.append(plt.Line2D([0], [0], marker = 'x', color = 'red', alpha = 1, markersize = 10))
+    labels.append(f'target position')
+    plt.legend(handles, labels, loc = 'upper right', fontsize = 15)
 
-    #truncate the FES until 88.
-    F_biased = F_biased[:89]
-    #zero the F_biased on state 89.
-    F_biased -= F_biased[88]
-    F_biased_total.append(F_biased)
+    plt.xlabel('state')
+    plt.ylabel('FES (kcal/mol)')
+    plt.tight_layout()
+    plt.savefig(f'./figs/1D_gif/optim-{pos_i}_bias_decomposition.png')
+    plt.close()
+    #plt.show()
 
-    
-    #plot the current position on F.
-    
-    for i in range(len(F_biased_total)):
-        plt.plot(F_biased_total[i], color = colormap(i*3), alpha = 0.7)
+##################################################
 
-    #plot agin the current position on F.
-    #plt.plot(pos_i, F[pos_i], marker = 'o', color = 'red', markersize = 10)
-    #plot the current position on lastest F_biased.
-    #plt.plot(pos_i, F_biased_total[-1][pos_i], marker = 'o', color = 'red', markersize = 10, alpha = 0.5)
-    
-#position legend on the top right with alpha=0.7
-plt.legend()
-plt.xlabel('state')
-plt.ylabel('FES (kcal/mol)')
-plt.tight_layout()
-#plt.show()
-plt.savefig(f'./figs/1D_gif/optim-{pos_i}_overlap.png')
-plt.close()
-
-
-
-import imageio
-import os
-
-path = './figs/1D_gif/'
-
-# Get all file names sorted by their creation time
-file_names = sorted(os.listdir(path), key=lambda x: int(x.split('-')[1].split('_')[0]) if '_overlap' in x and x.endswith('.png') else 999999)
-
-# Create a writer object
-writer = imageio.get_writer('./figs/1D_gif/animation_2.gif', fps=3)
-
-# Add images to the writer object
-for file_name in file_names:
-    if 'overlap' in file_name and file_name.endswith('.png'):
-        writer.append_data(imageio.imread(os.path.join(path, file_name)))
-
-# Close the writer object
-writer.close()
 
 print('done')

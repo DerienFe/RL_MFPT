@@ -16,7 +16,7 @@ time_tag = time.strftime("%Y%m%d-%H%M%S")
 amp = 6 
 platform = openmm.Platform.getPlatformByName('CUDA')
 start_state = 2 #Quantity(value = [Vec3(2.0,0.0,0.0)], unit = unit.nanometers)
-end_state = 8 #Quantity(value = [Vec3(8.0,0.0,0.0)], unit = unit.nanometers)
+end_state = 5 #Quantity(value = [Vec3(8.0,0.0,0.0)], unit = unit.nanometers)
 fes_mode = 'multiwell'                      #['gaussian', 'multiwell', 'funnel']
 load_global_gaussian_params_from_txt = False
 

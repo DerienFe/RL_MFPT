@@ -25,7 +25,8 @@ metaD_analysis = False
 plot = False
 plot_modified_fes = False
 plot_metad = False
-plot_metad_fes = True
+plot_metad_fes = False
+plot_unbias = True
 
 if plot_metad_fes:
     #we load the stored energy_cv.
@@ -242,3 +243,59 @@ if plot:
     plt.savefig("./figs/box_plot_log.png")
     plt.close()
 
+if plot_unbias:
+    strideint = 10
+    file_path = "./trajectory/unbias/20240422-153858_unbias_traj.dcd"#20240328-113249_unbias_traj.dcd"
+    traj = mdtraj.load(file_path, top="./trajectory/explore/20231101-140249_langevin_sim_explore_0.pdb",
+                       stride=strideint)
+
+    #this chunk we get the fes. 
+    ###############################
+    elem = Element(0, "X", "X", 1.0)
+    top = Topology()
+    top.addChain()
+    top.addResidue("xxx", top._chains[0])
+    top.addAtom("X", elem, top._chains[0]._residues[0])
+
+    mass = 12.0 * unit.amu
+    #starting point as [1.29,-1.29,0.0]
+    system = openmm.System()
+    system.addParticle(mass)
+    system, fes = apply_fes(system = system, 
+                        particle_idx=0, 
+                        gaussian_param = None, 
+                        pbc = config.pbc, 
+                        name = "FES", 
+                        amp=config.amp, 
+                        mode = config.fes_mode,
+                        plot = True)
+
+    fes = fes/4.184 #convert to kcal/mol
+
+    #plot
+    pos = []
+    for frame in traj:
+        pos.append(frame.xyz[0, :])
+    pos = np.array(pos).squeeze()
+
+
+    for index, p in enumerate(pos):
+        if np.linalg.norm(p[:2] - np.array([1.0, 1.0])) < 0.1:
+            print(f"Reached [1.0, 1.0] at step {index}")
+            break
+
+    time = index * 0.002 * 500 * strideint # in ps.
+    time = time/1e6 #in us
+
+    #plot the traj
+    x = np.linspace(0, 2*np.pi+1, 100)
+    plt.figure()
+    plt.plot(x,fes)
+    plt.xlabel("x")
+    plt.ylabel("FES (kcal/mol)")
+    plt.title(f"Time to reach [1.0, 1.0] is {time:.2f} us")
+    #plot the traj
+    plt.scatter(pos[:,0], fes[np.digitize(pos[:,0], x)], s=3.5, alpha = 0.5, c="black")
+    plt.plot(pos[-1,0], fes[np.digitize(pos[-1,0], x)], 'ro')
+    plt.savefig(f"./figs/unbias/replot_{file_path.split('/')[-1].split('.')[0]}_traj.png")
+    plt.close()

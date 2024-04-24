@@ -211,6 +211,12 @@ if __name__ == "__main__":
 
         x,y = np.meshgrid(np.linspace(0, 2*np.pi, config.num_bins), np.linspace(0, 2*np.pi, config.num_bins))
 
+
+        #save the top as pdb.
+        with open(f"./trajectory/explore/{time_tag}_langevin_sim_explore.pdb", 'w') as f:
+            openmm.app.PDBFile.writeFile(top, config.start_state, f)
+            
+
         #we start propagation.
         #note num_propagation = config.sim_steps/config.propagation_step
         reach = None

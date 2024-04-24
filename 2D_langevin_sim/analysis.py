@@ -22,10 +22,11 @@ from openmm.unit import Quantity
 
 unbias_analysis = False
 metaD_analysis = False
-plot = True
+plot = False
 plot_modified_fes = False
 plot_metad = False
 post_process_unbias = False
+plot_unbias = True
 
 if plot_metad:
     file_list = ['./trajectory/metaD/20231125-1621170_metaD_traj.dcd',
@@ -222,3 +223,54 @@ if plot:
     plt.savefig("./figs/box_plot_log.png")
     plt.close()
 
+if plot_unbias:
+    file_path = "./trajectory/unbias/20240418-183433_unbias_traj.dcd" #0240328-113222_unbias_traj.dcd" #20240329-221509_unbias_traj.dcd #"./trajectory/unbias/20240322-100627_unbias_traj.dcd"
+    traj = mdtraj.load(file_path, top="./trajectory/explore/20231101-133419_langevin_sim_explore_0.pdb")
+
+    #this chunk we get the fes. 
+    ###############################
+    elem = Element(0, "X", "X", 1.0)
+    top = Topology()
+    top.addChain()
+    top.addResidue("xxx", top._chains[0])
+    top.addAtom("X", elem, top._chains[0]._residues[0])
+
+    mass = 12.0 * unit.amu
+    #starting point as [1.29,-1.29,0.0]
+    system = openmm.System()
+    system.addParticle(mass)
+    system, fes = apply_fes(system = system, 
+                        particle_idx=0, 
+                        gaussian_param = None, 
+                        pbc = config.pbc, 
+                        name = "FES", 
+                        amp=config.amp, 
+                        mode = config.fes_mode,
+                        plot = True)
+
+    #traj_tail = traj[-1000:]
+    #plot
+    pos = []
+    for frame in traj:
+        pos.append(frame.xyz[0, :])
+    pos = np.array(pos).squeeze()
+
+    for index, p in enumerate(pos):
+        if np.linalg.norm(p[:2] - np.array([1.0, 1.0])) < 0.1:
+            print(f"Reached [1.0, 1.0] at step {index}")
+            break
+
+    time = index * 0.002 * 500 # in ps.
+    time = time/1e6 #in us
+
+    #plot the traj
+    plt.figure()
+    plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], origin="lower")
+    plt.colorbar()
+    plt.xlabel("x")
+    plt.ylabel("y")
+    plt.title(f"Time to reach [1.0, 1.0] is {time:.2f} us")
+    plt.scatter(pos[::10, 0], pos[::10, 1], s=3.5, alpha = 0.5, c="black")
+    plt.plot(pos[-1,0], pos[-1,1], 'ro', markersize=10)
+    plt.savefig(f"./figs/unbias/replot_{file_path.split('/')[-1].split('.')[0]}_traj.png")
+    plt.close()
