@@ -20,6 +20,7 @@ from openmm import Vec3
 import config
 import csv
 from util import *
+import os
 
 #first we initialize the system.
 # topology
@@ -95,6 +96,9 @@ if __name__ == "__main__":
         reach = None
         i=0
         
+        output_dir = 'trajectory/unbias'
+        if not os.path.exists(output_dir):
+            os.makedirs(output_dir)
         file_handle = open(f'trajectory/unbias/{time_tag}_unbias_traj.dcd', 'wb')
         dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize_unbias)
         for i in tqdm(range(int(config.sim_steps_unbiased//config.dcdfreq))):
@@ -125,6 +129,8 @@ if __name__ == "__main__":
                 plt.ylabel("fes (kJ/mol)")
                 plt.title(f"Unbiased Trajectory, pbc={config.pbc}")
                 #plt.show()
+                if not os.path.exists('figs/unbias'):
+                    os.makedirs('figs/unbias')
                 plt.savefig(f"./figs/unbias/unbias_traj_{time_tag}_simstep_{i*config.dcdfreq}.png")
                 plt.close()
             
@@ -142,6 +148,8 @@ if __name__ == "__main__":
         
         #save the traj and plot it.
         pos_traj = np.array(pos_traj)
+        if not os.path.exists('visited_states'):
+            os.makedirs('visited_states')
         np.savetxt(f"visited_states/{time_tag}_langevin_2D_unbias_traj.txt", pos_traj)
 
         #here we plot.

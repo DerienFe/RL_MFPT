@@ -4,73 +4,35 @@
 __pycache__/
 RL_CLEANRL/cleanrl
 /2D_model_potential_TW/__pycache__/*
-/2D_Dialanine/trajectories/*
-/1D_NaCl_TW/trajectories/*
-/1D_NaCl_TW/__pycache__/*
-/2D_model_potential_TW/langevin_approach/traj/*
-/2D_model_potential_TW/langevin_approach/data/*
-/2D_model_potential_TW/langevin_approach/figs*
-/2D_model_potential_TW/langevin_approach/MetaD_auxfiles/*
+/2D_model_potential_TW/langevin_approach/*
 /2D_model_potential_TW/data*
 /2D_model_potential_TW/figs*
 
-/1D_NaCl_TW/bias_plots/*
-/1D_NaCl_TW/MetaD_auxfiles/*
-/1D_NaCl_TW/gaussian_params/*
-/1D_NaCl_TW/visited_state/*
-/1D_NaCl_TW/trajectories/*
-/1D_NaCl_TW/distance/*
-/1D_NaCl_TW/__pycache__/*
-/1D_NaCl_TW/figs/*
-/1D_NaCl_TW/*png
-/1D_NaCl_TW/fes_metaD/*
+/2D_Dialanine/trajectories/*
 
-/1D_langevin_sim/figs/*
-/1D_langevin_sim/trajectory/*
-/1D_langevin_sim/params/*
-/1D_langevin_sim/visited_states/*
-/1D_langevin_sim/__pycache__/*
-/1D_langevin_sim/langevin_approach/*
+/1D_NaCl_TW/*
+!/1D_NaCl_TW/*.py
 
-/2D_langevin_sim/MetaD_auxfiles/*
-/2D_langevin_sim/trajectory/*
-/2D_langevin_sim/figs/*
-/2D_langevin_sim/data/*
-/2D_langevin_sim/params/*
-/2D_langevin_sim/__pycache__/*
-/2D_langevin_sim/visited_states/*
-/2D_langevin_sim/langevin_approach/*
-/2D_langevin_sim/*mat
+/1D_langevin_sim/*
+!/1D_langevin_sim/*.py
 
-/1D_PMg/trajectory/*
-/1D_PMg/fig/*
-/1D_PMg/gaussian_params/*
-/1D_PMg/distance/*
+/2D_langevin_sim/*
+!/2D_langevin_sim/*.py
 
-/1D_langevin_sim_backforth/figs/*
-/1D_langevin_sim_backforth/trajectory/*
-/1D_langevin_sim_backforth/params/*
-/1D_langevin_sim_backforth/visited_states/*
+/1D_PMg/*
+!/1D_PMg/*.py
 
-/1D_NaCl_TW_backforth/params/*
-/1D_NaCl_TW_backforth/visited_state/*
-/1D_NaCl_TW_backforth/trajectory/*
-/1D_NaCl_TW_backforth/__pycache__/*
-/1D_NaCl_TW_backforth/figs/*
-/1D_NaCl_TW_backforth/distance/*
+/1D_langevin_sim_backforth/*
+!/1D_langevin_sim_backforth/*.py
 
-/1D_PMg/trajectory/*
-/1D_PMg/figs/*
-/1D_PMg/gaussian_params/*
-/1D_PMg/params/*
-/1D_PMg/distance/*
+/1D_NaCl_TW_backforth/*
+!/1D_NaCl_TW_backforth/*.py
 
-/1D_PMg_backforth/trajectory/*
-/1D_PMg_backforth/figs/*
-/1D_PMg_backforth/gaussian_params/*
-/1D_PMg_backforth/params/*
-/1D_PMg_backforth/distance/*
+/1D_PMg_backforth/*
+!/1D_PMg_backforth/*.py
 
 ./paper_publication/data/*
 ./paper_publication/
 paper_publication/data/traj/2D/metad/20231129-1922082_metaD_pos_traj_.npy
+
+**/*.log
