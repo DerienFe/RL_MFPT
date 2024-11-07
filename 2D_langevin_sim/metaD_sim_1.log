@@ -1,13 +1,0 @@
--A0*exp(-(x-x00)^2/(2*sigma_x0^2) - (y-y00)^2/(2*sigma_y0^2))
--A1*exp(-(x-x01)^2/(2*sigma_x1^2) - (y-y01)^2/(2*sigma_y1^2))
--A2*exp(-(x-x02)^2/(2*sigma_x2^2) - (y-y02)^2/(2*sigma_y2^2))
--A3*exp(-(x-x03)^2/(2*sigma_x3^2) - (y-y03)^2/(2*sigma_y3^2))
--A4*exp(-(x-x04)^2/(2*sigma_x4^2) - (y-y04)^2/(2*sigma_y4^2))
--A5*exp(-(x-x05)^2/(2*sigma_x5^2) - (y-y05)^2/(2*sigma_y5^2))
--A6*exp(-(x-x06)^2/(2*sigma_x6^2) - (y-y06)^2/(2*sigma_y6^2))
--A7*exp(-(x-x07)^2/(2*sigma_x7^2) - (y-y07)^2/(2*sigma_y7^2))
--A8*exp(-(x-x08)^2/(2*sigma_x8^2) - (y-y08)^2/(2*sigma_y8^2))
-A9*exp(-(x-x09)^2/(2*sigma_x9^2) - (y-y09)^2/(2*sigma_y9^2))
-minimizing energy
-minimizing energy done, time: 0.95
-  0%|          | 0/50000.0 [00:00<?, ?it/s]

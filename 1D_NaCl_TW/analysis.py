@@ -6,12 +6,14 @@ import os
 import csv
 import matplotlib.pyplot as plt
 
+#set matplotlib font size
+plt.rcParams.update({'font.size': 20})
 #first we get all traj
 
 unbias_analysis = False
 metaD_analysis = False
-plot = False
-plot_modified_fes = True
+plot = True
+plot_modified_fes = False
 
 if plot_modified_fes:
     #we load uniased_profile
@@ -86,6 +88,7 @@ if metaD_analysis:
             writer.writerow([steps_to_7A * 100])
 
 if plot:
+    import seaborn as sns
     mfpt_data = np.genfromtxt("total_steps_mfpt.csv", delimiter=',')
     unbias_data = np.genfromtxt("total_steps_unbiased.csv", delimiter=',')
     metaD_data = np.genfromtxt("total_steps_metaD.csv", delimiter=',')
@@ -100,22 +103,15 @@ if plot:
     unbias_data = unbias_data * 0.002
     metaD_data = metaD_data * 0.002
 
-    #plot the violin plot, show the data points as dots.
-    fig, ax = plt.subplots()
-    ax.violinplot([mfpt_data, unbias_data, metaD_data])
-    ax.set_xticks([1, 2, 3])
-    ax.set_xticklabels(['MFPT', 'Unbiased', 'MetaD'])
-    ax.set_ylabel("Time (ps)")
-    ax.set_title("Time to reach 7A")
-    ax.set_yscale('log')
-    plt.savefig("violin_plot_log.png")
+    # Set a style
+    #sns.set(style="whitegrid", palette="muted", font_scale=1.2)
 
-    fig, ax = plt.subplots()
-    ax.boxplot([mfpt_data, unbias_data, metaD_data])
-    ax.set_xticks([1, 2, 3])
-    ax.set_xticklabels(['MFPT', 'Unbiased', 'MetaD'])
+    # Box plot
+    fig, ax = plt.subplots(figsize=(8, 6))
+    sns.boxplot(data=[mfpt_data, unbias_data, metaD_data], ax=ax)
+    ax.set_xticks([0, 1, 2])
+    ax.set_xticklabels(['MSM-opt MD', 'Classic MD', 'MetaDynamics'])
     ax.set_ylabel("Time (ps)")
-    ax.set_title("Time to reach 7A")
+    ax.set_title("Time to unbind Na-Cl pair")
     ax.set_yscale('log')
-    plt.savefig("box_plot_log.png")
-
+    plt.savefig("box_plot_log.png", dpi=300)

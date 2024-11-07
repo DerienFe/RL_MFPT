@@ -54,6 +54,10 @@ if __name__ == "__main__":
                         amp=config.amp, 
                         mode = config.fes_mode,
                         plot = True)
+        #save the fes to a matlab .mat file.
+        if True:
+            import scipy.io
+            scipy.io.savemat(f"./fes_{time_tag}.mat", {'fes':fes})
         z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z
         z_pot.addParticle(0)
         system.addForce(z_pot) #on z, large barrier
@@ -87,14 +91,14 @@ if __name__ == "__main__":
             simulation.context.setPeriodicBoxVectors(a,b,c)
 
 
-        pos_traj = []#np.zeros([int(config.sim_steps/config.dcdfreq), 3]) #note config.sim_steps represents the maximum number of steps here in the unbiased case.
+        pos_traj = []#np.zeros([int(config.sim_steps_unbiased/config.dcdfreq), 3]) #note config.sim_steps_unbiased represents the maximum number of steps here in the unbiased case.
         reach = None
         i=0
         
         file_handle = open(f'trajectory/unbias/{time_tag}_unbias_traj.dcd', 'wb')
         dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize_unbias)
-        #for i in tqdm(range(config.sim_steps)):
-        while reach is None:
+        for i in tqdm(range(int(config.sim_steps_unbiased/config.dcdfreq))):
+        #while reach is None:
             simulation.step(config.dcdfreq)
             state = simulation.context.getState(getPositions=True, enforcePeriodicBox=config.pbc)
             pos_traj.append(state.getPositions(asNumpy=True)[0,:])
@@ -102,7 +106,7 @@ if __name__ == "__main__":
             #we determine if we reached endstate.
             cur_pos = np.array(pos_traj[-1])
             
-            i+=1
+            #i+=1
             if np.linalg.norm(cur_pos - end_state_xyz) < 0.1:
                 print("reached end state")
                 reach = True

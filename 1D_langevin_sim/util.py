@@ -69,7 +69,6 @@ def mfpt_calc(peq, K):
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
-
 def bias_K_1D(K, total_bias, kT=0.5981):
     """
     K is the unperturbed transition matrix.
@@ -143,7 +142,7 @@ def bias_M_1D(M, total_bias, kT=0.5981):
     for i in range(N):
         for j in range(N):
             u_ij = total_bias[j] - total_bias[i]
-            M_biased[i, j] = M[i, j] * np.exp(-u_ij / 2*kT)
+            M_biased[i, j] = M[i, j] * np.exp(-u_ij / (2*kT))
         M_biased[i, i] = M[i,i]
 
     """for i in range(N):
@@ -179,7 +178,6 @@ def Markov_mfpt_calc(peq, M):
     #result = kemeny_constant_check(N, mfpt, peq)
     return mfpt
 
-
 def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_index=0, plot = False):
     #print("inside try and optim_M")
     """
@@ -196,6 +194,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     end_state: the ending state. note this has to be converted into the index space.
     index_offset: the offset of the index space. e.g. if the truncated M (with shape [20, 20]) matrix starts from 13 to 33, then the index_offset is 13.
     """
+    x = np.linspace(0, 2*np.pi, config.num_bins) #hard coded for now.
+    best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     #first we convert the big index into "index to the working indices".
 
@@ -204,17 +204,21 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
     start_state_working_index = np.argmin(np.abs(working_indices - start_index))
     end_state_working_index = np.argmin(np.abs(working_indices - end_index))
     print("optimizing to get g_param from start state:", start_state_working_index, "to end state:", end_state_working_index, "in working indices.")
-    
+    print("converted to xspace that's from:", x[working_indices[start_state_working_index]], "to", x[working_indices[end_state_working_index]])
     #now our M/working_indices could be incontinues. #N = M.shape[0]
-    x = np.linspace(0, 2*np.pi, config.num_bins+1) #hard coded for now.
-    best_mfpt = 1e20 #initialise the best mfpt np.inf
+    
+    #we get the upper/lower bound of the gaussian params.
+    upper = x[working_indices[-1]]
+    lower = x[working_indices[0]]
+    print("upper bound:", upper, "lower bound:", lower)
 
-    for i in range(1000): 
+    for try_num in range(1000): 
         rng = np.random.default_rng()
         #we set a to be 1
-        a = np.ones(num_gaussian) #* 1.5
+        a = np.ones(num_gaussian) * 0.6
         b = rng.uniform(0, 2*np.pi, num_gaussian)
-        c = rng.uniform(0.3, 1.5, num_gaussian)
+        #b = rng.uniform(lower, upper, num_gaussian)
+        c = rng.uniform(0.6, 2, num_gaussian)
         
         #we convert the working_indices to the qspace.
 
@@ -241,21 +245,21 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = 0
 
 
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        peq,F,_,_,_,_  = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
         #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
         #print(peq)
         #kemeny_constant_check(M.shape[0], mfpts_biased, peq)
-        if i % 100 == 0:
-            print("random try:", i, "mfpt:", mfpt_biased)
+        if try_num % 100 == 0:
+            print("random try:", try_num, "mfpt:", mfpt_biased)
             kemeny_constant_check(M.shape[0], mfpts_biased, peq)
             #we plot the F.
             
         if best_mfpt > mfpt_biased:
             best_mfpt = mfpt_biased
-            best_params = np.concatenate((a, b, c)) #we concatenate the params into a single array. in shape (30,)
+            best_params = np.concatenate((a, b, c)) #we concatenate the params into a single array. in shape (3*num_gaussian,)
 
     print("best mfpt:", best_mfpt)
     if False: 
@@ -304,7 +308,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                 M_biased[i, :] = M_biased[i, :] / row_sum
             else:
                 M_biased[i, :] = 0
-        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
+        peq,F,_,_,_,_ = compute_free_energy(M_biased.T.astype(np.float64), kT=0.5981)
         #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -317,9 +321,10 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_index=0, end_inde
                          start_state_working_index, 
                          end_state_working_index,
                          working_indices), 
-                   method='Nelder-Mead', 
-                   bounds= [(0.1, 2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.3, 1.5)]*config.num_gaussian, #add bounds to the parameters
-                   tol=1e-3)
+                   #method='Nelder-Mead', 
+                   method="L-BFGS-B",
+                   bounds= [(0.1, 1.2)]*config.num_gaussian + [(0,2*np.pi)]*config.num_gaussian + [(0.6, 5)]*config.num_gaussian, #add bounds to the parameters
+                   tol=1e-4)
     return res.x    #, best_params
 
 def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FES", amp = 7, mode = "gaussian", plot = False, plot_path = "./fes_visualization.png"):
@@ -327,6 +332,16 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
     this function apply the bias given by the gaussian_param to the system.
     """
     pi = np.pi #we need convert this into nm.
+    k = 5
+    max_barrier = '1e2'
+    offset = 0.4
+    left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * (x - (1-{offset})))))")
+    right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
+    left_pot.addParticle(particle_idx)
+    right_pot.addParticle(particle_idx)
+    system.addForce(left_pot)
+    system.addForce(right_pot)
+
     #unpack gaussian parameters
     if mode == "gaussian":
         num_gaussians = int(len(gaussian_param)/5)
@@ -422,10 +437,14 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
             
             if plot:
                 #plot the fes.
-                x = np.linspace(0, 2*np.pi, 100)
+                x = np.linspace(0, 2*np.pi+1, config.num_bins)
                 Z = np.zeros_like(x)
                 for i in range(num_hills):
                     Z += A_i[i] * 4.184 * np.exp(-(x-x0_i[i])**2/(2*sigma_x_i[i]**2))
+
+                #add the x boundary barrier in plot
+                Z += float(max_barrier) * (1 / (1 + np.exp(k * (x - (1-offset))))) #left
+                Z += float(max_barrier) * (1 / (1 + np.exp(-k * (x - (2 * pi + offset))))) #right
 
                 plt.figure()
                 plt.plot(x, Z, label="multiwell FES")
@@ -508,24 +527,6 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                     plt.savefig(plot_path)
                     plt.close()
                     fes = Z
-
-    #at last we add huge barrier at the edge of the box. since we are not using pbc.
-    #this is to prevent the particle from escaping the box.
-    # if x<0, push the atom back to x=0
-    left_pot = openmm.CustomExternalForce("1e10 * step(-x)")
-    right_pot = openmm.CustomExternalForce(f"1e10 * step(-(x - 2*{pi}))")
-    #bottom_pot = openmm.CustomExternalForce("1e10 * step(-y)")
-    #top_pot = openmm.CustomExternalForce(f"1e10 * step(-(y - 2*{pi}))")
-
-    left_pot.addParticle(particle_idx)
-    right_pot.addParticle(particle_idx)
-    #bottom_pot.addParticle(particle_idx)
-    #top_pot.addParticle(particle_idx)
-
-    system.addForce(left_pot)
-    system.addForce(right_pot)
-    #system.addForce(bottom_pot)
-    #system.addForce(top_pot)
 
     return system, fes #return the system and the fes (2D array for plotting.)
 
