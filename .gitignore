@@ -36,3 +36,30 @@ RL_CLEANRL/cleanrl
 paper_publication/data/traj/2D/metad/20231129-1922082_metaD_pos_traj_.npy
 
 **/*.log
+# ---------------------------------------------------------------------------
+# Added during 2026-11 repo cleanup (see docs/CLEANUP_LOG.md).
+# Rebuild environments from docs/ENVIRONMENT.md instead of committing them.
+# ---------------------------------------------------------------------------
+# Python virtual environments (incl. Windows-style venvs: Lib/ + Scripts/)
+.venv/
+venv/
+pyvenv.cfg
+**/Lib/site-packages/
+**/Scripts/*.exe
+**/Scripts/activate*
+**/Scripts/Activate.ps1
+**/Scripts/deactivate.bat
+# Python bytecode (complements *.pyc / __pycache__/ above)
+*.py[cod]
+# Editor / OS clutter
+.vs/
+.DS_Store
+.ipynb_checkpoints/
+# MATLAB autosave files
+*.asv
+# Batch-job stdout captures
+nohup.out
+# Editor workspace settings (the tracked ones were stock VS Code templates)
+.vscode/
+# Dropbox sync conflict copies
+*conflicted copy*
