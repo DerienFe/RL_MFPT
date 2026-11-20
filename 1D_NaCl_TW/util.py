@@ -6,6 +6,7 @@ from scipy.linalg import logm, expm
 from scipy.optimize import minimize
 import matplotlib.pyplot as plt
 import sys 
+import config
 
 def gaussian(x, a, b, c): #self-defined gaussian function
         return a * np.exp(-(x - b)**2 / ((2*c)**2)) 
@@ -136,7 +137,7 @@ def try_and_optim(K=None, num_gaussian=10, start_state=0, end_state=0):
 
     #we construct K from loading the fes in npy files.
     fes = np.load("Unbiased_Profile.npy")
-    K = create_K_1D(fes, N=150+1, kT=0.5981)
+    K = create_K_1D(fes, N=config.num_bins+1, kT=0.5981)
 
     best_mfpt = 1e12 #initialise the best mfpt np.inf
     for i in range(1000): 
@@ -147,7 +148,7 @@ def try_and_optim(K=None, num_gaussian=10, start_state=0, end_state=0):
         b = rng.uniform(1, 9, num_gaussian) #min/max of preloaded NaCl fes x-axis.
         c = rng.uniform(1, 5.0, num_gaussian) 
         
-        qspace = np.linspace(2.0, 9, 150+1)
+        qspace = np.linspace(2.0, 9, config.num_bins+1)
         total_bias = np.zeros_like(qspace)
         for j in range(num_gaussian):
             #print("adding params")
@@ -267,7 +268,7 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
     print("optimizing to get g_param from start state:", start_state_working_index, "to end state:", end_state_working_index, "in working indices.")
     
     #now our M/working_indices could be incontinues. #N = M.shape[0]
-    qspace = np.linspace(2.0, 9, 150+1) #hard coded for now.
+    qspace = np.linspace(2.0, 9, config.num_bins+1) #hard coded for now.
     best_mfpt = 1e20 #initialise the best mfpt np.inf
 
     for i in range(1000): 
@@ -288,8 +289,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         total_bias = total_bias[working_indices]
         
         M_biased = bias_M_1D(M, total_bias, kT=0.5981)
-        #[peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
-        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
@@ -338,8 +339,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
         total_bias = total_bias[working_indices]
 
         M_biased = bias_M_1D(M, total_bias, kT=0.5981)
-        #[peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
-        peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
+        [peq, F, evectors, evalues, evalues_sorted, index] = compute_free_energy(M_biased.T, kT=0.5981)
+        #peq, F = compute_free_energy_power_method(M_biased, kT=0.5981)
         mfpts_biased = Markov_mfpt_calc(peq, M_biased)
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
 
@@ -351,7 +352,8 @@ def try_and_optim_M(M, working_indices, num_gaussian=10, start_state=0, end_stat
                          start_state_working_index, 
                          end_state_working_index,
                          working_indices), 
-                   method='Nelder-Mead', 
+                   #method='Nelder-Mead', 
+                   method='L-BFGS-B',
                    bounds= [(0.1, 2)]*10 + [(0,10)]*10 + [(0.3, 1.5)]*10, #add bounds to the parameters
                    tol=1e-3)
 

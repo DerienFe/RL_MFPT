@@ -21,17 +21,17 @@ from dham import *
 from util import *
 
 def propagate(simulation,
-              gaussian_params,
               prop_index, 
               pos_traj,   #this records the trajectory of the particle. in shape: [prop_index, sim_steps, 3]
               steps=config.propagation_step,
-              dcdfreq=config.dcdfreq,
+              dcdfreq=config.dcdfreq_mfpt,
               stepsize=config.stepsize,
               num_bins=config.num_bins,
               pbc=config.pbc,
               time_tag=None,
               top=None,
-              reach=None
+              reach=None,
+              global_gaussian_params=None,
               ):
     """
     here we use the openmm context object to propagate the system.
@@ -76,12 +76,31 @@ def propagate(simulation,
 
     #we take all previous digitized x and feed it into DHAM.
     coor_x_total = pos_traj[:prop_index+1,:].squeeze() #note this is in coordinate space np.linspace(0, 2*np.pi, num_bins)
+    print("coor_x_total shape: ", coor_x_total.shape)
+    #we now reshape it to [cur_propagation+1, num_bins, 1]
+    coor_x_total = coor_x_total.reshape(prop_index+1, -1, 1)
+    print("coor_x_total shape: ", coor_x_total.shape)
+
+    #here we load all the gaussian_params from previous propagations.
+    #size of gaussian_params: [num_propagation, num_gaussian, 3] (a,b,c),
+    # note for 2D this would be [num_propagation, num_gaussian, 5] (a,bx,by,cx,cy)
+    """gaussian_params = np.zeros([prop_index+1, config.num_gaussian, 3])
+    for i in range(prop_index+1):
+        gaussian_params[i,:,:] = np.loadtxt(f"./params/{time_tag}_gaussian_fes_param_{i}.txt").reshape(-1,3)
+        print(f"gaussian_params for propagation {i} loaded.")
+    """
+    #note: gaussian_params will be passed global now, as a numpy array, in shape [num_propagation, num_gaussian, 3]
 
     #here we use the DHAM.
-    F_M, MM = DHAM_it(coor_x_total.reshape(-1,1), gaussian_params, T=300, lagtime=1, num_bins=num_bins, time_tag=time_tag, prop_index=prop_index)
+    F_M, MM = DHAM_it(coor_x_total, 
+                      global_gaussian_params, 
+                      T=300, 
+                      lagtime=1, 
+                      num_bins=num_bins, 
+                      time_tag=time_tag, 
+                      prop_index=prop_index)
     cur_pos = coor_x_total[-1] #the current position of the particle, in ravelled 1D form.
     
-
     #determine if the particle has reached the target state.
     end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
     end_state_x = end_state_xyz[:1]
@@ -89,7 +108,7 @@ def propagate(simulation,
         #if the distance of current pos is the config.target_state, we set reach to index_d.
         target_distance = np.linalg.norm(d - end_state_x)
         if target_distance < 0.1:
-            reach = index_d * config.dcdfreq
+            reach = index_d * config.dcdfreq_mfpt
 
     return cur_pos, pos_traj, MM, reach, F_M
 
@@ -125,7 +144,7 @@ def find_closest_index(working_indices, final_index, N):
     closest_index = np.ravel_multi_index(closest_state, (N,N), order='C')
     return closest_index
 
-def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None):
+def DHAM_it(CV, gloabl_gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, time_tag=None):
     """
     intput:
     CV: the collective variable we are interested in. now it's 2d.
@@ -137,7 +156,7 @@ def DHAM_it(CV, gaussian_params, T=300, lagtime=2, num_bins=150, prop_index=0, t
     the Markov Matrix
     Free energy surface probed by DHAM.
     """
-    d = DHAM(gaussian_params, num_bins=num_bins)
+    d = DHAM(gloabl_gaussian_params, num_bins=num_bins)
     d.setup(CV, T, prop_index=prop_index, time_tag=time_tag)
 
     d.lagtime = lagtime
@@ -178,7 +197,14 @@ if __name__ == "__main__":
         system = openmm.System() #we initialize the system every
         system.addParticle(mass)
         #gaussian_param = np.loadtxt("./params/gaussian_fes_param.txt")
-        system, fes = apply_fes(system = system, particle_idx=0, gaussian_param = None, pbc = config.pbc, amp = config.amp, name = "FES", mode=config.fes_mode, plot = True)
+        system, fes = apply_fes(system = system, 
+                                particle_idx=0, 
+                                gaussian_param = None, 
+                                pbc = config.pbc, 
+                                amp = config.amp, 
+                                name = "FES",
+                                mode=config.fes_mode, 
+                                plot = True)
         y_pot = openmm.CustomExternalForce("1e3 * y^2") # very large force constant in y
         y_pot.addParticle(0)
         z_pot = openmm.CustomExternalForce("1e3 * z^2") # very large force constant in z
@@ -199,7 +225,7 @@ if __name__ == "__main__":
                                             0.002*unit.picoseconds)
 
         num_propagation = int(config.sim_steps/config.propagation_step)
-        frame_per_propagation = int(config.propagation_step/config.dcdfreq)
+        frame_per_propagation = int(config.propagation_step/config.dcdfreq_mfpt)
         #this stores the digitized, ravelled, x, y coordinates of the particle, for every propagation.
         pos_traj = np.zeros([num_propagation, frame_per_propagation]) #shape: [num_propagation, frame_per_propagation]
 
@@ -218,6 +244,10 @@ if __name__ == "__main__":
                 print("propagation 0 starting")
                 gaussian_params = random_initial_bias(initial_position = config.start_state, num_gaussians = config.num_gaussian)
                 
+                global_gaussian_params = gaussian_params.reshape(1, config.num_gaussian, 3) #this is in shape [1, num_gaussian, 3]
+                #we save the gaussian_params as prop_0 params. later this will be loaded in dham.
+                np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
+
                 #we apply the initial gaussian bias (v small) to the system
                 system = apply_bias(system = system, particle_idx=0, gaussian_param = gaussian_params, pbc = config.pbc, name = "BIAS", num_gaussians = config.num_gaussian)
 
@@ -233,17 +263,17 @@ if __name__ == "__main__":
 
                 #now we propagate the system, i.e. run the langevin simulation.
                 cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                    gaussian_params = gaussian_params,
                                                                     prop_index = i_prop,
                                                                     pos_traj = pos_traj,
                                                                     steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
+                                                                    dcdfreq=config.dcdfreq_mfpt,
                                                                     stepsize=config.stepsize,
                                                                     num_bins=config.num_bins,
                                                                     pbc=config.pbc,
                                                                     time_tag = time_tag,
                                                                     top=top,
-                                                                    reach=reach
+                                                                    reach=reach,
+                                                                    global_gaussian_params=global_gaussian_params,
                                                                     )
 
                 working_MM, working_indices = get_working_MM(MM)
@@ -260,39 +290,17 @@ if __name__ == "__main__":
                 last_traj = pos_traj[i_prop-1,:]
                 last_traj_index = np.digitize(last_traj, x).astype(np.int64)
                 most_visited_state = np.argmax(np.bincount(last_traj_index)) #this is in digitized
+                last_visited_state = last_traj_index[-1] #this is in digitized
 
                 gaussian_params = try_and_optim_M(working_MM,
                                                 working_indices = working_indices,
                                                 num_gaussian = config.num_gaussian,
-                                                start_index = most_visited_state,
+                                                start_index = last_visited_state,
                                                 end_index = closest_index,
                                                 plot = False,
                                                 )
-                
-                #save the gaussian_params
-                np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
-
-                #apply the gaussian_params to openmm system.
-                simulation = update_bias(simulation = simulation,
-                                        gaussian_param = gaussian_params,
-                                        name = "BIAS",
-                                        num_gaussians=config.num_gaussian,
-                                        )
-                
-                #we propagate system again
-                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
-                                                                    gaussian_params = gaussian_params,
-                                                                    prop_index = i_prop,
-                                                                    pos_traj = pos_traj,
-                                                                    steps=config.propagation_step,
-                                                                    dcdfreq=config.dcdfreq,
-                                                                    stepsize=config.stepsize,
-                                                                    num_bins=config.num_bins,
-                                                                    pbc=config.pbc,
-                                                                    time_tag = time_tag,
-                                                                    top=top,
-                                                                    reach=reach
-                                                                    )
+                #np.concate this onto global_gaussian_params
+                global_gaussian_params = np.concatenate((global_gaussian_params, gaussian_params.reshape(1, config.num_gaussian, 3)), axis=0)
                 
                 if True:
                     #here we calculate the total bias given the optimized gaussian_params
@@ -305,9 +313,10 @@ if __name__ == "__main__":
                     #here we plot the reconstructed fes from MM.
                     # we also plot the most_visited_state and closest_index.
                     #plt.figure()
-                    plt.plot(x, F_M, label="DHAM fes")
-                    plt.plot(x[most_visited_state], F_M[most_visited_state], marker='o', markersize=3, color="blue", label = "most visited state (local start)")
-                    plt.plot(x[closest_index], F_M[closest_index], marker='o', markersize=3, color="red", label = "closest state (local target)")
+                    plt.plot(x, F_M*4.184, label="DHAM fes")
+                    #plt.plot(x[most_visited_state], F_M[most_visited_state]*4.184, marker='o', markersize=3, color="blue", label = "most visited state (local start)")
+                    plt.plot(x[last_visited_state], F_M[last_visited_state]*4.184, marker='o', markersize=3, color="blue", label = "last visited state (local start)")
+                    plt.plot(x[closest_index], F_M[closest_index]*4.184, marker='o', markersize=3, color="red", label = "closest state (local target)")
                     #plt.legend()
                     #plt.savefig(f"./figs/explore/{time_tag}_reconstructed_fes_{i_prop}.png")
                     #plt.close()
@@ -336,19 +345,44 @@ if __name__ == "__main__":
 
                     plt.scatter(x[history_traj], fes[history_traj], s=3.5, alpha=0.3, c='grey')
                     plt.scatter(x[recent_traj], fes[recent_traj], s=3.5, alpha=0.8, c='black')
-                    plt.legend()                                     
+                    plt.legend(loc='upper left')
                     plt.savefig(f"./figs/explore/{time_tag}_fes_traj_{i_prop}.png")
                     plt.close()
 
 
+                #save the gaussian_params
+                np.savetxt(f"./params/{time_tag}_gaussian_fes_param_{i_prop}.txt", gaussian_params)
+
+                #apply the gaussian_params to openmm system.
+                simulation = update_bias(simulation = simulation,
+                                        gaussian_param = gaussian_params,
+                                        name = "BIAS",
+                                        num_gaussians=config.num_gaussian,
+                                        )
+                
+                #we propagate system again
+                cur_pos, pos_traj, MM, reach, F_M = propagate(simulation = simulation,
+                                                                    prop_index = i_prop,
+                                                                    pos_traj = pos_traj,
+                                                                    steps=config.propagation_step,
+                                                                    dcdfreq=config.dcdfreq_mfpt,
+                                                                    stepsize=config.stepsize,
+                                                                    num_bins=config.num_bins,
+                                                                    pbc=config.pbc,
+                                                                    time_tag = time_tag,
+                                                                    top=top,
+                                                                    reach=reach,
+                                                                    global_gaussian_params=global_gaussian_params,
+                                                                    )
                 #update working_MM and working_indices
                 working_MM, working_indices = get_working_MM(MM)
                 #update closest_index
                 closest_index = working_indices[np.argmin(np.abs(working_indices - final_index))] #find the closest index in working_indices to final_index.
+                
                 i_prop += 1
 
         #we have reached target state, thus we record the steps used.
-        total_steps = i_prop * config.propagation_step + reach * config.dcdfreq
+        total_steps = i_prop * config.propagation_step + reach * config.dcdfreq_mfpt
         print("total steps used: ", total_steps)
 
         with open("./total_steps_mfpt.csv", "a") as f:

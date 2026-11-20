@@ -15,6 +15,9 @@ from tqdm import tqdm
 import openmm
 import config
 
+plt.rcParams.update({'font.size': 18})
+
+
 """
 
 def gaussian_2d(x, y, ax, bx, by, cx, cy): #deprecated
@@ -32,7 +35,7 @@ def random_initial_bias_2d(initial_position, num_gaussians = 20):
     #we convert the initial position from openmm quantity object to array with just the value.
     initial_position = initial_position.value_in_unit_system(openmm.unit.md_unit_system)[0] #this is in nm.
     rng = np.random.default_rng()
-    a = np.ones(num_gaussians) * 0.1#* 4 #
+    a = np.ones(num_gaussians) * 0.01#* 4 #
     #ay = np.ones(num_gaussians) * 0.1 #there's only one amplitude!
     bx = rng.uniform(initial_position[0]-1, initial_position[0]+1, num_gaussians)
     by = rng.uniform(initial_position[1]-1, initial_position[1]+1, num_gaussians)
@@ -111,7 +114,7 @@ def kemeny_constant_check(mfpt, peq):
         for j in range(N2):
             kemeny[i] = kemeny[i] + mfpt[i, j] * peq[j]
     #print("Performing Kemeny constant check...")
-    #print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
+    print("the min/max of the Kemeny constant is:", np.min(kemeny), np.max(kemeny))
     """
     if np.max(kemeny) - np.min(kemeny) > 1e-6:
         print("Kemeny constant check failed!")
@@ -194,7 +197,7 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
 
     for try_num in range(1000):
         rng = np.random.default_rng()
-        a = np.ones(num_gaussian) * 2
+        a = np.ones(num_gaussian)
         bx = rng.uniform(0, 2*np.pi, num_gaussian)
         by = rng.uniform(0, 2*np.pi, num_gaussian)
         cx = rng.uniform(0.3, 1.5, num_gaussian)
@@ -269,16 +272,16 @@ def try_and_optim_M(M, working_indices, N=20, num_gaussian=10, start_index=0, en
         mfpt_biased = mfpts_biased[start_state_working_index, end_state_working_index]
         return mfpt_biased
 
-    
     res = minimize(mfpt_helper, 
                    best_params, 
                    args=(M,
                          start_state_working_index, 
                          end_state_working_index,
                          working_indices), 
-                   method='Nelder-Mead', 
+                   #method='Nelder-Mead',
+                   method="L-BFGS-B", 
                    bounds= [(0.1, 2)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0, 2*np.pi)]*num_gaussian + [(0.3, 1.5)]*num_gaussian + [(0.3, 1.5)]*num_gaussian,
-                   tol=1e0)
+                   tol=1e-4)
     
     #print("local optimisation result:", res.x)
     return res.x
@@ -303,7 +306,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
 
     k = 5  # Steepness of the sigmoid curve
     max_barrier = "1e2"  # Scaling factor for the potential maximum
-    offset = 0.5 #the offset of the boundary energy barrier.
+    offset = 0.7 #the offset of the boundary energy barrier.
     # Defining the potentials using a sigmoid function
     left_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp({k} * x - (-{offset}))))")
     right_pot = openmm.CustomExternalForce(f"{max_barrier} * (1 / (1 + exp(-{k} * (x - (2 * {pi} + {offset})))))")
@@ -447,6 +450,7 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 system.addForce(force)
             
             if plot:
+                plot_3d = True
                 #plot the fes.
                 x = np.linspace(0, 2*np.pi, 100)
                 y = np.linspace(0, 2*np.pi, 100)
@@ -465,17 +469,38 @@ def apply_fes(system, particle_idx, gaussian_param=None, pbc = False, name = "FE
                 total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(k * (Y - (-offset)))))
                 total_energy_barrier += float(max_barrier) * (1 / (1 + np.exp(-k * (Y - (2 * pi + offset)))))
                 Z += total_energy_barrier
+                Z = Z - Z.min()
 
-                plt.figure()
-                plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=amp* 12/7 * 4.184, origin="lower")
-                plt.xlabel("x")
-                plt.xlim([-1, 1+2*np.pi])
-                plt.ylim([-1, 1+2*np.pi])
-                plt.ylabel("y")
-                plt.title("FES mode = multiwell, pbc=False")
-                plt.colorbar()
-                plt.savefig(plot_path)
-                plt.close()
+                if plot_3d:
+                    fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+                    #tight layout.
+                    plt.tight_layout(pad=2.0)
+                    plt.subplots_adjust(bottom=0.2)
+                    surf = ax.plot_surface(X, Y, Z, cmap="coolwarm", linewidth=0.2, rstride=5, cstride=5, alpha=0.8)
+                    ax.contourf(X, Y, Z, zdir='z', offset=0, cmap="coolwarm")
+
+                    ax.set_xlabel("x (nm)")
+                    ax.set_ylabel("y (nm)")
+                    #ax.set_zlabel("U (kcal/mol)")
+                    #ax.set_zlim([0, amp * 12/7])
+                    #ax.set_title("FES mode = multiwell, pbc=False")
+                    cbar = fig.colorbar(surf, shrink=0.5, aspect=5)
+                    cbar.set_label("U (kcal/mol)")
+                    plt.savefig(plot_path, dpi=800)
+                else:
+                    plt.figure()
+                    plt.tight_layout(pad=2.0)
+                    plt.subplots_adjust(bottom=0.2)
+                    plt.imshow(Z, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], origin="lower")
+                    plt.xlabel("x (nm)")
+                    plt.xlim([0, 2*np.pi])
+                    plt.ylim([0, 2*np.pi])
+                    plt.ylabel("y (nm)")
+                    #plt.title("FES mode = multiwell, pbc=False")
+                    cbar=plt.colorbar()
+                    cbar.set_label("U (kcal/mol)")
+                    plt.savefig(plot_path, dpi=800)
+                    plt.close()
                 fes = Z
             
     if mode == "funnel":

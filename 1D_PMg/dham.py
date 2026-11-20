@@ -9,7 +9,8 @@ from glob import glob
 from scipy.linalg import eig
 from scipy.optimize import minimize
 from util import gaussian
-
+import config
+from MSM import *
 
 def rmsd(offset, a, b):
     return np.sqrt(np.mean(np.square((a + offset) - b)))
@@ -20,7 +21,7 @@ def align(query, ref):
     print(res.x[0], res.fun)
     return res.x[0]
 
-def count_transitions(b, numbins, lagtime, endpt=None):
+def count_transitions(b, numbins, lagtime, endpt=None, use_symmetry=False):
     """
     note the b is a 2D array, 
      row represents the trajectory, column represents the time.
@@ -36,61 +37,64 @@ def count_transitions(b, numbins, lagtime, endpt=None):
                 continue
     sumtr = np.sum(Ntr, axis=0)
     trvec = np.sum(Ntr, axis=2)
-    sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
-    # anti = 0.5 * (sumtr - np.transpose(sumtr))
-    # print("Degree of symmetry:",
+    if use_symmetry:
+        print("Using symmetry in DHAM")
+        sumtr = 0.5 * (sumtr + np.transpose(sumtr)) #disable for original DHAM, enable for DHAM_sym
+    else:
+        print("Not using symmetry in DHAM")
+    # print("Degree of symmetry:",zz
     #       (np.linalg.norm(sym) - np.linalg.norm(anti)) / (np.linalg.norm(sym) + np.linalg.norm(anti)))
     return sumtr.real, trvec
 
 class DHAM:
-    KbT = 0.001987204259 * 300  # energy unit: kcal/mol
-    epsilon = 0.00001
-    data = None
-    vel = None
-    datlength = None
-    k_val = None
-    constr_val = None
-    qspace = None
-    numbins = 100
-    lagtime = 1
-
-    def __init__(self, gaussian_params):
-        #unpack it to self.a, self.b, self.c
-        num_gaussian = len(gaussian_params)//3
-        self.a = gaussian_params[:num_gaussian]
-        self.b = gaussian_params[num_gaussian:2*num_gaussian]
-        self.c = gaussian_params[2*num_gaussian:]
+    
+    def __init__(self, global_gaussian_params, num_bins):
+        #gaussian_params comes in shape [prop_index + 1, num_gaussian, 3]
+        self.global_gaussian_params = global_gaussian_params
+        self.KbT = 0.001987204259 * 300  # energy unit: kcal/mol
+        self.epsilon = 0.00001
+        self.data = None
+        self.vel = None
+        self.datlength = None
+        self.k_val = None
+        self.constr_val = None
+        self.qspace = None
+        self.num_bins = num_bins
+        self.lagtime = 1
         return
 
-    def setup(self, CV, T,prop_index):
+    def setup(self, CV, T, prop_index, time_tag):
         self.data = CV
         self.KbT = 0.001987204259 * T
         self.prop_index = prop_index
+        self.time_tag = time_tag
         return
 
     def build_MM(self, sumtr, trvec, biased=False):
         MM = np.empty(shape=sumtr.shape, dtype=np.longdouble)
         if biased:
             MM = np.zeros(shape=sumtr.shape, dtype=np.longdouble)
-
-            #compute total bias u. used for dham unbias.
-            u = np.zeros_like(self.qspace)
-            for n in range(len(self.a)):
-                u += gaussian(self.qspace, self.a[n], self.b[n], self.c[n])
             #qsp = self.qspace[1] - self.qspace[0] #step size between bins
             for i in range(sumtr.shape[0]):
                 for j in range(sumtr.shape[1]):
                     if sumtr[i, j] > 0:
                         sump1 = 0.0
                         for k in range(trvec.shape[0]):
+                            #the k represents the trajectory index.
+
+                            #for each chunk of trajectory, we load the gaussian parameters.
+                            # and calculate total bias in u, used to unbias the traj later.
+                            u = np.zeros_like(self.qspace)
+                            for g in range(self.global_gaussian_params.shape[1]):
+                                a,b,c = self.global_gaussian_params[k, g, :]
+                                u += gaussian(self.qspace, a, b, c)
+                            
                             if trvec[k, i] > 0:
                                 sump1 += trvec[k, i] * np.exp(-(u[j] - u[i]) / (2*self.KbT))
-                        if sump1 > 0:
-                            MM[i, j] = sumtr[i, j] / sump1
-                        else:
-                            MM[i, j] = 0
-            #epsilon_offset = 1e-15
-            #MM = MM / (np.sum(MM, axis=1)[:, None])#+epsilon_offset) #normalize the M matrix #this is returning NaN?.
+                        #if sump1 > 0:
+                        MM[i, j] = sumtr[i, j] / sump1
+                    else:
+                        MM[i, j] = 0
             for i in range(MM.shape[0]):
                 row_sum = np.sum(MM[i,:])
                 if row_sum > 0:
@@ -101,7 +105,7 @@ class DHAM:
             raise NotImplementedError
         return MM
 
-    def run(self, plot=False, adjust=True, biased=False, conversion=2E-13):
+    def run(self, plot=False, adjust=True, biased=False, conversion=2E-13, use_symmetry=False, use_dynamic_bins=False):
         """
 
         :param plot:
@@ -110,39 +114,36 @@ class DHAM:
         :param conversion: from timestep to seconds
         :return:
         """
-        v_min = np.nanmin(self.data) - self.epsilon
-        v_max = np.nanmax(self.data) + self.epsilon
-        qspace = np.linspace(1.0, 8.0, self.numbins + 1) #hard coded for now.
-        self.qspace = qspace
-        b = np.digitize(self.data[:, :], qspace)
-        b = b.reshape(1, -1)
-        sumtr, trvec = count_transitions(b, self.numbins, self.lagtime)
-        #print("Number of transitions:", np.sum(sumtr))
-        #print("Transition vector:", np.sum(trvec, axis=0))
-        MM = self.build_MM(sumtr, trvec, biased)
-        """d, v = eig(MM.T)
-        mpeq = v[:, np.where(d == np.max(d))[0][0]]
-        mpeq = mpeq / np.sum(mpeq)
-        mpeq = mpeq.real
-        #rate = np.float_(- self.lagtime * conversion / np.log(d[np.argsort(d)[-2]]))
-        mU2 = - self.KbT * np.log(mpeq)"""
+        #given the data, we create dynamic qspace based on config.DHAM_num_bins
+        #and discretize the data into bins.
+        #for higher dimension, we discretize and then ravel it into 1D array.
+        if use_dynamic_bins:
+            minval = np.min(self.data[:, :])
+            maxval = np.max(self.data[:, :])
+            self.qspace = np.linspace(minval, maxval, self.num_bins)
+            print("min/max of the data: ", minval, maxval)
+            print("using dynamic Binning with {0:d} bins".format(self.num_bins))
+        else:
+            self.qspace = config.qspace
+            print("using static Binning with {0:d} bins".format(config.qspace_num_bins))
+            
+        b = np.digitize(self.data[:, :], self.qspace)
+        sumtr, trvec = count_transitions(b, self.num_bins, self.lagtime, use_symmetry=use_symmetry)
 
-        from util import compute_free_energy, compute_free_energy_power_method
-        peq, mU2,_,_,_,_ = compute_free_energy(MM.T.astype(np.float64))
-        #peq, mU2 = compute_free_energy_power_method(MM)
-        print(peq)
-        print(sum(peq))
+        MM = self.build_MM(sumtr, trvec, biased)
+        msm = MSM()
+        msm.M = MM.T
+        msm._compute_peq_fes_M()
+        print("sum of peq in dham reconstruction: ", sum(msm.peq))
 
         if False:
-            unb_bins, unb_profile = np.load("Unbiased_Profile.npy")
-            #plot the unbiased profile from 2.4 to 9 A.
-            plt.plot(unb_bins, unb_profile, label="ground truth")
-            x = np.linspace(2.0, 9, self.numbins)
-            plt.plot(x, mU2, label="reconstructed M by DHAMsym")
-            plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.numbins))
-            plt.xlim(2.0, 9)
+            plt.figure()
+            plt.plot(self.qspace, msm.free_energy, label=" fes from reconstructed M by DHAMsym")
+            plt.title("Lagtime={0:d} Nbins={1:d}".format(self.lagtime, self.num_bins))
+            plt.xlim(config.qspace_low, config.qspace_high)
             plt.savefig(f"./test_dham_{self.prop_index}.png")
-        return mU2, MM # mU2 is in unit kcal/mol.
+            plt.close()        
+        return self.qspace, msm.free_energy, MM.T # fes in unit kcal/mol.
 
     def bootstrap_error(self, size, iter=100, plotall=False, save=None):
         full = self.run(plot=False)

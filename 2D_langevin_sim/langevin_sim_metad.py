@@ -28,12 +28,11 @@ if __name__ == "__main__":
 
     pbc = config.pbc
     time_tag = time.strftime("%Y%m%d-%H%M%S")
-    amp = 1 #for amp applied on fes. note the gaussian parameters for fes is normalized.
 
     #metaD parameters
     npoints = 101
     meta_freq = 5000
-    meta_height = 1
+    meta_height = config.amp * 1/2
 
     #
     elem = Element(0, "X", "X", 1.0)
@@ -46,6 +45,8 @@ if __name__ == "__main__":
     #starting point as [1.29,-1.29,0.0]
 
     for i_sim in range(config.num_sim):
+        #print the config.
+        print(f"config: {config.__dict__}")
         system = openmm.System()
         system.addParticle(mass)
 
@@ -130,8 +131,8 @@ if __name__ == "__main__":
         metaD = Metadynamics(system=system,
                                 variables=[x_Bias_var, y_Bias_var], #variables=[rmsd_Bias_var],
                                 temperature=300*unit.kelvin,
-                                biasFactor=2,
-                                height=1.0*unit.kilocalorie_per_mole,
+                                biasFactor=5,
+                                height=meta_height*unit.kilocalorie_per_mole,
                                 frequency=meta_freq, #1000
                                 saveFrequency=meta_freq,
                                 biasDir=aux_file_path,)
@@ -158,14 +159,14 @@ if __name__ == "__main__":
         print("minimizing energy done, time: %.2f" % (time.time()-s))
 
 
-        pos_traj = np.zeros([config.sim_steps, 3])
+        #pos_traj = np.zeros([int(config.sim_steps/config.dcdfreq), 3])
 
         #store fes in 2D way
         #fes = np.zeros([int(sim_steps/dcdfreq), 50, 50])
         potential_energy = []
 
-        file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
-        dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
+        #file_handle = open(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', 'wb')
+        #dcd_file = openmm.app.DCDFile(file_handle, top, dt = config.stepsize)
 
         progress_bar = tqdm(total = config.sim_steps/config.dcdfreq)
 
@@ -180,17 +181,20 @@ if __name__ == "__main__":
 
             #record the trajectory, distance, and bias applied
             state = simulation.context.getState(getPositions=True, getEnergy=True, enforcePeriodicBox=pbc)
-            pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
+            #pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
             
             #fes[i,:,:] = metaD.getFreeEnergy()
             energy = state.getPotentialEnergy()
             potential_energy.append(energy)
-            dcd_file.writeModel(state.getPositions(asNumpy=True))
-        file_handle.close()
+            #dcd_file.writeModel(state.getPositions(asNumpy=True))
+            #we will record dcd using reporter.
+            simulation.reporters.append(openmm.app.DCDReporter(f'./trajectory/metaD/{time_tag}_metaD_traj.dcd', config.dcdfreq))
+
+        #file_handle.close()
 
 
         #zip traj, biasand save.
-        np.save(f"./visited_states/{time_tag}_metaD_pos_traj_.npy", np.array(pos_traj))
+        #np.save(f"./visited_states/{time_tag}_metaD_pos_traj_.npy", np.array(pos_traj))
         np.save(f"./visited_states/{time_tag}_metaD_potential_energy.npy", np.array(potential_energy))
 
         #this is for plain MD.
@@ -202,10 +206,10 @@ if __name__ == "__main__":
             pos_traj[i,:] = state.getPositions(asNumpy=True)[0,:]
         """
 
-        pos_traj = np.array(pos_traj)
-        end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
+        #pos_traj = np.array(pos_traj)
+        #end_state_xyz = config.end_state.value_in_unit_system(openmm.unit.md_unit_system)[0]
 
-        for index_d, d in enumerate(pos_traj):
+        """for index_d, d in enumerate(pos_traj):
             if np.linalg.norm(d - end_state_xyz) < 0.1:
                 steps_to_endstate = index_d*config.dcdfreq
                 break
@@ -215,11 +219,11 @@ if __name__ == "__main__":
         with open("total_steps_metaD.csv", 'a') as f:
             writer = csv.writer(f)
             writer.writerow([steps_to_endstate])
-
+"""
 
         ### VISUALIZATION ###
 
-        #we plot the pos_traj.
+        """#we plot the pos_traj.
         plt.figure()
         #here we plot the fes.
         plt.imshow(fes, cmap="coolwarm", extent=[0, 2*np.pi,0, 2*np.pi], vmin=0, vmax=config.amp * 12/7 * 4.184, origin="lower")
@@ -231,12 +235,12 @@ if __name__ == "__main__":
         plt.title("FES mode = multiwell, pbc=False")
 
         #plot the trajectory
-        plot_inteval = len(pos_traj)//10000 #plot 10000 points
+        plot_inteval = len(pos_traj)//1000 #plot 10000 points
         plt.scatter(pos_traj[::plot_inteval,0], pos_traj[::plot_inteval,1], s=3.5, alpha = 0.5, c="black")
         plt.savefig(f"./figs/metaD/{time_tag}_metaD_traj.png")
         plt.close()
 
-
+"""
 
 
 
